@@ -1,13 +1,13 @@
 import { motion } from 'framer-motion';
-import { Webhook, Mail, Code, Clock, Plus, X } from 'lucide-react';
+import { Plugs, Envelope, Code, Clock, Plus, X } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 
 const nodeTypes = [
-    { type: 'trigger', label: 'Trigger', icon: Webhook, color: 'from-pink-500 to-rose-500' },
-    { type: 'webhook', label: 'Webhook', icon: Webhook, color: 'from-orange-500 to-red-500' },
+    { type: 'trigger', label: 'Trigger', icon: Plugs, color: 'from-pink-500 to-rose-500' },
+    { type: 'webhook', label: 'Webhook', icon: Plugs, color: 'from-orange-500 to-red-500' },
     { type: 'schedule', label: 'Schedule', icon: Clock, color: 'from-green-500 to-emerald-500' },
-    { type: 'action', label: 'Action', icon: Mail, color: 'from-blue-500 to-cyan-500' },
+    { type: 'action', label: 'Action', icon: Envelope, color: 'from-blue-500 to-cyan-500' },
     { type: 'function', label: 'Function', icon: Code, color: 'from-purple-500 to-indigo-500' },
 ];
 
@@ -33,7 +33,7 @@ export const NodePalette = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setIsOpen(true)}
-                    className="w-14 h-14 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 flex items-center justify-center hover:shadow-xl transition-shadow"
+                    className="w-14 h-14 rounded-full bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 flex items-center justify-center hover:shadow-xl transition-shadow"
                 >
                     <Plus className="w-6 h-6" />
                 </motion.button>
@@ -62,7 +62,7 @@ export const NodePalette = () => {
                                 onClick={() => handleAddNode(nodeType.type, nodeType.label)}
                                 className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-white/5 transition-colors text-left group"
                             >
-                                <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${nodeType.color} flex items-center justify-center shadow-md`}>
+                                <div className={`w-10 h-10 rounded-lg bg-linear-to-br ${nodeType.color} flex items-center justify-center shadow-md`}>
                                     <nodeType.icon className="w-5 h-5 text-white" />
                                 </div>
                                 <div className="flex-1">

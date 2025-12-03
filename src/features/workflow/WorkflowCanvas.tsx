@@ -3,7 +3,7 @@ import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { Node } from './Node';
 import { Edge } from './Edge';
 import { motion } from 'framer-motion';
-import { Maximize, Minimize, Hand } from 'lucide-react';
+import { CornersOut, CornersIn, Hand } from '@phosphor-icons/react';
 
 export const WorkflowCanvas = () => {
     const { nodes, edges, updateNodePosition, removeNode, addEdge } = useWorkflowStore();
@@ -121,7 +121,7 @@ export const WorkflowCanvas = () => {
                     onClick={() => setIsFullscreen(!isFullscreen)}
                     className="px-3 py-2 rounded-lg backdrop-blur-md bg-white/80 dark:bg-white/5 border border-[#E5E0D8] dark:border-white/10 hover:bg-[#F5F1E8] dark:hover:bg-white/10 hover:border-[#D4A574] transition-all text-[#475569] dark:text-[#D4C5A9]"
                 >
-                    {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
+                    {isFullscreen ? <CornersIn className="w-4 h-4" /> : <CornersOut className="w-4 h-4" />}
                 </button>
             </div>
 
@@ -228,8 +228,8 @@ export const WorkflowCanvas = () => {
                         animate={{ opacity: 1, y: 0 }}
                         className="text-center"
                     >
-                        <div className="w-16 h-16 bg-gradient-to-br from-[#D4A574]/20 to-[#8B7355]/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-[#E5E0D8]/30 dark:border-white/10 backdrop-blur-sm">
-                            <div className="w-8 h-8 bg-gradient-to-br from-[#D4A574] to-[#8B7355] rounded-lg" />
+                        <div className="w-16 h-16 bg-linear-to-br from-[#D4A574]/20 to-[#8B7355]/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-[#E5E0D8]/30 dark:border-white/10 backdrop-blur-sm">
+                            <div className="w-8 h-8 bg-linear-to-br from-[#D4A574] to-[#8B7355] rounded-lg" />
                         </div>
                         <h3 className="text-xl font-bold text-[#1E293B] dark:text-white mb-2">Start Your Workflow</h3>
                         <p className="text-[#475569] dark:text-[#D4C5A9] max-w-xs mx-auto">

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
-import { Lock, Mail, ArrowRight, Zap, User } from 'lucide-react';
+import { CircleNotch, GithubLogo, Lightning, Envelope, Lock, ArrowRight, User } from '@phosphor-icons/react';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Card } from '../components/ui/Card';
@@ -43,7 +43,7 @@ export function RegisterPage() {
                             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                             className="w-16 h-16 bg-primary/10 rounded-2xl mx-auto flex items-center justify-center mb-6 border border-primary/20"
                         >
-                            <Zap className="w-8 h-8 text-primary" />
+                            <Lightning className="w-8 h-8 text-primary" />
                         </motion.div>
                         <h1 className="text-3xl font-bold text-text-primary mb-2">Create Account</h1>
                         <p className="text-text-secondary">Join us and start automating</p>
@@ -64,7 +64,7 @@ export function RegisterPage() {
                             </div>
 
                             <div className="relative">
-                                <Mail className="absolute left-3 top-3 w-4 h-4 text-text-tertiary" />
+                                <Envelope className="absolute left-3 top-3 w-4 h-4 text-text-tertiary" />
                                 <Input
                                     type="email"
                                     value={email}

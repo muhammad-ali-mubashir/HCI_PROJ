@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useThemeStore } from '../store/useThemeStore';
-import { Moon, Sun, Zap, Layout as LayoutIcon, Settings, BarChart3, MessageSquare } from 'lucide-react';
+import { Moon, Sun, Lightning, Layout as LayoutIcon, Gear, ChartBar, ChatCircle } from '@phosphor-icons/react';
 import { cn } from '../lib/utils';
 import { Button } from './ui/Button';
 
@@ -11,11 +11,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     const location = useLocation();
 
     const navItems = [
-        { path: '/home', icon: Zap, label: 'Home' },
-        { path: '/chat', icon: MessageSquare, label: 'Chat' },
+        { path: '/home', icon: Lightning, label: 'Home' },
+        { path: '/chat', icon: ChatCircle, label: 'Chat' },
         { path: '/builder', icon: LayoutIcon, label: 'Builder' },
-        { path: '/dashboard', icon: BarChart3, label: 'Dashboard' },
-        { path: '/settings', icon: Settings, label: 'Settings' },
+        { path: '/dashboard', icon: ChartBar, label: 'Dashboard' },
+        { path: '/settings', icon: Gear, label: 'Settings' },
     ];
 
     return (
@@ -26,7 +26,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                         <div className="flex items-center">
                             <Link to="/home" className="flex items-center gap-2 font-bold text-xl tracking-tight group">
                                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:bg-primary/20 transition-colors">
-                                    <Zap className="w-5 h-5 text-primary" />
+                                    <Lightning className="w-5 h-5 text-primary" />
                                 </div>
                                 <span className="text-text-primary">AutoM8</span>
                             </Link>

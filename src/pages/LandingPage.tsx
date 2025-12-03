@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Zap, Layers, Activity, Sparkles } from 'lucide-react';
+import { ArrowRight, Lightning, Stack, Pulse, Sparkle } from '@phosphor-icons/react';
 import { HeroCanvas } from '../components/HeroCanvas';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';
@@ -19,7 +19,7 @@ export const LandingPage = () => {
                         transition={{ duration: 0.5 }}
                         className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-8"
                     >
-                        <Sparkles className="w-3.5 h-3.5 text-primary" />
+                        <Sparkle className="w-3.5 h-3.5 text-primary" />
                         <span className="text-xs font-medium text-text-secondary uppercase tracking-wider">
                             AI-Powered Workflow Automation
                         </span>
@@ -32,7 +32,7 @@ export const LandingPage = () => {
                         className="text-5xl sm:text-7xl font-bold tracking-tight mb-6 text-text-primary"
                     >
                         Build workflows that <br />
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/50">
+                        <span className="text-transparent bg-clip-text bg-linear-to-r from-primary to-primary/50">
                             work like magic
                         </span>
                     </motion.h1>
@@ -75,17 +75,17 @@ export const LandingPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
                             {
-                                icon: Zap,
+                                icon: Lightning,
                                 title: 'Instant Generation',
                                 desc: 'Turn natural language into complex workflows in seconds using AI.'
                             },
                             {
-                                icon: Layers,
+                                icon: Stack,
                                 title: 'Visual Builder',
                                 desc: 'Drag, drop, and connect nodes with smooth physics and animations.'
                             },
                             {
-                                icon: Activity,
+                                icon: Pulse,
                                 title: 'Live Simulation',
                                 desc: 'Watch your data flow in real-time with beautiful visualization.'
                             }

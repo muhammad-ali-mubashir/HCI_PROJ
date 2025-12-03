@@ -1,6 +1,6 @@
 import { useThemeStore } from '../store/useThemeStore';
 import { motion } from 'framer-motion';
-import { Moon, Sun, Eye, Zap, Download, FileJson, Image } from 'lucide-react';
+import { Moon, Sun, Eye, Lightning, DownloadSimple, FileCode, Image } from '@phosphor-icons/react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Switch } from '../components/ui/Switch';
 import { Button } from '../components/ui/Button';
@@ -69,7 +69,7 @@ export const SettingsPage = () => {
                         <SettingItem
                             label="Reduced Motion"
                             description="Minimize animations for a simpler experience"
-                            icon={Zap}
+                            icon={Lightning}
                             value={reducedMotion}
                             onChange={toggleReducedMotion}
                         />
@@ -83,7 +83,7 @@ export const SettingsPage = () => {
                     <CardContent>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <Button variant="outline" className="justify-start h-auto py-4 px-4">
-                                <FileJson className="w-5 h-5 mr-3 text-text-secondary" />
+                                <FileCode className="w-5 h-5 mr-3 text-text-secondary" />
                                 <div className="text-left">
                                     <div className="font-medium">Export JSON</div>
                                     <div className="text-xs text-text-secondary font-normal">Download raw data</div>
@@ -97,7 +97,7 @@ export const SettingsPage = () => {
                                 </div>
                             </Button>
                             <Button className="sm:col-span-2 w-full">
-                                <Download className="w-4 h-4 mr-2" />
+                                <DownloadSimple className="w-4 h-4 mr-2" />
                                 Download Full Report
                             </Button>
                         </div>

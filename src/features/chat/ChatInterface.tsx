@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, User, Clock } from 'lucide-react';
+import { PaperPlaneRight, Robot, User, Clock } from '@phosphor-icons/react';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 import { simulateWorkflowGeneration } from '../../lib/simulation';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -42,7 +42,7 @@ export const ChatInterface = () => {
                             log.status === 'error' && "bg-red-50 dark:bg-red-900/20"
                         )}
                     >
-                        <span className="flex-shrink-0">
+                        <span className="shrink-0">
                             {log.status === 'success' ? '✅' : '❌'}
                         </span>
                         <div className="flex-1 min-w-0">
@@ -60,7 +60,7 @@ export const ChatInterface = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="flex items-center gap-1 text-[#94A3B8] dark:text-[#B8935C] flex-shrink-0">
+                        <div className="flex items-center gap-1 text-[#94A3B8] dark:text-[#B8935C] shrink-0">
                             <Clock className="w-3 h-3" />
                             <span>{new Date(log.timestamp).toLocaleTimeString()}</span>
                         </div>
@@ -128,7 +128,7 @@ export const ChatInterface = () => {
 
                 // Animate nodes sequentially if it's an execution
                 if (response.executionLogs) {
-                    response.executionLogs.forEach((log, index) => {
+                    response.executionLogs.forEach((_, index) => {
                         setTimeout(() => {
                             // Update node status in the visualization
                             // This will be handled by WorkflowCanvas component
@@ -169,7 +169,7 @@ export const ChatInterface = () => {
         <div className="flex flex-col h-full bg-white/5 dark:bg-[#1E293B]/30 border-r border-[#E5E0D8]/20 dark:border-white/10 backdrop-blur-sm">
             <div className="p-4 border-b border-[#E5E0D8]/20 dark:border-white/10">
                 <h2 className="text-lg font-semibold flex items-center gap-2">
-                    <Bot className="w-5 h-5 text-[#8B7355] dark:text-[#D4A574]" />
+                    <Robot className="w-5 h-5 text-[#8B7355] dark:text-[#D4A574]" />
                     n8n AI Assistant
                 </h2>
                 <p className="text-xs text-[#64748B] dark:text-[#D4C5A9] mt-1">
@@ -192,8 +192,8 @@ export const ChatInterface = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     className="flex gap-3"
                                 >
-                                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#D4A574] to-[#8B7355] flex items-center justify-center flex-shrink-0">
-                                        <Bot className="w-4 h-4" />
+                                    <div className="w-8 h-8 rounded-full bg-linear-to-br from-[#D4A574] to-[#8B7355] flex items-center justify-center shrink-0">
+                                        <Robot className="w-4 h-4" />
                                     </div>
                                     <div className="flex-1 bg-[#F5F1E8]/80 dark:bg-white/10 p-3 rounded-2xl rounded-tl-none">
                                         <ExecutionLogsDisplay logs={(msg as any).executionLogs} />
@@ -213,12 +213,12 @@ export const ChatInterface = () => {
                                 )}
                             >
                                 <div className={clsx(
-                                    "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300",
+                                    "w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300",
                                     msg.role === 'user'
-                                        ? "bg-gradient-to-br from-[#8B7355] to-[#6B5444] dark:from-[#D4A574] dark:to-[#B8935C]"
-                                        : "bg-gradient-to-br from-[#D4A574] to-[#8B7355] dark:from-[#D4A574] dark:to-[#B8935C]"
+                                        ? "bg-linear-to-br from-[#8B7355] to-[#6B5444] dark:from-[#D4A574] dark:to-[#B8935C]"
+                                        : "bg-linear-to-br from-[#D4A574] to-[#8B7355] dark:from-[#D4A574] dark:to-[#B8935C]"
                                 )}>
-                                    {msg.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                                    {msg.role === 'user' ? <User className="w-4 h-4" /> : <Robot className="w-4 h-4" />}
                                 </div>
                                 <div className={clsx(
                                     "p-3 rounded-2xl text-sm transition-all duration-200 whitespace-pre-line",
@@ -237,8 +237,8 @@ export const ChatInterface = () => {
                             animate={{ opacity: 1 }}
                             className="flex gap-3"
                         >
-                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#D4A574] to-[#8B7355] flex items-center justify-center">
-                                <Bot className="w-4 h-4" />
+                            <div className="w-8 h-8 rounded-full bg-linear-to-br from-[#D4A574] to-[#8B7355] flex items-center justify-center">
+                                <Robot className="w-4 h-4" />
                             </div>
                             <div className="bg-[#F5F1E8]/80 dark:bg-white/10 p-3 rounded-2xl rounded-tl-none flex gap-1 items-center">
                                 <span className="w-2 h-2 bg-[#8B7355] dark:bg-[#D4A574] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
@@ -287,9 +287,9 @@ export const ChatInterface = () => {
                         <button
                             type="submit"
                             disabled={!input.trim() || isLoading}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-r from-[#8B7355] to-[#6B5444] dark:from-[#D4A574] dark:to-[#B8935C] rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-all duration-200 shadow-md"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-linear-to-r from-[#8B7355] to-[#6B5444] dark:from-[#D4A574] dark:to-[#B8935C] rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-all duration-200 shadow-md"
                         >
-                            <Send className="w-4 h-4" />
+                            <PaperPlaneRight className="w-4 h-4" />
                         </button>
                     </div>
                 </form>

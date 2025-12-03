@@ -1,15 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import type { Node as NodeType } from '../../lib/types';
-import { Zap, Webhook, Mail, Clock, Code, Play, Trash2 } from 'lucide-react';
+import { Lightning, Plugs, Envelope, Clock, Code, Play, Trash } from '@phosphor-icons/react';
 import { cn } from '../../lib/utils';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 
 const iconMap = {
-    trigger: Webhook,
-    action: Mail,
+    trigger: Plugs,
+    action: Envelope,
     function: Code,
-    webhook: Webhook,
+    webhook: Plugs,
     schedule: Clock,
 };
 
@@ -34,7 +34,7 @@ interface NodeProps {
 }
 
 export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onClick, onDragEnd, onDragStart, onDelete, onConnectStart, onConnectEnd }) => {
-    const Icon = iconMap[node.type] || Zap;
+    const Icon = iconMap[node.type] || Lightning;
     const colorClass = colorMap[node.type] || 'text-text-secondary bg-surface border-white/10';
     const { isExecuting, executionLog } = useWorkflowStore();
 
@@ -132,7 +132,7 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                                     }}
                                     className="p-1.5 hover:bg-error/10 rounded-md text-text-secondary hover:text-error transition-colors"
                                 >
-                                    <Trash2 className="w-3 h-3" />
+                                    <Trash className="w-3 h-3" />
                                 </button>
                             </div>
                         )}
@@ -141,7 +141,7 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
 
                 {/* Active State Overlay */}
                 {isRunning && isExecuting && (
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
+                    <div className="absolute inset-0 bg-linear-to-r from-transparent via-primary/5 to-transparent animate-shimmer" style={{ backgroundSize: '200% 100%' }} />
                 )}
             </div>
         </motion.div>
