@@ -7,156 +7,133 @@ interface SimulationResponse {
     conversationContext?: ConversationContext;
     executionLogs?: ExecutionLogEntry[];
     workflowList?: string[];
+    recommendations?: string[];
 }
 
-// Pre-defined workflow registry
+// Enhanced Workflow Registry with AutoML metadata
 const WORKFLOW_REGISTRY: Record<string, WorkflowDefinition> = {
     "welcome_email": {
         id: 'wf-1',
-        name: 'Welcome Email',
-        description: 'Sends a welcome email to new users',
+        name: 'User Onboarding',
+        description: 'Optimized onboarding flow with smart retries',
         requiredParams: ['email'],
         nodes: [
             { id: '1', type: 'trigger', label: 'New User Trigger', position: { x: 100, y: 300 } },
-            { id: '2', type: 'function', label: 'Personalize Content', position: { x: 400, y: 300 } },
-            { id: '3', type: 'action', label: 'Send Email', position: { x: 700, y: 300 } }
-        ],
-        edges: [
-            { id: 'e1-2', source: '1', target: '2' },
-            { id: 'e2-3', source: '2', target: '3' }
-        ]
-    },
-    "new_lead": {
-        id: 'wf-2',
-        name: 'New Lead',
-        description: 'Processes new leads from form submissions',
-        requiredParams: ['name', 'email'],
-        nodes: [
-            { id: '1', type: 'webhook', label: 'Form Submission', position: { x: 100, y: 300 } },
-            { id: '2', type: 'function', label: 'Validate Data', position: { x: 400, y: 300 } },
-            { id: '3', type: 'action', label: 'Add to CRM', position: { x: 700, y: 200 } },
-            { id: '4', type: 'action', label: 'Notify Sales Team', position: { x: 700, y: 400 } }
+            { id: '2', type: 'function', label: 'Fetch User Data', position: { x: 400, y: 300 }, data: { optimized: true } },
+            { id: '3', type: 'action', label: 'Send Welcome Email', position: { x: 700, y: 300 }, data: { retry: 3, strategy: 'exponential_backoff' } },
+            { id: '4', type: 'action', label: 'Logger', position: { x: 1000, y: 300 } }
         ],
         edges: [
             { id: 'e1-2', source: '1', target: '2' },
             { id: 'e2-3', source: '2', target: '3' },
-            { id: 'e2-4', source: '2', target: '4' }
+            { id: 'e3-4', source: '3', target: '4' }
         ]
     },
-    "send_report": {
-        id: 'wf-3',
-        name: 'Send Report',
-        description: 'Generates and sends weekly reports',
-        requiredParams: ['recipient'],
-        canFail: true, // Can simulate failure
+    "weekly_sales": {
+        id: 'wf-2',
+        name: 'Weekly Sales Report',
+        description: 'Automated reporting with batch processing',
+        requiredParams: [],
         nodes: [
             { id: '1', type: 'schedule', label: 'Weekly Trigger', position: { x: 100, y: 300 } },
-            { id: '2', type: 'function', label: 'Generate Report', position: { x: 400, y: 300 } },
-            { id: '3', type: 'action', label: 'Send Email', position: { x: 700, y: 300 } }
-        ],
-        edges: [
-            { id: 'e1-2', source: '1', target: '2' },
-            { id: 'e2-3', source: '2', target: '3' }
-        ]
-    },
-    "weekly_newsletter": {
-        id: 'wf-4',
-        name: 'Weekly Newsletter',
-        description: 'Sends weekly newsletter to subscribers',
-        requiredParams: [],
-        nodes: [
-            { id: '1', type: 'schedule', label: 'Weekly Schedule', position: { x: 100, y: 300 } },
-            { id: '2', type: 'function', label: 'Fetch Content', position: { x: 400, y: 200 } },
-            { id: '3', type: 'action', label: 'Send to Subscribers', position: { x: 700, y: 200 } },
-            { id: '4', type: 'action', label: 'Log Execution', position: { x: 700, y: 400 } }
+            { id: '2', type: 'function', label: 'Fetch Sales Data', position: { x: 400, y: 300 }, data: { batchSize: 500 } },
+            { id: '3', type: 'function', label: 'Generate Report', position: { x: 700, y: 300 } },
+            { id: '4', type: 'action', label: 'Send Email', position: { x: 1000, y: 300 }, data: { recipients: 20 } }
         ],
         edges: [
             { id: 'e1-2', source: '1', target: '2' },
             { id: 'e2-3', source: '2', target: '3' },
-            { id: 'e2-4', source: '2', target: '4' }
-        ]
-    },
-    "form_logger": {
-        id: 'wf-5',
-        name: 'Form Logger',
-        description: 'Logs form submissions to Google Sheets',
-        requiredParams: [],
-        nodes: [
-            { id: '1', type: 'webhook', label: 'Form Webhook', position: { x: 100, y: 300 } },
-            { id: '2', type: 'action', label: 'Add to Google Sheets', position: { x: 400, y: 300 } }
-        ],
-        edges: [
-            { id: 'e1-2', source: '1', target: '2' }
+            { id: 'e3-4', source: '3', target: '4' }
         ]
     }
 };
 
-// Parse user intent from message
 export const parseUserIntent = (message: string): CommandIntent => {
     const lowerMsg = message.toLowerCase();
-
     if (lowerMsg.match(/trigger|run|execute|start/)) return 'trigger_workflow';
-    if (lowerMsg.match(/create|build|make|new workflow/)) return 'create_workflow';
-    if (lowerMsg.match(/edit|modify|update|change/)) return 'edit_workflow';
-    if (lowerMsg.match(/log|monitor|show|history|status/)) return 'monitor_workflow';
-    if (lowerMsg.match(/list|what|available|workflows/)) return 'list_workflows';
-
+    if (lowerMsg.match(/create|build|make|automate/)) return 'create_workflow';
+    if (lowerMsg.match(/configure|set up|edit/)) return 'edit_workflow';
+    if (lowerMsg.match(/log|monitor|show|recommendations/)) return 'monitor_workflow';
+    if (lowerMsg.match(/list|what|available/)) return 'list_workflows';
     return 'unknown';
 };
 
-// Extract workflow name from message
 export const extractWorkflowName = (message: string): string | null => {
     for (const key in WORKFLOW_REGISTRY) {
         const workflow = WORKFLOW_REGISTRY[key];
-        if (message.toLowerCase().includes(workflow.name.toLowerCase())) {
+        if (message.toLowerCase().includes(workflow.name.toLowerCase()) ||
+            message.toLowerCase().includes(key.replace('_', ' '))) {
             return key;
         }
     }
     return null;
 };
 
-// Extract parameters from message
 export const extractParameters = (message: string): Record<string, any> => {
     const params: Record<string, any> = {};
-
-    // Extract email
     const emailMatch = message.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9_-]+)/);
     if (emailMatch) params.email = emailMatch[1];
-
-    // Extract names (simple heuristic)
-    const nameMatch = message.match(/for\s+([A-Z][a-z]+)/);
-    if (nameMatch) params.name = nameMatch[1];
-
     return params;
 };
 
-// Generate execution logs
-export const generateExecutionLogs = (workflow: WorkflowDefinition, shouldFail: boolean = false): ExecutionLogEntry[] => {
+// AutoML Logic: Generate smart logs with self-healing simulation
+export const generateAutoMLLogs = (workflow: WorkflowDefinition): ExecutionLogEntry[] => {
     const logs: ExecutionLogEntry[] = [];
-    const startTime = Date.now();
+    let currentTime = Date.now();
 
-    workflow.nodes.forEach((node, index) => {
-        const isLastNode = index === workflow.nodes.length - 1;
-        const shouldFailThisNode = shouldFail && isLastNode;
+    // Add optimization log
+    logs.push({
+        nodeId: 'system',
+        nodeName: 'AutoML Engine',
+        status: 'success',
+        timestamp: currentTime,
+        message: 'Workflow optimization check passed. Configuration valid.'
+    });
+
+    workflow.nodes.forEach((node, _) => {
+        currentTime += 800;
+
+        // Simulate self-healing for specific nodes (randomly)
+        const simulateError = Math.random() < 0.2 && node.type === 'action';
+
+        if (simulateError) {
+            logs.push({
+                nodeId: node.id,
+                nodeName: node.label,
+                status: 'error',
+                timestamp: currentTime,
+                error: 'Connection timeout (500ms)'
+            });
+
+            currentTime += 500;
+
+            logs.push({
+                nodeId: node.id,
+                nodeName: node.label,
+                status: 'running',
+                timestamp: currentTime,
+                message: 'AutoML optimization applied -> Retrying with exponential backoff...'
+            });
+
+            currentTime += 800;
+        }
 
         logs.push({
             nodeId: node.id,
             nodeName: node.label,
-            status: shouldFailThisNode ? 'error' : 'success',
-            timestamp: startTime + (index * 800),
-            message: shouldFailThisNode
-                ? undefined
-                : `${node.label} executed successfully`,
-            error: shouldFailThisNode
-                ? 'Email service unavailable. Please try again later.'
-                : undefined
+            status: 'success',
+            timestamp: currentTime,
+            message: node.data?.recipients
+                ? `Sent to ${node.data.recipients} recipients`
+                : node.data?.batchSize
+                    ? `Processed ${node.data.batchSize} rows`
+                    : 'Executed successfully'
         });
     });
 
     return logs;
 };
 
-// Simulate workflow triggering
 export const simulateWorkflowTrigger = async (
     workflowKey: string,
     parameters: Record<string, any>
@@ -169,19 +146,18 @@ export const simulateWorkflowTrigger = async (
                 resolve({
                     nodes: [],
                     edges: [],
-                    message: `❌ Workflow not found. Type "list workflows" to see available workflows.`
+                    message: `❌ Workflow not found. I can create a new optimized workflow for you if you describe your goal.`
                 });
                 return;
             }
 
-            // Check for missing parameters
             const missingParams = workflow.requiredParams?.filter(param => !parameters[param]) || [];
 
             if (missingParams.length > 0) {
                 resolve({
                     nodes: workflow.nodes,
                     edges: workflow.edges,
-                    message: `To trigger "${workflow.name}", I need some information. What is the ${missingParams[0]}?`,
+                    message: `To execute the optimized "${workflow.name}" workflow, I need the **${missingParams[0]}**.`,
                     conversationContext: {
                         intent: 'trigger_workflow',
                         workflowName: workflowKey,
@@ -193,253 +169,135 @@ export const simulateWorkflowTrigger = async (
                 return;
             }
 
-            // Simulate execution with potential failure
-            const shouldFail = workflow.canFail && Math.random() < 0.3; // 30% chance of failure
-            const logs = generateExecutionLogs(workflow, shouldFail);
-
-            const paramString = Object.entries(parameters)
-                .map(([k, v]) => `${k}: ${v}`)
-                .join(', ');
+            const logs = generateAutoMLLogs(workflow);
 
             resolve({
                 nodes: workflow.nodes,
                 edges: workflow.edges,
-                message: shouldFail
-                    ? `❌ Workflow "${workflow.name}" failed during execution.`
-                    : `✅ Workflow "${workflow.name}" executed successfully with parameters: ${paramString}`,
+                message: `🚀 **AutoML Execution Started**\nRunning optimized workflow "${workflow.name}"...`,
                 executionLogs: logs
             });
-        }, 1200);
+        }, 1500);
     });
 };
 
-// Simulate workflow creation
 export const simulateWorkflowCreation = async (
     message: string,
     context?: ConversationContext
 ): Promise<SimulationResponse> => {
     return new Promise((resolve) => {
         setTimeout(() => {
-            // If waiting for workflow name
             if (context?.step === 'awaiting_name') {
                 const workflowName = message.trim();
                 const workflowKey = workflowName.toLowerCase().replace(/\s+/g, '_');
 
-                // Detect nodes from original message or use defaults
-                let nodeTypes = ['trigger', 'action'];
-                if (context.parameters?.original_message) {
-                    const msg = context.parameters.original_message.toLowerCase();
-                    if (msg.includes('google sheets')) nodeTypes.push('google_sheets');
-                    if (msg.includes('email')) nodeTypes.push('email');
-                    if (msg.includes('webhook')) nodeTypes = ['webhook', ...nodeTypes];
-                }
-
                 const newWorkflow: WorkflowDefinition = {
                     id: `wf-${Date.now()}`,
                     name: workflowName,
-                    description: `Custom workflow: ${workflowName}`,
+                    description: `AutoML generated: ${workflowName}`,
                     nodes: [
-                        { id: '1', type: 'trigger', label: 'Trigger', position: { x: 100, y: 300 } },
-                        { id: '2', type: 'action', label: 'Action', position: { x: 400, y: 300 } }
+                        { id: '1', type: 'trigger', label: 'Smart Trigger', position: { x: 100, y: 300 } },
+                        { id: '2', type: 'function', label: 'Auto-Optimize Data', position: { x: 400, y: 300 } },
+                        { id: '3', type: 'action', label: 'Execute Action', position: { x: 700, y: 300 } },
+                        { id: '4', type: 'action', label: 'Smart Logger', position: { x: 1000, y: 300 } }
                     ],
                     edges: [
-                        { id: 'e1-2', source: '1', target: '2' }
+                        { id: 'e1-2', source: '1', target: '2' },
+                        { id: 'e2-3', source: '2', target: '3' },
+                        { id: 'e3-4', source: '3', target: '4' }
                     ]
                 };
 
-                // Add to registry (in real app, this would persist)
                 WORKFLOW_REGISTRY[workflowKey] = newWorkflow;
 
                 resolve({
                     nodes: newWorkflow.nodes,
                     edges: newWorkflow.edges,
-                    message: `✅ Workflow "${workflowName}" created successfully with nodes: ${newWorkflow.nodes.map(n => n.label).join(' → ')}. Ready to use!`
+                    message: `✅ **AutoML Optimization Complete**\n\nCreated workflow "**${workflowName}**" with smart nodes:\n• Smart Trigger\n• Auto-Optimize Data\n• Execute Action\n• Smart Logger\n\nReady to execute with self-healing enabled.`
                 });
                 return;
             }
 
-            // Initial creation request
             resolve({
                 nodes: [],
                 edges: [],
-                message: `Sure! I'll help you create a new workflow. What should the name of this workflow be?`,
+                message: `🤖 **AutoML Workflow Generator**\n\nI can build an optimized workflow for you. What is the goal of this automation? (e.g., "Automate weekly sales report")`,
                 conversationContext: {
                     intent: 'create_workflow',
                     step: 'awaiting_name',
                     parameters: { original_message: message }
                 }
             });
-        }, 800);
+        }, 1000);
     });
 };
 
-// Simulate showing workflow logs
-export const simulateShowLogs = async (workflowKey: string): Promise<SimulationResponse> => {
+export const simulateRecommendations = async (workflowKey: string): Promise<SimulationResponse> => {
     return new Promise((resolve) => {
         setTimeout(() => {
             const workflow = WORKFLOW_REGISTRY[workflowKey];
-
             if (!workflow) {
-                resolve({
-                    nodes: [],
-                    edges: [],
-                    message: `❌ Workflow not found.`
-                });
+                resolve({ nodes: [], edges: [], message: "Workflow not found." });
                 return;
             }
 
-            const logs = generateExecutionLogs(workflow, false);
+            const logs = generateAutoMLLogs(workflow);
+            const recommendations = [
+                "💡 **Optimization**: Batch emails in groups of 20 for 15% faster execution.",
+                "🛡️ **Reliability**: Enable 'Circuit Breaker' pattern on the API node.",
+                "⚡ **Performance**: Cache user data to reduce API calls by 40%."
+            ];
 
             resolve({
                 nodes: workflow.nodes,
                 edges: workflow.edges,
-                message: `📊 Execution log for "${workflow.name}":`,
-                executionLogs: logs
+                message: `📊 **AutoML Insights for "${workflow.name}"**\n\nAnalysis complete based on recent executions.`,
+                executionLogs: logs,
+                recommendations
             });
-        }, 600);
+        }, 1200);
     });
 };
 
-// List all workflows
-export const simulateListWorkflows = async (): Promise<SimulationResponse> => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const workflowList = Object.values(WORKFLOW_REGISTRY).map(wf =>
-                `• **${wf.name}** - ${wf.description}`
-            );
-
-            resolve({
-                nodes: [],
-                edges: [],
-                message: `📋 Available workflows:\n\n${workflowList.join('\n')}`,
-                workflowList: Object.values(WORKFLOW_REGISTRY).map(wf => wf.name)
-            });
-        }, 500);
-    });
-};
-
-// Main simulation handler
 export const simulateWorkflowGeneration = async (
     message: string,
     context?: ConversationContext
 ): Promise<SimulationResponse> => {
-    // If we have context, we're in the middle of a conversation
     if (context) {
         if (context.intent === 'trigger_workflow' && context.step === 'collecting_params') {
-            // User is providing a missing parameter
             const param = context.missingParams?.[0];
             const newParams = { ...context.parameters, [param!]: message.trim() };
             return simulateWorkflowTrigger(context.workflowName!, newParams);
         }
-
         if (context.intent === 'create_workflow' && context.step === 'awaiting_name') {
             return simulateWorkflowCreation(message, context);
         }
     }
 
-    // Parse intent from message
     const intent = parseUserIntent(message);
 
     switch (intent) {
-        case 'list_workflows':
-            return simulateListWorkflows();
-
         case 'monitor_workflow': {
             const workflowKey = extractWorkflowName(message);
-            if (workflowKey) {
-                return simulateShowLogs(workflowKey);
-            }
-            return {
-                nodes: [],
-                edges: [],
-                message: `Which workflow would you like to monitor? Available workflows: ${Object.values(WORKFLOW_REGISTRY).map(wf => wf.name).join(', ')}`
-            };
+            if (workflowKey) return simulateRecommendations(workflowKey);
+            return { nodes: [], edges: [], message: "Which workflow would you like to analyze? I can provide AutoML recommendations." };
         }
-
         case 'trigger_workflow': {
             const workflowKey = extractWorkflowName(message);
-            if (workflowKey) {
-                const parameters = extractParameters(message);
-                return simulateWorkflowTrigger(workflowKey, parameters);
-            }
+            if (workflowKey) return simulateWorkflowTrigger(workflowKey, extractParameters(message));
+            return { nodes: [], edges: [], message: "Which workflow should I trigger? I'll handle the optimization." };
+        }
+        case 'create_workflow':
+            return simulateWorkflowCreation(message);
+        case 'list_workflows':
             return {
                 nodes: [],
                 edges: [],
-                message: `Which workflow would you like to trigger? Type "list workflows" to see available options.`
+                message: `📋 **Available Optimized Workflows**\n\n${Object.values(WORKFLOW_REGISTRY).map(wf => `• **${wf.name}**: ${wf.description}`).join('\n')}`
             };
-        }
-
-        case 'create_workflow':
-            return simulateWorkflowCreation(message);
-
         default:
-            // Fallback to original behavior for general queries
-            return simulateGeneralWorkflow(message);
+            return simulateWorkflowCreation(message);
     }
 };
 
-// Original general workflow generation (for backward compatibility)
-const simulateGeneralWorkflow = async (prompt: string): Promise<SimulationResponse> => {
-    const MOCK_RESPONSES: Record<string, Omit<SimulationResponse, 'conversationContext' | 'executionLogs'>> = {
-        "ecommerce": {
-            nodes: [
-                { id: '1', type: 'trigger', label: 'New Order (Shopify)', position: { x: 100, y: 300 } },
-                { id: '2', type: 'function', label: 'Filter > $100', position: { x: 400, y: 200 } },
-                { id: '3', type: 'function', label: 'Format Data', position: { x: 400, y: 400 } },
-                { id: '4', type: 'action', label: 'Send Slack Alert', position: { x: 700, y: 200 } },
-                { id: '5', type: 'action', label: 'Add to CRM', position: { x: 700, y: 400 } }
-            ],
-            edges: [
-                { id: 'e1-2', source: '1', target: '2' },
-                { id: 'e1-3', source: '1', target: '3' },
-                { id: 'e2-4', source: '2', target: '4' },
-                { id: 'e3-5', source: '3', target: '5' }
-            ],
-            message: "I've created an e-commerce automation workflow. It filters high-value orders to Slack and adds all orders to your CRM."
-        },
-        "social": {
-            nodes: [
-                { id: '1', type: 'trigger', label: 'RSS Feed', position: { x: 100, y: 300 } },
-                { id: '2', type: 'function', label: 'AI Summarize', position: { x: 400, y: 300 } },
-                { id: '3', type: 'action', label: 'Post to Twitter', position: { x: 700, y: 200 } },
-                { id: '4', type: 'action', label: 'Post to LinkedIn', position: { x: 700, y: 400 } }
-            ],
-            edges: [
-                { id: 'e1-2', source: '1', target: '2' },
-                { id: 'e2-3', source: '2', target: '3' },
-                { id: 'e2-4', source: '2', target: '4' }
-            ],
-            message: "Here is a social media automation workflow. It summarizes new RSS items using AI and posts them to Twitter and LinkedIn."
-        },
-        "support": {
-            nodes: [
-                { id: '1', type: 'webhook', label: 'Incoming Ticket', position: { x: 100, y: 300 } },
-                { id: '2', type: 'function', label: 'Classify Intent', position: { x: 400, y: 300 } },
-                { id: '3', type: 'action', label: 'Auto-Reply', position: { x: 700, y: 200 } },
-                { id: '4', type: 'action', label: 'Escalate to Human', position: { x: 700, y: 400 } }
-            ],
-            edges: [
-                { id: 'e1-2', source: '1', target: '2' },
-                { id: 'e2-3', source: '2', target: '3' },
-                { id: 'e2-4', source: '2', target: '4' }
-            ],
-            message: "I've generated a customer support bot workflow. It classifies incoming tickets and either auto-replies or escalates them."
-        }
-    };
-
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const lowerPrompt = prompt.toLowerCase();
-            let key = 'ecommerce';
-
-            if (lowerPrompt.includes('social')) key = 'social';
-            else if (lowerPrompt.includes('support') || lowerPrompt.includes('ticket')) key = 'support';
-            else if (lowerPrompt.includes('shop') || lowerPrompt.includes('order')) key = 'ecommerce';
-
-            resolve(MOCK_RESPONSES[key]);
-        }, 1500);
-    });
-};
-
-// Export workflow registry for other components
 export const getWorkflowRegistry = () => WORKFLOW_REGISTRY;

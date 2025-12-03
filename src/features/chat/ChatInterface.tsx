@@ -120,6 +120,20 @@ export const ChatInterface = () => {
                 }, 300);
             }
 
+            // If there are recommendations, add them as a separate message
+            if (response.recommendations && response.recommendations.length > 0) {
+                setTimeout(() => {
+                    const recMsg = {
+                        id: (Date.now() + 3).toString(),
+                        role: 'assistant' as const,
+                        content: '__RECOMMENDATIONS__',
+                        timestamp: Date.now(),
+                    };
+                    addMessage(recMsg);
+                    (recMsg as any).recommendations = response.recommendations;
+                }, 800);
+            }
+
             // Update workflow visualization if nodes were returned
             if (response.nodes && response.nodes.length > 0) {
                 setWorkflow({
@@ -188,27 +202,59 @@ export const ChatInterface = () => {
                 <AnimatePresence>
                     {messages.map((msg) => {
                         const hasLogs = (msg as any).executionLogs;
-                        const isLogsMessage = msg.content === '__EXECUTION_LOGS__';
+                        const hasRecommendations = (msg as any).recommendations;
+                        const isLogsMessage = msg.content === '__EXECUTION_LOGS__' || msg.content === '__RECOMMENDATIONS__';
 
-                        if (isLogsMessage && hasLogs) {
-                            return (
-                                <motion.div
-                                    key={msg.id}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="flex gap-3"
-                                >
-                                    <div 
-                                        className="w-7 h-7 rounded-lg bg-violet-500 flex items-center justify-center shrink-0"
-                                        style={{ boxShadow: '0 0 10px rgba(139, 92, 246, 0.3)' }}
+                        if (isLogsMessage) {
+                            if (hasLogs) {
+                                return (
+                                    <motion.div
+                                        key={msg.id}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="flex gap-3"
                                     >
-                                        <Robot className="w-3.5 h-3.5 text-white" weight="bold" />
-                                    </div>
-                                    <div className="flex-1 bg-[#16161A] border border-white/6 p-3 rounded-xl rounded-tl-none">
-                                        <ExecutionLogsDisplay logs={(msg as any).executionLogs} />
-                                    </div>
-                                </motion.div>
-                            );
+                                        <div 
+                                            className="w-7 h-7 rounded-lg bg-violet-500 flex items-center justify-center shrink-0"
+                                            style={{ boxShadow: '0 0 10px rgba(139, 92, 246, 0.3)' }}
+                                        >
+                                            <Robot className="w-3.5 h-3.5 text-white" weight="bold" />
+                                        </div>
+                                        <div className="flex-1 bg-[#16161A] border border-white/6 p-3 rounded-xl rounded-tl-none">
+                                            <ExecutionLogsDisplay logs={hasLogs} />
+                                        </div>
+                                    </motion.div>
+                                );
+                            }
+                            if (hasRecommendations) {
+                                return (
+                                    <motion.div
+                                        key={msg.id}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="flex gap-3"
+                                    >
+                                        <div 
+                                            className="w-7 h-7 rounded-lg bg-violet-500 flex items-center justify-center shrink-0"
+                                            style={{ boxShadow: '0 0 10px rgba(139, 92, 246, 0.3)' }}
+                                        >
+                                            <Robot className="w-3.5 h-3.5 text-white" weight="bold" />
+                                        </div>
+                                        <div className="flex-1 bg-violet-500/5 border border-violet-500/15 p-4 rounded-xl rounded-tl-none">
+                                            <h4 className="font-semibold text-violet-400 mb-2 flex items-center gap-2 text-[13px]">
+                                                <span>💡</span> AutoML Recommendations
+                                            </h4>
+                                            <div className="space-y-2">
+                                                {(hasRecommendations as string[]).map((rec, idx) => (
+                                                    <div key={idx} className="text-[12px] text-white/70 bg-[#0F0F12] border border-white/6 p-2.5 rounded-lg">
+                                                        {rec}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                );
+                            }
                         }
 
                         return (

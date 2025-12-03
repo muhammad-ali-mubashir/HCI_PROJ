@@ -47,9 +47,12 @@ export interface ChatMessage {
 
 export interface ExecutionStep {
     nodeId: string;
+    nodeName?: string;
     status: 'running' | 'success' | 'error';
     timestamp: number;
     output?: any;
+    message?: string;
+    error?: string;
 }
 
 export interface ThemeState {
