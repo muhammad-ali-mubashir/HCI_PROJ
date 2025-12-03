@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
-import { Node } from './Node';
+import { Node, NODE_WIDTH, NODE_HEIGHT } from './Node';
 import { Edge } from './Edge';
 import { motion } from 'framer-motion';
 import { CornersOut, CornersIn, Hand } from '@phosphor-icons/react';
@@ -184,22 +184,40 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                     {connectingNodeId && (() => {
                         const sourceNode = nodes.find(n => n.id === connectingNodeId);
                         if (!sourceNode) return null;
-                        // Start from right connection point: node width is 256px (w-64 = 16*4 = 64*4 = 256px)
-                        const startX = sourceNode.position.x + 256;
-                        const startY = sourceNode.position.y + 40; // Half of approximate node height
+                        // Start from right connection dot - centered on the dot
+                        const startX = sourceNode.position.x + NODE_WIDTH + 8;
+                        const startY = sourceNode.position.y + NODE_HEIGHT / 2;
+                        
+                        // Create bezier curve to mouse
+                        const deltaX = Math.abs(mousePos.x - startX);
+                        const controlOffset = Math.max(deltaX * 0.4, 40);
+                        const path = `M ${startX} ${startY} C ${startX + controlOffset} ${startY}, ${mousePos.x - controlOffset} ${mousePos.y}, ${mousePos.x} ${mousePos.y}`;
+                        
                         return (
                             <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
                                 <defs>
-                                    <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" style={{ stopColor: '#3B82F6', stopOpacity: 1 }} />
-                                        <stop offset="100%" style={{ stopColor: '#60A5FA', stopOpacity: 1 }} />
-                                    </linearGradient>
+                                    <filter id="tempGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                                        <feMerge>
+                                            <feMergeNode in="coloredBlur" />
+                                            <feMergeNode in="SourceGraphic" />
+                                        </feMerge>
+                                    </filter>
                                 </defs>
+                                {/* Glow layer */}
                                 <path
-                                    d={`M${startX} ${startY} L${mousePos.x} ${mousePos.y}`}
-                                    stroke="url(#connectionGradient)"
-                                    strokeWidth="3"
-                                    strokeDasharray="8,4"
+                                    d={path}
+                                    stroke="rgba(255,255,255,0.1)"
+                                    strokeWidth="8"
+                                    fill="none"
+                                    strokeLinecap="round"
+                                />
+                                {/* Main line */}
+                                <path
+                                    d={path}
+                                    stroke="rgba(255,255,255,0.4)"
+                                    strokeWidth="2"
+                                    strokeDasharray="6,4"
                                     fill="none"
                                     strokeLinecap="round"
                                 />
@@ -208,8 +226,8 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                                     cx={mousePos.x}
                                     cy={mousePos.y}
                                     r="6"
-                                    fill="#3B82F6"
-                                    opacity="0.8"
+                                    fill="rgba(255,255,255,0.6)"
+                                    filter="url(#tempGlow)"
                                 />
                             </svg>
                         );
