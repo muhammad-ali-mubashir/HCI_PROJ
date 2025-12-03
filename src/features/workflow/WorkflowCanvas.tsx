@@ -6,8 +6,15 @@ import { motion } from 'framer-motion';
 import { Maximize, Minimize, Hand } from 'lucide-react';
 
 export const WorkflowCanvas = () => {
-    const { nodes, edges, updateNodePosition, removeNode, addEdge } = useWorkflowStore();
-    const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+    const {
+        nodes,
+        edges,
+        updateNodePosition,
+        removeNode,
+        addEdge,
+        selectedNodeId,
+        selectNode
+    } = useWorkflowStore();
     const containerRef = useRef<HTMLDivElement>(null);
 
     // Pan/Zoom State
@@ -76,6 +83,13 @@ export const WorkflowCanvas = () => {
         setConnectingNodeId(null);
     };
 
+    const handleBackgroundClick = (e: React.MouseEvent) => {
+        if ((e.target as HTMLElement) === containerRef.current ||
+            (e.target as HTMLElement).closest('.workflow-canvas-bg')) {
+            selectNode(null);
+        }
+    };
+
     const startConnection = (nodeId: string) => {
         setConnectingNodeId(nodeId);
     };
@@ -99,6 +113,7 @@ export const WorkflowCanvas = () => {
                 } ${panMode ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'}`}
             onWheel={handleWheel}
             onMouseDown={handleMouseDown}
+            onClick={handleBackgroundClick}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
@@ -208,7 +223,7 @@ export const WorkflowCanvas = () => {
                             node={node}
                             isSelected={selectedNodeId === node.id}
                             isConnecting={!!connectingNodeId}
-                            onClick={() => setSelectedNodeId(node.id)}
+                            onClick={() => selectNode(node.id)}
                             onDragEnd={(id, x, y) => {
                                 updateNodePosition(id, { x, y });
                             }}

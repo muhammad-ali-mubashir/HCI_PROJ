@@ -19,11 +19,14 @@ interface WorkflowState {
     conversationContext: ConversationContext | null;
     currentExecution: ExecutionState | null;
     executionHistory: ExecutionRecord[];
+    selectedNodeId: string | null;
 
     // Actions
     addNode: (node: Node) => void;
     removeNode: (id: string) => void;
     updateNodePosition: (id: string, position: { x: number; y: number }) => void;
+    selectNode: (id: string | null) => void;
+    updateNodeData: (id: string, data: any) => void;
     addEdge: (edge: Edge) => void;
     removeEdge: (id: string) => void;
     setWorkflow: (workflow: Workflow) => void;
@@ -46,16 +49,24 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
     conversationContext: null,
     currentExecution: null,
     executionHistory: [],
+    selectedNodeId: null,
 
     addNode: (node) => set((state) => ({ nodes: [...state.nodes, node] })),
 
     removeNode: (id) => set((state) => ({
         nodes: state.nodes.filter((n) => n.id !== id),
-        edges: state.edges.filter((e) => e.source !== id && e.target !== id)
+        edges: state.edges.filter((e) => e.source !== id && e.target !== id),
+        selectedNodeId: state.selectedNodeId === id ? null : state.selectedNodeId
     })),
 
     updateNodePosition: (id, position) => set((state) => ({
         nodes: state.nodes.map((n) => n.id === id ? { ...n, position } : n)
+    })),
+
+    selectNode: (id) => set({ selectedNodeId: id }),
+
+    updateNodeData: (id, data) => set((state) => ({
+        nodes: state.nodes.map((n) => n.id === id ? { ...n, data: { ...n.data, ...data } } : n)
     })),
 
     addEdge: (edge) => set((state) => ({ edges: [...state.edges, edge] })),

@@ -1,5 +1,7 @@
 import { MetricChart } from '../features/dashboard/MetricChart';
 import { ExecutionVisualizer } from '../features/dashboard/ExecutionVisualizer';
+import { GlobalActivityMap } from '../features/dashboard/GlobalActivityMap';
+import { AutoMLStatusWidget } from '../features/dashboard/AutoMLStatusWidget';
 import { motion } from 'framer-motion';
 
 export const DashboardPage = () => {
@@ -25,6 +27,11 @@ export const DashboardPage = () => {
                     </p>
                 </motion.div>
 
+                {/* AutoML Status */}
+                <div className="mb-8 h-48">
+                    <AutoMLStatusWidget />
+                </div>
+
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                     <MetricChart label="Total Executions (24h)" data={executionsData} color="#8B7355" />
                     <MetricChart label="Success Rate (%)" data={successRateData} color="#D4A574" />
@@ -34,22 +41,14 @@ export const DashboardPage = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 min-h-[500px]">
                     <ExecutionVisualizer />
 
-                    {/* Placeholder for another widget */}
+                    {/* Global Activity Map */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 0.4, duration: 0.5 }}
-                        className="bg-white/80 backdrop-blur-sm border-2 border-[#E5E0D8] rounded-3xl p-8 flex items-center justify-center shadow-xl hover:shadow-2xl hover:border-[#D4A574] transition-all duration-300"
+                        className="h-[500px]"
                     >
-                        <div className="text-center">
-                            <div className="w-20 h-20 bg-gradient-to-br from-[#D4A574] to-[#8B7355] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
-                                <span className="text-4xl">🌍</span>
-                            </div>
-                            <h3 className="text-2xl font-bold text-[#1E293B] mb-3">Global Activity Map</h3>
-                            <p className="text-[#64748B] text-lg">
-                                Real-time geographic distribution of workflow triggers
-                            </p>
-                        </div>
+                        <GlobalActivityMap />
                     </motion.div>
                 </div>
             </div>

@@ -117,6 +117,20 @@ export const ChatInterface = () => {
                 }, 300);
             }
 
+            // If there are recommendations, add them as a separate message
+            if (response.recommendations && response.recommendations.length > 0) {
+                setTimeout(() => {
+                    const recMsg = {
+                        id: (Date.now() + 3).toString(),
+                        role: 'assistant' as const,
+                        content: '__RECOMMENDATIONS__',
+                        timestamp: Date.now(),
+                    };
+                    addMessage(recMsg);
+                    (recMsg as any).recommendations = response.recommendations;
+                }, 800);
+            }
+
             // Update workflow visualization if nodes were returned
             if (response.nodes && response.nodes.length > 0) {
                 setWorkflow({
@@ -128,7 +142,7 @@ export const ChatInterface = () => {
 
                 // Animate nodes sequentially if it's an execution
                 if (response.executionLogs) {
-                    response.executionLogs.forEach((log, index) => {
+                    response.executionLogs.forEach((_, index) => {
                         setTimeout(() => {
                             // Update node status in the visualization
                             // This will be handled by WorkflowCanvas component
@@ -182,24 +196,53 @@ export const ChatInterface = () => {
                     {messages.map((msg) => {
                         // Check if this is a special execution logs message
                         const hasLogs = (msg as any).executionLogs;
-                        const isLogsMessage = msg.content === '__EXECUTION_LOGS__';
+                        const hasRecommendations = (msg as any).recommendations;
+                        const isLogsMessage = msg.content === '__EXECUTION_LOGS__' || msg.content === '__RECOMMENDATIONS__';
 
-                        if (isLogsMessage && hasLogs) {
-                            return (
-                                <motion.div
-                                    key={msg.id}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="flex gap-3"
-                                >
-                                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#D4A574] to-[#8B7355] flex items-center justify-center flex-shrink-0">
-                                        <Bot className="w-4 h-4" />
-                                    </div>
-                                    <div className="flex-1 bg-[#F5F1E8]/80 dark:bg-white/10 p-3 rounded-2xl rounded-tl-none">
-                                        <ExecutionLogsDisplay logs={(msg as any).executionLogs} />
-                                    </div>
-                                </motion.div>
-                            );
+                        if (isLogsMessage) {
+                            if (hasLogs) {
+                                return (
+                                    <motion.div
+                                        key={msg.id}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="flex gap-3"
+                                    >
+                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#D4A574] to-[#8B7355] flex items-center justify-center flex-shrink-0">
+                                            <Bot className="w-4 h-4" />
+                                        </div>
+                                        <div className="flex-1 bg-[#F5F1E8]/80 dark:bg-white/10 p-3 rounded-2xl rounded-tl-none">
+                                            <ExecutionLogsDisplay logs={hasLogs} />
+                                        </div>
+                                    </motion.div>
+                                );
+                            }
+                            if (hasRecommendations) {
+                                return (
+                                    <motion.div
+                                        key={msg.id}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        className="flex gap-3"
+                                    >
+                                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#D4A574] to-[#8B7355] flex items-center justify-center flex-shrink-0">
+                                            <Bot className="w-4 h-4" />
+                                        </div>
+                                        <div className="flex-1 bg-blue-50 dark:bg-blue-900/20 p-4 rounded-2xl rounded-tl-none border border-blue-100 dark:border-blue-800">
+                                            <h4 className="font-bold text-blue-800 dark:text-blue-300 mb-2 flex items-center gap-2">
+                                                <span className="text-lg">💡</span> AutoML Recommendations
+                                            </h4>
+                                            <div className="space-y-2">
+                                                {(hasRecommendations as string[]).map((rec, idx) => (
+                                                    <div key={idx} className="text-sm text-blue-900 dark:text-blue-100 bg-white/50 dark:bg-black/20 p-2 rounded-lg">
+                                                        {rec}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                );
+                            }
                         }
 
                         return (
