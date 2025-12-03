@@ -7,8 +7,8 @@ export const SettingsPage = () => {
     const { mode, toggleMode, reducedMotion, toggleReducedMotion, highContrast, toggleHighContrast } = useThemeStore();
 
     const SettingSection = ({ title, children }: { title: string, children: React.ReactNode }) => (
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm mb-6">
-            <h2 className="text-xl font-semibold text-white mb-4">{title}</h2>
+        <div className="bg-white/80 backdrop-blur-sm border-2 border-[#E5E0D8] rounded-3xl p-8 mb-6 shadow-lg hover:shadow-xl hover:border-[#D4A574] transition-all duration-300">
+            <h2 className="text-2xl font-black text-[#1E293B] mb-6">{title}</h2>
             <div className="space-y-4">
                 {children}
             </div>
@@ -16,84 +16,105 @@ export const SettingsPage = () => {
     );
 
     const Toggle = ({ label, icon: Icon, value, onChange, description }: any) => (
-        <div className="flex items-center justify-between p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors">
+        <div className="flex items-center justify-between p-6 rounded-2xl bg-white/60 border border-[#E5E0D8] hover:border-[#D4A574] hover:bg-white/80 transition-all duration-300">
             <div className="flex items-center gap-4">
-                <div className="p-2 rounded-lg bg-blue-500/20 text-blue-400">
-                    <Icon className="w-5 h-5" />
+                <div className="p-3 rounded-xl bg-gradient-to-br from-[#D4A574] to-[#8B7355] text-white shadow-md">
+                    <Icon className="w-6 h-6" />
                 </div>
                 <div>
-                    <h3 className="text-white font-medium">{label}</h3>
-                    <p className="text-sm text-gray-400">{description}</p>
+                    <h3 className="text-[#1E293B] font-bold text-lg">{label}</h3>
+                    <p className="text-sm text-[#64748B] mt-1">{description}</p>
                 </div>
             </div>
             <button
                 onClick={onChange}
                 className={clsx(
-                    "w-12 h-6 rounded-full transition-colors relative",
-                    value ? "bg-blue-600" : "bg-gray-600"
+                    "w-14 h-7 rounded-full transition-all duration-300 relative shadow-inner",
+                    value ? "bg-gradient-to-r from-[#8B7355] to-[#6B5444]" : "bg-[#D4C5A9]"
                 )}
             >
                 <motion.div
-                    animate={{ x: value ? 24 : 2 }}
-                    className="w-5 h-5 bg-white rounded-full absolute top-0.5"
+                    animate={{ x: value ? 28 : 2 }}
+                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    className="w-6 h-6 bg-white rounded-full absolute top-0.5 shadow-md"
                 />
             </button>
         </div>
     );
 
     return (
-        <div className="p-8 max-w-4xl mx-auto h-[calc(100vh-4rem)] overflow-y-auto">
-            <motion.h1
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-3xl font-bold text-white mb-8"
-            >
-                Settings
-            </motion.h1>
+        <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-b from-[#FDFCFA] via-[#F5F1E8] to-[#E8DCC4] p-8">
+            <div className="max-w-4xl mx-auto">
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="mb-8"
+                >
+                    <h1 className="text-5xl font-black text-[#1E293B] mb-3">
+                        Settings
+                    </h1>
+                    <p className="text-xl text-[#64748B]">
+                        Customize your experience
+                    </p>
+                </motion.div>
 
-            <SettingSection title="Appearance">
-                <Toggle
-                    label="Dark Mode"
-                    description="Switch between light and dark themes"
-                    icon={mode === 'dark' ? Moon : Sun}
-                    value={mode === 'dark'}
-                    onChange={toggleMode}
-                />
-                <Toggle
-                    label="High Contrast"
-                    description="Increase contrast for better visibility"
-                    icon={Eye}
-                    value={highContrast}
-                    onChange={toggleHighContrast}
-                />
-            </SettingSection>
+                <SettingSection title="Appearance">
+                    <Toggle
+                        label="Dark Mode"
+                        description="Switch between light and dark themes"
+                        icon={mode === 'dark' ? Moon : Sun}
+                        value={mode === 'dark'}
+                        onChange={toggleMode}
+                    />
+                    <Toggle
+                        label="High Contrast"
+                        description="Increase contrast for better visibility"
+                        icon={Eye}
+                        value={highContrast}
+                        onChange={toggleHighContrast}
+                    />
+                </SettingSection>
 
-            <SettingSection title="Accessibility & Motion">
-                <Toggle
-                    label="Reduced Motion"
-                    description="Minimize animations for a simpler experience"
-                    icon={Zap}
-                    value={reducedMotion}
-                    onChange={toggleReducedMotion}
-                />
-            </SettingSection>
+                <SettingSection title="Accessibility & Motion">
+                    <Toggle
+                        label="Reduced Motion"
+                        description="Minimize animations for a simpler experience"
+                        icon={Zap}
+                        value={reducedMotion}
+                        onChange={toggleReducedMotion}
+                    />
+                </SettingSection>
 
-            <SettingSection title="Data & Export">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <button className="flex items-center justify-center gap-2 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-white font-medium">
-                        <FileJson className="w-5 h-5" />
-                        Export JSON
-                    </button>
-                    <button className="flex items-center justify-center gap-2 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-white font-medium">
-                        <Image className="w-5 h-5" />
-                        Export SVG
-                    </button>
-                    <button className="flex items-center justify-center gap-2 p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors text-white font-medium sm:col-span-2">
-                        <Download className="w-5 h-5" />
-                        Download Full Report
-                    </button>
-                </div>
-            </SettingSection>
+                <SettingSection title="Data & Export">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <motion.button
+                            whileHover={{ scale: 1.02, y: -2 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="flex items-center justify-center gap-3 p-5 rounded-2xl bg-white border-2 border-[#E5E0D8] hover:border-[#D4A574] transition-all text-[#1E293B] font-bold shadow-md hover:shadow-lg"
+                        >
+                            <FileJson className="w-5 h-5 text-[#8B7355]" />
+                            Export JSON
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.02, y: -2 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="flex items-center justify-center gap-3 p-5 rounded-2xl bg-white border-2 border-[#E5E0D8] hover:border-[#D4A574] transition-all text-[#1E293B] font-bold shadow-md hover:shadow-lg"
+                        >
+                            <Image className="w-5 h-5 text-[#8B7355]" />
+                            Export SVG
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.02, y: -2 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="sm:col-span-2 flex items-center justify-center gap-3 p-5 rounded-2xl bg-gradient-to-r from-[#8B7355] to-[#6B5444] text-white font-bold shadow-xl hover:shadow-2xl transition-all"
+                        >
+                            <Download className="w-5 h-5" />
+                            Download Full Report
+                        </motion.button>
+                    </div>
+                </SettingSection>
+            </div>
         </div>
     );
 };

@@ -1,5 +1,14 @@
 import { create } from 'zustand';
-import type { Node, Edge, Workflow, ChatMessage, ExecutionStep } from '../lib/types';
+import type {
+    Node,
+    Edge,
+    Workflow,
+    ChatMessage,
+    ExecutionStep,
+    ConversationContext,
+    ExecutionState,
+    ExecutionRecord
+} from '../lib/types';
 
 interface WorkflowState {
     nodes: Node[];
@@ -7,6 +16,9 @@ interface WorkflowState {
     messages: ChatMessage[];
     executionLog: ExecutionStep[];
     isExecuting: boolean;
+    conversationContext: ConversationContext | null;
+    currentExecution: ExecutionState | null;
+    executionHistory: ExecutionRecord[];
 
     // Actions
     addNode: (node: Node) => void;
@@ -20,6 +32,9 @@ interface WorkflowState {
     stopExecution: () => void;
     addExecutionStep: (step: ExecutionStep) => void;
     resetWorkflow: () => void;
+    setConversationContext: (context: ConversationContext | null) => void;
+    setCurrentExecution: (execution: ExecutionState | null) => void;
+    addExecutionRecord: (record: ExecutionRecord) => void;
 }
 
 export const useWorkflowStore = create<WorkflowState>((set) => ({
@@ -28,6 +43,9 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
     messages: [],
     executionLog: [],
     isExecuting: false,
+    conversationContext: null,
+    currentExecution: null,
+    executionHistory: [],
 
     addNode: (node) => set((state) => ({ nodes: [...state.nodes, node] })),
 
@@ -54,5 +72,21 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
 
     addExecutionStep: (step) => set((state) => ({ executionLog: [...state.executionLog, step] })),
 
-    resetWorkflow: () => set({ nodes: [], edges: [], messages: [], executionLog: [], isExecuting: false }),
+    resetWorkflow: () => set({
+        nodes: [],
+        edges: [],
+        messages: [],
+        executionLog: [],
+        isExecuting: false,
+        conversationContext: null,
+        currentExecution: null
+    }),
+
+    setConversationContext: (context) => set({ conversationContext: context }),
+
+    setCurrentExecution: (execution) => set({ currentExecution: execution }),
+
+    addExecutionRecord: (record) => set((state) => ({
+        executionHistory: [...state.executionHistory, record]
+    })),
 }));

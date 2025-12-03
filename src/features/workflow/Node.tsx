@@ -14,16 +14,17 @@ const iconMap = {
 };
 
 const colorMap = {
-    trigger: 'from-pink-500 to-rose-500',
-    action: 'from-blue-500 to-cyan-500',
-    function: 'from-purple-500 to-indigo-500',
-    webhook: 'from-orange-500 to-red-500',
-    schedule: 'from-green-500 to-emerald-500',
+    trigger: 'from-[#D4A574] to-[#B8935C]',
+    action: 'from-[#475569] to-[#334155]',
+    function: 'from-[#D4C5A9] to-[#8B7355]',
+    webhook: 'from-[#B8935C] to-[#8B7355]',
+    schedule: 'from-[#6B5444] to-[#4A3F35]',
 };
 
 interface NodeProps {
     node: NodeType;
     isSelected?: boolean;
+    isConnecting?: boolean;
     onClick?: () => void;
     onDragEnd?: (id: string, x: number, y: number) => void;
     onDragStart?: () => void;
@@ -32,7 +33,7 @@ interface NodeProps {
     onConnectEnd?: () => void;
 }
 
-export const Node: React.FC<NodeProps> = ({ node, isSelected, onClick, onDragEnd, onDragStart, onDelete, onConnectStart, onConnectEnd }) => {
+export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onClick, onDragEnd, onDragStart, onDelete, onConnectStart, onConnectEnd }) => {
     const Icon = iconMap[node.type] || Zap;
     const gradient = colorMap[node.type] || 'from-gray-500 to-gray-600';
     const { isExecuting, executionLog } = useWorkflowStore();
@@ -42,7 +43,7 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, onClick, onDragEnd
 
     return (
         <motion.div
-            drag
+            drag={!isConnecting}
             dragMomentum={false}
             dragElastic={0}
             onDragStart={() => {
@@ -78,7 +79,7 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, onClick, onDragEnd
         >
             {/* Connection Points */}
             <div
-                className="absolute -left-3 top-1/2 -translate-y-1/2 w-4 h-4 bg-blue-400 rounded-full border-2 border-[#0f111a] hover:bg-blue-500 hover:scale-150 transition-all cursor-pointer z-20 shadow-lg"
+                className="absolute -left-3 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#D4A574] rounded-full border-2 border-[#0f111a] dark:border-[#1E293B] hover:bg-[#B8935C] hover:scale-150 transition-all cursor-pointer z-20 shadow-lg"
                 onMouseUp={(e) => {
                     e.stopPropagation();
                     if (onConnectEnd) onConnectEnd();
@@ -86,7 +87,7 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, onClick, onDragEnd
                 title="Drop connection here"
             />
             <div
-                className="absolute -right-3 top-1/2 -translate-y-1/2 w-4 h-4 bg-green-400 rounded-full border-2 border-[#0f111a] hover:bg-green-500 hover:scale-150 transition-all cursor-grab active:cursor-grabbing z-20 shadow-lg"
+                className="absolute -right-3 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#8B7355] rounded-full border-2 border-[#0f111a] dark:border-[#1E293B] hover:bg-[#D4A574] hover:scale-150 transition-all cursor-grab active:cursor-grabbing z-20 shadow-lg"
                 onMouseDown={(e) => {
                     e.preventDefault();
                     e.stopPropagation();

@@ -8,21 +8,21 @@ const AnimatedSphere = ({ position, color, scale }: { position: [number, number,
 
     useFrame((state) => {
         if (meshRef.current) {
-            meshRef.current.rotation.x = state.clock.getElapsedTime() * 0.2;
-            meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.3;
+            meshRef.current.rotation.x = state.clock.getElapsedTime() * 0.15;
+            meshRef.current.rotation.y = state.clock.getElapsedTime() * 0.2;
         }
     });
 
     return (
-        <Float speed={2} rotationIntensity={1} floatIntensity={2}>
+        <Float speed={1.5} rotationIntensity={0.8} floatIntensity={1.5}>
             <Sphere args={[1, 32, 32]} position={position} scale={scale} ref={meshRef}>
                 <MeshDistortMaterial
                     color={color}
                     attach="material"
-                    distort={0.4}
-                    speed={2}
-                    roughness={0.2}
-                    metalness={0.8}
+                    distort={0.25}
+                    speed={1.5}
+                    roughness={0.3}
+                    metalness={0.6}
                 />
             </Sphere>
         </Float>
@@ -31,17 +31,18 @@ const AnimatedSphere = ({ position, color, scale }: { position: [number, number,
 
 export const HeroCanvas = () => {
     return (
-        <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0">
             <Canvas camera={{ position: [0, 0, 5] }}>
-                <ambientLight intensity={0.5} />
-                <directionalLight position={[10, 10, 5]} intensity={1} />
-                <pointLight position={[-10, -10, -5]} intensity={0.5} color="#3b82f6" />
+                <ambientLight intensity={0.8} />
+                <directionalLight position={[10, 10, 5]} intensity={0.5} color="#F5F1E8" />
+                <pointLight position={[-10, -10, -5]} intensity={0.3} color="#E8DCC4" />
 
-                <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+                <Stars radius={100} depth={50} count={1500} factor={2} saturation={0.1} fade speed={0.3} />
 
-                <AnimatedSphere position={[2, 0, 0]} color="#8b5cf6" scale={1.2} />
-                <AnimatedSphere position={[-2, 1, -2]} color="#3b82f6" scale={0.8} />
-                <AnimatedSphere position={[0, -2, -1]} color="#ec4899" scale={1} />
+                {/* Subtle warm spheres for background */}
+                <AnimatedSphere position={[3, 1, -3]} color="#E8DCC4" scale={0.8} />
+                <AnimatedSphere position={[-3, -1, -4]} color="#F5F1E8" scale={0.6} />
+                <AnimatedSphere position={[0, 2, -5]} color="#D4C5A9" scale={0.7} />
             </Canvas>
         </div>
     );

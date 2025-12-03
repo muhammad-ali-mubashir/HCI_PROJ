@@ -13,10 +13,11 @@ export const BuilderPage = () => {
     }, [resetWorkflow]);
 
     return (
-        <div className="h-[calc(100vh-4rem)] flex bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+        <div className="h-[calc(100vh-4rem)] flex bg-gradient-to-br from-[#FDFCFA] to-[#E8DCC4]">
             <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
                 className="flex-1 relative"
             >
                 <WorkflowCanvas />
