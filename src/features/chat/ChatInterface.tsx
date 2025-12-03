@@ -46,11 +46,11 @@ export const ChatInterface = () => {
                             {log.status === 'success' ? '✅' : '❌'}
                         </span>
                         <div className="flex-1 min-w-0">
-                            <div className="font-medium text-[#1E293B] dark:text-[#E8DCC4]">
+                            <div className="font-medium text-text-primary">
                                 {log.nodeName}
                             </div>
                             {log.message && (
-                                <div className="text-[#64748B] dark:text-[#D4C5A9] mt-0.5">
+                                <div className="text-text-secondary mt-0.5">
                                     {log.message}
                                 </div>
                             )}
@@ -60,7 +60,7 @@ export const ChatInterface = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="flex items-center gap-1 text-[#94A3B8] dark:text-[#B8935C] shrink-0">
+                        <div className="flex items-center gap-1 text-text-tertiary shrink-0">
                             <Clock className="w-3 h-3" />
                             <span>{new Date(log.timestamp).toLocaleTimeString()}</span>
                         </div>
@@ -166,13 +166,13 @@ export const ChatInterface = () => {
     };
 
     return (
-        <div className="flex flex-col h-full bg-white/5 dark:bg-[#1E293B]/30 border-r border-[#E5E0D8]/20 dark:border-white/10 backdrop-blur-sm">
-            <div className="p-4 border-b border-[#E5E0D8]/20 dark:border-white/10">
-                <h2 className="text-lg font-semibold flex items-center gap-2">
-                    <Robot className="w-5 h-5 text-[#8B7355] dark:text-[#D4A574]" />
+        <div className="flex flex-col h-full bg-surface/30 border-r border-white/10 backdrop-blur-sm">
+            <div className="p-4 border-b border-white/10">
+                <h2 className="text-lg font-semibold flex items-center gap-2 text-text-primary">
+                    <Robot className="w-5 h-5 text-primary" />
                     n8n AI Assistant
                 </h2>
-                <p className="text-xs text-[#64748B] dark:text-[#D4C5A9] mt-1">
+                <p className="text-xs text-text-secondary mt-1">
                     Create, trigger, and monitor workflows
                 </p>
             </div>
@@ -192,10 +192,10 @@ export const ChatInterface = () => {
                                     animate={{ opacity: 1, y: 0 }}
                                     className="flex gap-3"
                                 >
-                                    <div className="w-8 h-8 rounded-full bg-linear-to-br from-[#D4A574] to-[#8B7355] flex items-center justify-center shrink-0">
-                                        <Robot className="w-4 h-4" />
+                                    <div className="w-8 h-8 rounded-full bg-linear-to-br from-primary to-primary-hover flex items-center justify-center shrink-0">
+                                        <Robot className="w-4 h-4 text-white" />
                                     </div>
-                                    <div className="flex-1 bg-[#F5F1E8]/80 dark:bg-white/10 p-3 rounded-2xl rounded-tl-none">
+                                    <div className="flex-1 bg-surface/80 p-3 rounded-2xl rounded-tl-none">
                                         <ExecutionLogsDisplay logs={(msg as any).executionLogs} />
                                     </div>
                                 </motion.div>
@@ -215,16 +215,16 @@ export const ChatInterface = () => {
                                 <div className={clsx(
                                     "w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-all duration-300",
                                     msg.role === 'user'
-                                        ? "bg-linear-to-br from-[#8B7355] to-[#6B5444] dark:from-[#D4A574] dark:to-[#B8935C]"
-                                        : "bg-linear-to-br from-[#D4A574] to-[#8B7355] dark:from-[#D4A574] dark:to-[#B8935C]"
+                                        ? "bg-linear-to-br from-primary to-primary-hover"
+                                        : "bg-linear-to-br from-surface-active to-surface"
                                 )}>
-                                    {msg.role === 'user' ? <User className="w-4 h-4" /> : <Robot className="w-4 h-4" />}
+                                    {msg.role === 'user' ? <User className="w-4 h-4 text-white" /> : <Robot className="w-4 h-4 text-text-primary" />}
                                 </div>
                                 <div className={clsx(
                                     "p-3 rounded-2xl text-sm transition-all duration-200 whitespace-pre-line",
                                     msg.role === 'user'
-                                        ? "bg-[#8B7355]/20 dark:bg-[#D4A574]/20 text-[#1E293B] dark:text-[#F5F1E8] rounded-tr-none"
-                                        : "bg-[#F5F1E8]/80 dark:bg-white/10 text-[#334155] dark:text-[#E8DCC4] rounded-tl-none"
+                                        ? "bg-primary/20 text-text-primary rounded-tr-none"
+                                        : "bg-surface/80 text-text-secondary rounded-tl-none"
                                 )}>
                                     {msg.content}
                                 </div>
@@ -237,13 +237,13 @@ export const ChatInterface = () => {
                             animate={{ opacity: 1 }}
                             className="flex gap-3"
                         >
-                            <div className="w-8 h-8 rounded-full bg-linear-to-br from-[#D4A574] to-[#8B7355] flex items-center justify-center">
-                                <Robot className="w-4 h-4" />
+                            <div className="w-8 h-8 rounded-full bg-linear-to-br from-surface-active to-surface flex items-center justify-center">
+                                <Robot className="w-4 h-4 text-text-primary" />
                             </div>
-                            <div className="bg-[#F5F1E8]/80 dark:bg-white/10 p-3 rounded-2xl rounded-tl-none flex gap-1 items-center">
-                                <span className="w-2 h-2 bg-[#8B7355] dark:bg-[#D4A574] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                <span className="w-2 h-2 bg-[#8B7355] dark:bg-[#D4A574] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                <span className="w-2 h-2 bg-[#8B7355] dark:bg-[#D4A574] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                            <div className="bg-surface/80 p-3 rounded-2xl rounded-tl-none flex gap-1 items-center">
+                                <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                                <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                                <span className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                             </div>
                         </motion.div>
                     )}
@@ -251,7 +251,7 @@ export const ChatInterface = () => {
                 <div ref={messagesEndRef} />
             </div>
 
-            <div className="p-4 border-t border-[#E5E0D8]/20 dark:border-white/10 space-y-3">
+            <div className="p-4 border-t border-white/10 space-y-3">
                 {/* Suggested Prompts */}
                 {messages.length === 0 && (
                     <div className="flex flex-wrap gap-2 mb-2">
@@ -259,7 +259,7 @@ export const ChatInterface = () => {
                             <button
                                 key={index}
                                 onClick={() => handlePromptClick(prompt)}
-                                className="text-xs bg-[#F5F1E8] dark:bg-white/10 hover:bg-[#E8DCC4] dark:hover:bg-white/20 border border-[#E5E0D8] dark:border-white/10 rounded-full px-3 py-1.5 text-[#1E293B] dark:text-[#F5F1E8] hover:text-black dark:hover:text-white transition-all duration-200 text-left font-medium"
+                                className="text-xs bg-surface hover:bg-surface-hover border border-white/10 rounded-full px-3 py-1.5 text-text-secondary hover:text-text-primary transition-all duration-200 text-left font-medium"
                             >
                                 {prompt}
                             </button>
@@ -269,7 +269,7 @@ export const ChatInterface = () => {
 
                 {/* Conversation context hint */}
                 {conversationContext && (
-                    <div className="text-xs text-[#8B7355] dark:text-[#D4A574] bg-[#F5F1E8] dark:bg-white/10 px-3 py-2 rounded-lg border border-[#E5E0D8] dark:border-white/10 font-medium">
+                    <div className="text-xs text-primary bg-primary/10 px-3 py-2 rounded-lg border border-primary/20 font-medium">
                         💬 Waiting for your response...
                     </div>
                 )}
@@ -281,13 +281,13 @@ export const ChatInterface = () => {
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             placeholder={conversationContext ? "Type your answer..." : "Describe a workflow or trigger one..."}
-                            className="w-full bg-white dark:bg-[#0F172A] border border-[#E5E0D8] dark:border-white/20 rounded-xl py-3 px-4 pr-12 focus:outline-none focus:ring-2 focus:ring-[#D4A574] dark:focus:ring-[#D4A574] transition-all text-[#1E293B] dark:text-white placeholder-[#64748B] dark:placeholder-gray-400 shadow-sm"
+                            className="w-full bg-surface border border-white/10 rounded-xl py-3 px-4 pr-12 focus:outline-none focus:ring-2 focus:ring-primary transition-all text-text-primary placeholder-text-tertiary shadow-sm"
                             disabled={isLoading}
                         />
                         <button
                             type="submit"
                             disabled={!input.trim() || isLoading}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-linear-to-r from-[#8B7355] to-[#6B5444] dark:from-[#D4A574] dark:to-[#B8935C] rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-all duration-200 shadow-md"
+                            className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-linear-to-r from-primary to-primary-hover rounded-lg text-white disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-all duration-200 shadow-md"
                         >
                             <PaperPlaneRight className="w-4 h-4" />
                         </button>

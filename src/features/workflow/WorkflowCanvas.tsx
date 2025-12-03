@@ -111,7 +111,7 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
     return (
         <div
             ref={containerRef}
-            className={`relative w-full h-full overflow-hidden bg-[#FDFCFA] dark:bg-[#0f111a] transition-colors duration-500 ${isFullscreen ? 'fixed inset-0 z-50' : ''
+            className={`relative w-full h-full overflow-hidden bg-background transition-colors duration-500 ${isFullscreen ? 'fixed inset-0 z-50' : ''
                 } ${panMode ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'}`}
             onWheel={handleWheel}
             onMouseDown={handleMouseDown}
@@ -123,8 +123,8 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
             <div className="absolute top-4 right-4 z-50 flex gap-2">
                 {/* Pan Mode Indicator */}
                 <div className={`px-3 py-2 rounded-lg backdrop-blur-md border transition-all duration-300 ${panMode
-                    ? 'bg-[#D4A574]/20 border-[#D4A574]/50 text-[#8B7355] dark:text-[#D4A574]'
-                    : 'bg-white/80 dark:bg-white/5 border-[#E5E0D8] dark:border-white/10 text-[#475569] dark:text-[#D4C5A9]'
+                    ? 'bg-primary/20 border-primary/50 text-primary'
+                    : 'bg-surface/80 border-white/10 text-text-secondary'
                     }`}>
                     <div className="flex items-center gap-2">
                         <Hand className="w-4 h-4" />
@@ -135,7 +135,7 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                 {/* Fullscreen Toggle */}
                 <button
                     onClick={() => setIsFullscreen(!isFullscreen)}
-                    className="px-3 py-2 rounded-lg backdrop-blur-md bg-white/80 dark:bg-white/5 border border-[#E5E0D8] dark:border-white/10 hover:bg-[#F5F1E8] dark:hover:bg-white/10 hover:border-[#D4A574] transition-all text-[#475569] dark:text-[#D4C5A9]"
+                    className="px-3 py-2 rounded-lg backdrop-blur-md bg-surface/80 border border-white/10 hover:bg-surface-hover hover:border-primary/50 transition-all text-text-secondary hover:text-text-primary"
                 >
                     {isFullscreen ? <CornersIn className="w-4 h-4" /> : <CornersOut className="w-4 h-4" />}
                 </button>
@@ -143,11 +143,11 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
 
             {/* Infinite Grid Background */}
             <div
-                className="absolute inset-0 pointer-events-none opacity-5 dark:opacity-10"
+                className="absolute inset-0 pointer-events-none opacity-10"
                 style={{
                     backgroundImage: `
-                        linear-gradient(to right, rgba(139, 115, 85, 0.3) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(139, 115, 85, 0.3) 1px, transparent 1px)
+                        linear-gradient(to right, rgba(59, 130, 246, 0.2) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(59, 130, 246, 0.2) 1px, transparent 1px)
                     `,
                     backgroundSize: '40px 40px',
                     transform: `translate(${transform.x % 40}px, ${transform.y % 40}px) scale(${transform.scale})`,
@@ -191,8 +191,8 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                             <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
                                 <defs>
                                     <linearGradient id="connectionGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" style={{ stopColor: '#8B7355', stopOpacity: 1 }} />
-                                        <stop offset="100%" style={{ stopColor: '#D4A574', stopOpacity: 1 }} />
+                                        <stop offset="0%" style={{ stopColor: '#3B82F6', stopOpacity: 1 }} />
+                                        <stop offset="100%" style={{ stopColor: '#60A5FA', stopOpacity: 1 }} />
                                     </linearGradient>
                                 </defs>
                                 <path
@@ -208,7 +208,7 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                                     cx={mousePos.x}
                                     cy={mousePos.y}
                                     r="6"
-                                    fill="#D4A574"
+                                    fill="#3B82F6"
                                     opacity="0.8"
                                 />
                             </svg>
@@ -244,11 +244,11 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                         animate={{ opacity: 1, y: 0 }}
                         className="text-center"
                     >
-                        <div className="w-16 h-16 bg-linear-to-br from-[#D4A574]/20 to-[#8B7355]/20 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-[#E5E0D8]/30 dark:border-white/10 backdrop-blur-sm">
-                            <div className="w-8 h-8 bg-linear-to-br from-[#D4A574] to-[#8B7355] rounded-lg" />
+                        <div className="w-16 h-16 bg-linear-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-white/10 backdrop-blur-sm">
+                            <div className="w-8 h-8 bg-linear-to-br from-primary to-primary-hover rounded-lg" />
                         </div>
-                        <h3 className="text-xl font-bold text-[#1E293B] dark:text-white mb-2">Start Your Workflow</h3>
-                        <p className="text-[#475569] dark:text-[#D4C5A9] max-w-xs mx-auto">
+                        <h3 className="text-xl font-bold text-text-primary mb-2">Start Your Workflow</h3>
+                        <p className="text-text-secondary max-w-xs mx-auto">
                             Describe what you want to automate in the chat, and watch the magic happen.
                         </p>
                     </motion.div>

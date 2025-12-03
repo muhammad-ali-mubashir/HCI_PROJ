@@ -35,9 +35,9 @@ export const Edge: React.FC<EdgeProps> = ({ edge, sourceNode, targetNode }) => {
         <svg className="absolute inset-0 pointer-events-none overflow-visible w-full h-full">
             <defs>
                 <linearGradient id={`gradient-${edge.id}`} x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#8B7355" />
-                    <stop offset="50%" stopColor="#D4A574" />
-                    <stop offset="100%" stopColor="#B8935C" />
+                    <stop offset="0%" stopColor="#3B82F6" />
+                    <stop offset="50%" stopColor="#60A5FA" />
+                    <stop offset="100%" stopColor="#3B82F6" />
                 </linearGradient>
                 <filter id="glow">
                     <feGaussianBlur stdDeviation="1.5" result="coloredBlur" />
@@ -51,7 +51,7 @@ export const Edge: React.FC<EdgeProps> = ({ edge, sourceNode, targetNode }) => {
             {/* Background Line (Ghost) */}
             <path
                 d={path}
-                stroke="rgba(212,165,116,0.15)"
+                stroke="rgba(59,130,246,0.15)"
                 strokeWidth="2"
                 fill="none"
                 strokeLinecap="round"
@@ -73,7 +73,7 @@ export const Edge: React.FC<EdgeProps> = ({ edge, sourceNode, targetNode }) => {
             {/* Data Flow Particles - Enhanced */}
             {isExecuting && (
                 <>
-                    <circle r="4" fill="#D4A574" filter="url(#glow)">
+                    <circle r="4" fill="#60A5FA" filter="url(#glow)">
                         <animateMotion
                             dur="1.5s"
                             repeatCount="indefinite"
@@ -83,7 +83,7 @@ export const Edge: React.FC<EdgeProps> = ({ edge, sourceNode, targetNode }) => {
                             calcMode="linear"
                         />
                     </circle>
-                    <circle r="2" fill="#8B7355" opacity="0.6">
+                    <circle r="2" fill="#3B82F6" opacity="0.6">
                         <animateMotion
                             dur="1.5s"
                             begin="0.2s"
