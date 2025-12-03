@@ -7,6 +7,7 @@ import { ChatPage } from './pages/ChatPage';
 import { BuilderPage } from './pages/BuilderPage';
 import { DashboardPage } from './pages/DashboardPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { ProjectsPage } from './pages/ProjectsPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
 
         {/* All other pages with Layout */}
         <Route path="/home" element={<Layout><LandingPage /></Layout>} />
+        <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
         <Route path="/chat" element={<Layout><ChatPage /></Layout>} />
         <Route path="/builder" element={<Layout><BuilderPage /></Layout>} />
         <Route path="/dashboard" element={<Layout><DashboardPage /></Layout>} />

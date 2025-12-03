@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useThemeStore } from '../store/useThemeStore';
-import { Moon, Sun, Lightning, Layout as LayoutIcon, Gear, ChartBar, ChatCircle } from '@phosphor-icons/react';
+import { Moon, Sun, Lightning, Layout as LayoutIcon, Gear, ChartBar, ChatCircle, Folder } from '@phosphor-icons/react';
 import { cn } from '../lib/utils';
 import { Button } from './ui/Button';
 
@@ -12,6 +12,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
 
     const navItems = [
         { path: '/home', icon: Lightning, label: 'Home' },
+        { path: '/projects', icon: Folder, label: 'Projects' },
         { path: '/chat', icon: ChatCircle, label: 'Chat' },
         { path: '/builder', icon: LayoutIcon, label: 'Builder' },
         { path: '/dashboard', icon: ChartBar, label: 'Dashboard' },
