@@ -37,6 +37,7 @@
   --color-node-schedule: #06B6D4;
 
   --font-sans: Inter, system-ui, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
 
   /* Linear style: No heavy shadows, just subtle borders */
   --shadow-subtle: none;
@@ -90,6 +91,11 @@
 }
 
 @layer utilities {
+  /* Font utilities */
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+  
   /* Linear-style card: border-based depth, no shadows */
   .linear-card {
     @apply bg-surface border border-white/[0.08] rounded-xl;
