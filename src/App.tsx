@@ -1,0 +1,30 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Layout } from './components/Layout';
+import { LandingPage } from './pages/LandingPage';
+import { LoginPage } from './pages/LoginPage';
+import { RegisterPage } from './pages/RegisterPage';
+import { ChatPage } from './pages/ChatPage';
+import { BuilderPage } from './pages/BuilderPage';
+import { DashboardPage } from './pages/DashboardPage';
+import { SettingsPage } from './pages/SettingsPage';
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        {/* Login & Register Pages - Isolated without Layout */}
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+
+        {/* All other pages with Layout */}
+        <Route path="/home" element={<Layout><LandingPage /></Layout>} />
+        <Route path="/chat" element={<Layout><ChatPage /></Layout>} />
+        <Route path="/builder" element={<Layout><BuilderPage /></Layout>} />
+        <Route path="/dashboard" element={<Layout><DashboardPage /></Layout>} />
+        <Route path="/settings" element={<Layout><SettingsPage /></Layout>} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
