@@ -3,8 +3,7 @@ import { Layout } from './components/Layout';
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
-import { ChatPage } from './pages/ChatPage';
-import { BuilderPage } from './pages/BuilderPage';
+import { WorkspacePage } from './pages/WorkspacePage';
 import { DashboardPage } from './pages/DashboardPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ProjectsPage } from './pages/ProjectsPage';
@@ -20,8 +19,7 @@ function App() {
         {/* All other pages with Layout */}
         <Route path="/home" element={<Layout><LandingPage /></Layout>} />
         <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
-        <Route path="/chat" element={<Layout><ChatPage /></Layout>} />
-        <Route path="/builder" element={<Layout><BuilderPage /></Layout>} />
+        <Route path="/workspace" element={<Layout><WorkspacePage /></Layout>} />
         <Route path="/dashboard" element={<Layout><DashboardPage /></Layout>} />
         <Route path="/settings" element={<Layout><SettingsPage /></Layout>} />
       </Routes>

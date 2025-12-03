@@ -52,7 +52,7 @@ export const ProjectsPage = () => {
         if (workflow) {
             setActiveWorkflow(workflowId);
             setWorkflow(workflow);
-            navigate('/builder');
+            navigate('/workspace');
         }
     };
 
