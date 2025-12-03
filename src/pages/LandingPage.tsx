@@ -86,10 +86,10 @@ export const LandingPage = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5, delay: 0.1 }}
-                        className="text-5xl sm:text-7xl font-bold tracking-tight mb-6 text-text-primary"
+                        className="text-5xl sm:text-7xl font-bold tracking-tight mb-6 text-text-primary font-serif"
                     >
-                        Build workflows that{' '}
-                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-violet-400 to-primary/50">
+                        Build workflows that<br/>
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-violet-400 to-primary/50 italic">
                             work like magic
                         </span>
                     </motion.h1>
@@ -117,7 +117,7 @@ export const LandingPage = () => {
                             </Button>
                         </Link>
 
-                        <Link to="/builder">
+                        <Link to="/workspace">
                             <Button variant="secondary" size="lg" className="h-12 px-8 text-base">
                                 View Demo
                             </Button>
@@ -376,7 +376,7 @@ export const LandingPage = () => {
                         className="text-center mb-16"
                     >
                         <span className="text-xs font-semibold text-primary uppercase tracking-wider">Productivity</span>
-                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4 font-serif">
                             Supercharge your workflow
                         </h2>
                         <p className="text-text-secondary max-w-2xl mx-auto">
@@ -462,7 +462,7 @@ export const LandingPage = () => {
                         className="text-center mb-16"
                     >
                         <span className="text-xs font-semibold text-primary uppercase tracking-wider">Capabilities</span>
-                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4 font-serif">
                             Everything you need to automate
                         </h2>
                         <p className="text-text-secondary max-w-2xl mx-auto">
@@ -558,7 +558,7 @@ export const LandingPage = () => {
                         className="text-center mb-16"
                     >
                         <span className="text-xs font-semibold text-primary uppercase tracking-wider">By the Numbers</span>
-                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 font-serif">
                             Trusted by thousands of teams
                         </h2>
                     </motion.div>
@@ -597,7 +597,7 @@ export const LandingPage = () => {
                         className="text-center mb-16"
                     >
                         <span className="text-xs font-semibold text-primary uppercase tracking-wider">Pricing</span>
-                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4 font-serif">
                             Simple, transparent pricing
                         </h2>
                         <p className="text-text-secondary max-w-2xl mx-auto">
@@ -690,7 +690,7 @@ export const LandingPage = () => {
                         className="text-center mb-16"
                     >
                         <span className="text-xs font-semibold text-primary uppercase tracking-wider">Comparison</span>
-                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4 font-serif">
                             How we stack up
                         </h2>
                         <p className="text-text-secondary max-w-2xl mx-auto">
@@ -773,7 +773,7 @@ export const LandingPage = () => {
                         className="text-center mb-16"
                     >
                         <span className="text-xs font-semibold text-primary uppercase tracking-wider">Testimonials</span>
-                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4 font-serif">
                             Loved by teams worldwide
                         </h2>
                     </motion.div>
@@ -841,7 +841,7 @@ export const LandingPage = () => {
                         className="text-center mb-16"
                     >
                         <span className="text-xs font-semibold text-primary uppercase tracking-wider">FAQ</span>
-                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4 font-serif">
                             Frequently asked questions
                         </h2>
                     </motion.div>
@@ -913,8 +913,8 @@ export const LandingPage = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                     >
-                        <h2 className="text-3xl sm:text-5xl font-bold text-text-primary mb-6">
-                            Ready to automate your work?
+                        <h2 className="text-3xl sm:text-5xl font-bold text-text-primary mb-6 font-serif">
+                            Ready to automate your <span className="italic">work</span>?
                         </h2>
                         <p className="text-lg text-text-secondary mb-8 max-w-2xl mx-auto">
                             Join thousands of teams who've already transformed their workflows. 
