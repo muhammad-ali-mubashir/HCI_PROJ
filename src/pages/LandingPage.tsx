@@ -1113,10 +1113,12 @@ export const LandingPage = () => {
             )}>
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-                            <Lightning className="w-4 h-4 text-white" weight="fill" />
-                        </div>
-                        <span className="font-semibold text-text-primary">FlowAI</span>
+                        <img 
+                            src="/badge.svg" 
+                            alt="AutoM8 Logo" 
+                            className="w-8 h-8 rounded-lg"
+                        />
+                        <span className="font-semibold text-text-primary">AutoM8</span>
                     </div>
                     <div className="flex items-center gap-6 text-sm text-text-secondary">
                         <a href="#" className="hover:text-text-primary transition-colors">Privacy</a>
@@ -1125,7 +1127,7 @@ export const LandingPage = () => {
                         <a href="#" className="hover:text-text-primary transition-colors">Blog</a>
                     </div>
                     <div className="text-sm text-text-tertiary">
-                        © 2024 FlowAI. All rights reserved.
+                        © 2024 AutoM8. All rights reserved.
                     </div>
                 </div>
             </footer>

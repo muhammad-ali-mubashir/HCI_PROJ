@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
-import { Lightning, Envelope, Lock, ArrowRight, User } from '@phosphor-icons/react';
+import { Envelope, Lock, ArrowRight, User } from '@phosphor-icons/react';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Card } from '../components/ui/Card';
@@ -41,9 +41,13 @@ export function RegisterPage() {
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                            className="w-16 h-16 bg-primary/10 rounded-2xl mx-auto flex items-center justify-center mb-6 border border-primary/20"
+                            className="flex justify-center mb-6"
                         >
-                            <Lightning className="w-8 h-8 text-primary" />
+                            <img 
+                                src="/badge.svg" 
+                                alt="AutoM8 Logo" 
+                                className="w-16 h-16 rounded-2xl"
+                            />
                         </motion.div>
                         <h1 className="text-3xl font-bold text-text-primary mb-2">Create Account</h1>
                         <p className="text-text-secondary">Join us and start automating</p>

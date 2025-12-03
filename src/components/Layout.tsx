@@ -2,7 +2,8 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useThemeStore } from '../store/useThemeStore';
-import { Moon, Sun, Lightning, Gear, ChartBar, Folder, CompassTool } from '@phosphor-icons/react';
+import { Moon, Sun, Gear, ChartBar, Folder, CompassTool } from '@phosphor-icons/react';
+import { House } from '@phosphor-icons/react';
 import { cn } from '../lib/utils';
 import { Button } from './ui/Button';
 
@@ -11,7 +12,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     const location = useLocation();
 
     const navItems = [
-        { path: '/home', icon: Lightning, label: 'Home' },
+        { path: '/home', icon: House, label: 'Home' },
         { path: '/projects', icon: Folder, label: 'Projects' },
         { path: '/workspace', icon: CompassTool, label: 'Workspace' },
         { path: '/dashboard', icon: ChartBar, label: 'Dashboard' },
@@ -30,14 +31,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     <div className="flex items-center justify-between h-16">
                         <div className="flex items-center">
                             <Link to="/home" className="flex items-center gap-2 font-bold text-xl tracking-tight group">
-                                <div className={cn(
-                                    "w-8 h-8 rounded-lg flex items-center justify-center transition-colors",
-                                    mode === 'dark'
-                                        ? "bg-primary/10 border border-primary/20 group-hover:bg-primary/20"
-                                        : "bg-primary/10 border border-primary/20 group-hover:bg-primary/20"
-                                )}>
-                                    <Lightning className="w-5 h-5 text-primary" />
-                                </div>
+                                <img 
+                                    src="/badge.svg" 
+                                    alt="AutoM8 Logo" 
+                                    className="w-8 h-8 rounded-lg transition-transform group-hover:scale-105"
+                                />
                                 <span className="text-text-primary">AutoM8</span>
                             </Link>
                         </div>
