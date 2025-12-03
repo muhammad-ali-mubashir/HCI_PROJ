@@ -48,6 +48,26 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
         return () => window.removeEventListener('keydown', handleKeyPress);
     }, []);
 
+    // Listen for fullscreen changes (e.g., user presses Escape)
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    }, []);
+
+    // Toggle fullscreen using browser API
+    const toggleFullscreen = () => {
+        if (!document.fullscreenElement) {
+            containerRef.current?.requestFullscreen().catch(err => {
+                console.error('Error attempting to enable fullscreen:', err);
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    };
+
     const handleWheel = (e: React.WheelEvent) => {
         if (e.ctrlKey || e.metaKey) {
             e.preventDefault();
@@ -121,20 +141,23 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
         >
             {/* UI Controls - Linear style */}
             <div className="absolute top-4 right-4 z-50 flex gap-2">
-                {/* Pan Mode Indicator */}
-                <div className={`px-3 py-2 rounded-lg border transition-all duration-200 ${panMode
-                    ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-                    : 'bg-[#16161A] border-white/8 text-white/40'
-                    }`}>
+                {/* Pan Mode Toggle Button */}
+                <button
+                    onClick={() => setPanMode(prev => !prev)}
+                    className={`px-3 py-2 rounded-lg border transition-all duration-200 cursor-pointer ${panMode
+                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+                        : 'bg-[#16161A] border-white/8 text-white/40 hover:border-white/15 hover:text-white/70'
+                    }`}
+                >
                     <div className="flex items-center gap-2">
                         <Hand className="w-4 h-4" weight={panMode ? 'fill' : 'regular'} />
                         <span className="text-[11px] font-medium">Pan (H)</span>
                     </div>
-                </div>
+                </button>
 
                 {/* Fullscreen Toggle */}
                 <button
-                    onClick={() => setIsFullscreen(!isFullscreen)}
+                    onClick={toggleFullscreen}
                     className="px-3 py-2 rounded-lg bg-[#16161A] border border-white/8 hover:border-white/15 transition-all text-white/40 hover:text-white/70"
                 >
                     {isFullscreen ? <CornersIn className="w-4 h-4" /> : <CornersOut className="w-4 h-4" />}
