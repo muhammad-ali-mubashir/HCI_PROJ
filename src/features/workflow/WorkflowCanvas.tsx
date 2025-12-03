@@ -5,9 +5,25 @@ import { Edge } from './Edge';
 import { motion } from 'framer-motion';
 import { CornersOut, CornersIn, Hand } from '@phosphor-icons/react';
 
-export const WorkflowCanvas = () => {
+interface WorkflowCanvasProps {
+    selectedNodeId?: string | null;
+    onNodeSelect?: (nodeId: string | null) => void;
+}
+
+export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeSelect }: WorkflowCanvasProps = {}) => {
     const { nodes, edges, updateNodePosition, removeNode, addEdge } = useWorkflowStore();
-    const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+    const [internalSelectedNodeId, setInternalSelectedNodeId] = useState<string | null>(null);
+    
+    // Use external state if provided, otherwise use internal
+    const selectedNodeId = externalSelectedNodeId !== undefined ? externalSelectedNodeId : internalSelectedNodeId;
+    const setSelectedNodeId = (nodeId: string | null) => {
+        if (onNodeSelect) {
+            onNodeSelect(nodeId);
+        } else {
+            setInternalSelectedNodeId(nodeId);
+        }
+    };
+    
     const containerRef = useRef<HTMLDivElement>(null);
 
     // Pan/Zoom State

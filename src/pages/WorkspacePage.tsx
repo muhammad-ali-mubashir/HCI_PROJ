@@ -4,6 +4,7 @@ import { CaretLeft, CaretRight, SidebarSimple, ChatCircle } from '@phosphor-icon
 import { ChatInterface } from '../features/chat/ChatInterface';
 import { WorkflowCanvas } from '../features/workflow/WorkflowCanvas';
 import { NodePalette } from '../features/builder/NodePalette';
+import { NodeLibrarySidebar } from '../features/builder/NodeLibrarySidebar';
 import { useWorkflowStore } from '../store/useWorkflowStore';
 import { useProjectStore } from '../store/useProjectStore';
 import { Button } from '../components/ui/Button';
@@ -11,6 +12,7 @@ import { Button } from '../components/ui/Button';
 export const WorkspacePage = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [isChatOpen, setIsChatOpen] = useState(true);
+    const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
     const { nodes, edges, setWorkflow, resetWorkflow } = useWorkflowStore();
     const { activeWorkflowId, workflows, saveWorkflow } = useProjectStore();
@@ -49,8 +51,8 @@ export const WorkspacePage = () => {
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="h-full border-r border-white/5 bg-surface/30 backdrop-blur-sm flex flex-col overflow-hidden"
                     >
-                        <div className="p-4 border-b border-white/5 flex items-center justify-between">
-                            <h2 className="text-sm font-semibold text-text-primary">Sidebar</h2>
+                        <div className="flex items-center justify-between p-3 border-b border-white/5">
+                            <h2 className="text-sm font-semibold text-text-primary">Node Library</h2>
                             <Button
                                 variant="ghost"
                                 size="icon"
@@ -60,10 +62,10 @@ export const WorkspacePage = () => {
                                 <CaretLeft className="w-4 h-4" />
                             </Button>
                         </div>
-                        <div className="flex-1 p-4">
-                            {/* Sidebar content placeholder */}
-                            <p className="text-text-tertiary text-sm">Sidebar content goes here</p>
-                        </div>
+                        <NodeLibrarySidebar 
+                            selectedNodeId={selectedNodeId}
+                            onNodeSelect={setSelectedNodeId}
+                        />
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -92,7 +94,10 @@ export const WorkspacePage = () => {
                 transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="flex-1 h-full relative z-10"
             >
-                <WorkflowCanvas />
+                <WorkflowCanvas 
+                    selectedNodeId={selectedNodeId}
+                    onNodeSelect={setSelectedNodeId}
+                />
                 <NodePalette />
             </motion.div>
 
