@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
+import { useThemeStore } from '../../store/useThemeStore';
 import { Node, NODE_WIDTH, NODE_HEIGHT } from './Node';
 import { Edge } from './Edge';
 import { motion } from 'framer-motion';
@@ -12,6 +13,7 @@ interface WorkflowCanvasProps {
 
 export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeSelect }: WorkflowCanvasProps = {}) => {
     const { nodes, edges, updateNodePosition, removeNode, addEdge } = useWorkflowStore();
+    const { mode } = useThemeStore();
     const [internalSelectedNodeId, setInternalSelectedNodeId] = useState<string | null>(null);
     
     // Use external state if provided, otherwise use internal
@@ -131,8 +133,9 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
     return (
         <div
             ref={containerRef}
-            className={`relative w-full h-full overflow-hidden bg-[#0F0F12] transition-colors duration-300 ${isFullscreen ? 'fixed inset-0 z-50' : ''
+            className={`relative w-full h-full overflow-hidden transition-colors duration-300 ${isFullscreen ? 'fixed inset-0 z-50' : ''
                 } ${panMode ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'}`}
+            style={{ backgroundColor: 'var(--color-background)' }}
             onWheel={handleWheel}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
@@ -145,8 +148,8 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                 <button
                     onClick={() => setPanMode(prev => !prev)}
                     className={`px-3 py-2 rounded-lg border transition-all duration-200 cursor-pointer ${panMode
-                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
-                        : 'bg-[#16161A] border-white/8 text-white/40 hover:border-white/15 hover:text-white/70'
+                        ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500'
+                        : 'bg-surface border-[var(--card-border)] text-text-tertiary hover:border-[var(--card-border-hover)] hover:text-text-secondary'
                     }`}
                 >
                     <div className="flex items-center gap-2">
@@ -158,7 +161,7 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                 {/* Fullscreen Toggle */}
                 <button
                     onClick={toggleFullscreen}
-                    className="px-3 py-2 rounded-lg bg-[#16161A] border border-white/8 hover:border-white/15 transition-all text-white/40 hover:text-white/70"
+                    className="px-3 py-2 rounded-lg bg-surface border border-[var(--card-border)] hover:border-[var(--card-border-hover)] transition-all text-text-tertiary hover:text-text-secondary"
                 >
                     {isFullscreen ? <CornersIn className="w-4 h-4" /> : <CornersOut className="w-4 h-4" />}
                 </button>
@@ -168,7 +171,9 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
             <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
-                    backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)`,
+                    backgroundImage: mode === 'dark' 
+                        ? `radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)`
+                        : `radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px)`,
                     backgroundSize: '24px 24px',
                     transform: `translate(${transform.x % 24}px, ${transform.y % 24}px)`,
                 }}
@@ -212,6 +217,9 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                         const controlOffset = Math.max(deltaX * 0.5, 50);
                         const path = `M ${startX} ${startY} C ${startX + controlOffset} ${startY}, ${mousePos.x - controlOffset} ${mousePos.y}, ${mousePos.x} ${mousePos.y}`;
                         
+                        // Theme-aware stroke color
+                        const tempStrokeColor = mode === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.4)';
+                        
                         return (
                             <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
                                 <defs>
@@ -226,7 +234,7 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                                 {/* Main dashed line */}
                                 <path
                                     d={path}
-                                    stroke="rgba(255,255,255,0.25)"
+                                    stroke={tempStrokeColor}
                                     strokeWidth="1.5"
                                     strokeDasharray="6,4"
                                     fill="none"
@@ -273,14 +281,14 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                         animate={{ opacity: 1, y: 0 }}
                         className="text-center"
                     >
-                        <div className="w-14 h-14 bg-[#16161A] border border-white/8 rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <div className="w-14 h-14 bg-surface border border-[var(--card-border)] rounded-xl flex items-center justify-center mx-auto mb-4">
                             <div 
                                 className="w-6 h-6 rounded-lg bg-emerald-500"
                                 style={{ boxShadow: '0 0 16px rgba(16, 185, 129, 0.4)' }}
                             />
                         </div>
-                        <h3 className="text-lg font-semibold text-white/90 mb-2">Start Your Workflow</h3>
-                        <p className="text-[13px] text-white/40 max-w-[280px] mx-auto leading-relaxed">
+                        <h3 className="text-lg font-semibold text-text-primary mb-2">Start Your Workflow</h3>
+                        <p className="text-[13px] text-text-tertiary max-w-[280px] mx-auto leading-relaxed">
                             Describe what you want to automate in the chat, or drag nodes from the sidebar.
                         </p>
                     </motion.div>

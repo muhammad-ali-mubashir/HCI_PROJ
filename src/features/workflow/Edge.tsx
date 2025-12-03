@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import type { Edge as EdgeType, Node } from '../../lib/types';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
+import { useThemeStore } from '../../store/useThemeStore';
 import { NODE_WIDTH, NODE_HEIGHT } from './Node';
 
 interface EdgeProps {
@@ -12,6 +13,7 @@ interface EdgeProps {
 
 export const Edge: React.FC<EdgeProps> = ({ edge, sourceNode, targetNode }) => {
     const { isExecuting } = useWorkflowStore();
+    const { mode } = useThemeStore();
 
     if (!sourceNode || !targetNode) return null;
     
@@ -35,6 +37,9 @@ export const Edge: React.FC<EdgeProps> = ({ edge, sourceNode, targetNode }) => {
 
     const path = `M ${sx} ${sy} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${tx} ${ty}`;
 
+    // Theme-aware stroke color
+    const strokeColor = mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.25)';
+
     return (
         <svg className="absolute inset-0 pointer-events-none overflow-visible w-full h-full">
             <defs>
@@ -51,7 +56,7 @@ export const Edge: React.FC<EdgeProps> = ({ edge, sourceNode, targetNode }) => {
             {/* Main connection line - Linear style: subtle, border-like */}
             <motion.path
                 d={path}
-                stroke="rgba(255,255,255,0.12)"
+                stroke={strokeColor}
                 strokeWidth="1.5"
                 fill="none"
                 strokeLinecap="round"

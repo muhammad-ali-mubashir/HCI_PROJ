@@ -28,7 +28,7 @@ export const MetricChart: React.FC<MetricChartProps> = ({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="p-5 rounded-xl bg-surface border border-white/[0.08] hover:border-white/[0.15] transition-all"
+            className="p-5 rounded-xl bg-surface border border-[var(--card-border)] hover:border-[var(--card-border-hover)] transition-all"
         >
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
@@ -85,7 +85,7 @@ export const MetricChart: React.FC<MetricChartProps> = ({
                             />
                             {/* Tooltip */}
                             <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                                <div className="px-2 py-1 rounded bg-surface border border-white/10 text-xs text-text-primary whitespace-nowrap">
+                                <div className="px-2 py-1 rounded bg-surface border border-[var(--card-border)] text-xs text-text-primary whitespace-nowrap shadow-lg">
                                     {value}{unit}
                                 </div>
                             </div>

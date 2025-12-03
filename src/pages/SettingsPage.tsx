@@ -9,7 +9,7 @@ export const SettingsPage = () => {
     const { mode, toggleMode, reducedMotion, toggleReducedMotion, highContrast, toggleHighContrast } = useThemeStore();
 
     const SettingItem = ({ label, icon: Icon, value, onChange, description }: any) => (
-        <div className="flex items-center justify-between p-4 rounded-lg hover:bg-white/5 transition-colors">
+        <div className="flex items-center justify-between p-4 rounded-lg hover:bg-surface-hover transition-colors">
             <div className="flex items-center gap-4">
                 <div className="p-2 rounded-md bg-primary/10 text-primary">
                     <Icon className="w-5 h-5" />

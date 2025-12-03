@@ -39,7 +39,7 @@ const StatCard = ({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay }}
-        className="p-5 rounded-xl bg-surface border border-white/[0.08] hover:border-white/[0.15] transition-all"
+        className="p-5 rounded-xl bg-surface border border-[var(--card-border)] hover:border-[var(--card-border-hover)] transition-all"
     >
         <div className="flex items-start justify-between mb-3">
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${color}`}>
@@ -72,7 +72,7 @@ const ActivityItem = ({
     time: string;
     duration: string;
 }) => (
-    <div className="flex items-center gap-4 p-3 rounded-lg bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.08] transition-all">
+    <div className="flex items-center gap-4 p-3 rounded-lg bg-surface-hover/50 border border-[var(--card-border)] hover:border-[var(--card-border-hover)] transition-all">
         <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
             status === 'success' ? 'bg-emerald-500/10 text-emerald-400' :
             status === 'failed' ? 'bg-red-500/10 text-red-400' :
@@ -86,7 +86,7 @@ const ActivityItem = ({
             <p className="text-sm font-medium text-text-primary truncate">{workflow}</p>
             <p className="text-xs text-text-tertiary">{time}</p>
         </div>
-        <div className="text-xs text-text-secondary font-mono bg-white/[0.03] px-2 py-1 rounded">
+        <div className="text-xs text-text-secondary font-mono bg-surface-hover px-2 py-1 rounded">
             {duration}
         </div>
     </div>
@@ -119,10 +119,11 @@ export const DashboardPage = () => {
         <div className="min-h-[calc(100vh-4rem)] bg-background">
             {/* Subtle grid background */}
             <div 
-                className="fixed inset-0 pointer-events-none opacity-30"
+                className="fixed inset-0 pointer-events-none opacity-30 dark:opacity-30"
                 style={{
-                    backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)`,
+                    backgroundImage: `radial-gradient(circle, var(--color-text-tertiary) 1px, transparent 1px)`,
                     backgroundSize: '32px 32px',
+                    opacity: 0.15
                 }}
             />
             
@@ -226,7 +227,7 @@ export const DashboardPage = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.3, duration: 0.5 }}
-                            className="p-6 rounded-xl bg-surface border border-white/[0.08]"
+                            className="p-6 rounded-xl bg-surface border border-[var(--card-border)]"
                         >
                             <div className="flex items-center justify-between mb-5">
                                 <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
@@ -249,7 +250,7 @@ export const DashboardPage = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.35, duration: 0.5 }}
-                            className="p-6 rounded-xl bg-surface border border-white/[0.08]"
+                            className="p-6 rounded-xl bg-surface border border-[var(--card-border)]"
                         >
                             <div className="flex items-center justify-between mb-5">
                                 <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
@@ -263,7 +264,7 @@ export const DashboardPage = () => {
                             <div className="space-y-4">
                                 {topWorkflows.map((workflow, index) => (
                                     <div key={index} className="flex items-center gap-4">
-                                        <div className="w-8 h-8 rounded-lg bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-sm font-semibold text-text-secondary">
+                                        <div className="w-8 h-8 rounded-lg bg-surface-hover border border-[var(--card-border)] flex items-center justify-center text-sm font-semibold text-text-secondary">
                                             {index + 1}
                                         </div>
                                         <div className="flex-1 min-w-0">
@@ -279,7 +280,7 @@ export const DashboardPage = () => {
                                                 </span>
                                             </div>
                                         </div>
-                                        <div className="w-24 h-2 bg-white/[0.05] rounded-full overflow-hidden">
+                                        <div className="w-24 h-2 bg-surface-hover rounded-full overflow-hidden">
                                             <div 
                                                 className="h-full bg-gradient-to-r from-primary to-violet-500 rounded-full"
                                                 style={{ width: `${workflow.successRate}%` }}
@@ -300,7 +301,7 @@ export const DashboardPage = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.4, duration: 0.5 }}
-                            className="p-6 rounded-xl bg-surface border border-white/[0.08]"
+                            className="p-6 rounded-xl bg-surface border border-[var(--card-border)]"
                         >
                             <div className="flex items-center justify-between mb-5">
                                 <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
@@ -310,14 +311,14 @@ export const DashboardPage = () => {
                             </div>
                             
                             <div className="grid grid-cols-2 gap-4 mb-6">
-                                <div className="p-4 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+                                <div className="p-4 rounded-lg bg-surface-hover/50 border border-[var(--card-border)]">
                                     <div className="flex items-center gap-2 mb-2">
                                         <Users className="w-4 h-4 text-text-tertiary" />
                                         <span className="text-xs text-text-tertiary">Active Users</span>
                                     </div>
                                     <div className="text-2xl font-bold text-text-primary">2,847</div>
                                 </div>
-                                <div className="p-4 rounded-lg bg-white/[0.02] border border-white/[0.04]">
+                                <div className="p-4 rounded-lg bg-surface-hover/50 border border-[var(--card-border)]">
                                     <div className="flex items-center gap-2 mb-2">
                                         <Globe className="w-4 h-4 text-text-tertiary" />
                                         <span className="text-xs text-text-tertiary">Regions</span>
@@ -338,7 +339,7 @@ export const DashboardPage = () => {
                                         <div className={`w-2 h-2 rounded-full ${item.color}`} />
                                         <span className="text-sm text-text-secondary flex-1">{item.region}</span>
                                         <span className="text-sm font-medium text-text-primary">{item.percentage}%</span>
-                                        <div className="w-20 h-1.5 bg-white/[0.05] rounded-full overflow-hidden">
+                                        <div className="w-20 h-1.5 bg-surface-hover rounded-full overflow-hidden">
                                             <div 
                                                 className={`h-full ${item.color} rounded-full`}
                                                 style={{ width: `${item.percentage}%` }}

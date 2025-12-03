@@ -201,7 +201,7 @@ export const ProjectsPage = () => {
                                     <p className="text-text-secondary text-sm mb-4 flex-1">
                                         {project.description || 'No description'}
                                     </p>
-                                    <div className="flex items-center justify-between text-xs text-text-tertiary mt-auto pt-4 border-t border-white/5">
+                                    <div className="flex items-center justify-between text-xs text-text-tertiary mt-auto pt-4 border-t border-[var(--card-border)]">
                                         <span>{project.workflows.length} Workflows</span>
                                         <span>{new Date(project.updatedAt).toLocaleDateString()}</span>
                                     </div>
@@ -257,7 +257,7 @@ export const ProjectsPage = () => {
                                         <p className="text-text-secondary text-sm mb-4 flex-1">
                                             {workflow.description || 'No description'}
                                         </p>
-                                        <div className="flex items-center justify-between text-xs text-text-tertiary mt-auto pt-4 border-t border-white/5">
+                                        <div className="flex items-center justify-between text-xs text-text-tertiary mt-auto pt-4 border-t border-[var(--card-border)]">
                                             <span>{workflow.nodes.length} Nodes</span>
                                             <div className="flex items-center gap-1 text-primary group-hover:translate-x-1 transition-transform">
                                                 Open <CaretRight className="w-3 h-3" />

@@ -7,16 +7,16 @@ const Card = React.forwardRef<
 >(({ className, variant = 'default', ...props }, ref) => {
   
   const variants = {
-    default: "bg-surface border border-white/5 shadow-card",
-    glass: "bg-surface/40 backdrop-blur-xl border border-white/5 shadow-card",
-    outline: "bg-transparent border border-white/10",
+    default: "bg-surface border border-[var(--card-border)] shadow-[var(--shadow-card)]",
+    glass: "bg-surface/40 backdrop-blur-xl border border-[var(--card-border)] shadow-[var(--shadow-card)]",
+    outline: "bg-transparent border border-[var(--card-border)]",
   }
 
   return (
     <div
       ref={ref}
       className={cn(
-        "rounded-xl text-text-primary",
+        "rounded-xl text-text-primary transition-colors duration-200",
         variants[variant],
         className
       )}

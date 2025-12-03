@@ -5,6 +5,7 @@ import type { Icon as PhosphorIcon } from '@phosphor-icons/react';
 import { Lightning, Plugs, Envelope, Clock, Code, Play, Trash, DotsThree } from '@phosphor-icons/react';
 import { cn } from '../../lib/utils';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
+import { useThemeStore } from '../../store/useThemeStore';
 
 const iconMap: Record<string, PhosphorIcon> = {
     trigger: Lightning,
@@ -95,6 +96,7 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
     const Icon = iconMap[node.type] || Lightning;
     const dotColors = dotColorMap[node.type] || { bg: 'bg-gray-500', glow: '0 0 10px rgba(107, 114, 128, 0.6)', text: '#6B7280' };
     const { isExecuting, executionLog } = useWorkflowStore();
+    const { mode } = useThemeStore();
     const isDraggingConnection = useRef(false);
 
     const executionStatus = executionLog.find(step => step.nodeId === node.id)?.status;
@@ -179,11 +181,13 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                 className={cn(
                     "rounded-xl overflow-hidden transition-all duration-150",
                     // Linear style: solid background + border for depth
-                    "bg-[#16161A]",
+                    "bg-surface",
                     // 1px border for depth (no shadows)
                     isSelected 
-                        ? "border border-white/20" 
-                        : "border border-white/[0.08] hover:border-white/[0.12]"
+                        ? mode === 'dark' ? "border border-white/20" : "border border-black/20"
+                        : mode === 'dark' 
+                            ? "border border-white/[0.08] hover:border-white/[0.12]" 
+                            : "border border-black/[0.08] hover:border-black/[0.12]"
                 )}
                 style={{ width: NODE_WIDTH }}
             >
@@ -196,16 +200,16 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                     />
                     
                     {/* Title */}
-                    <span className="flex-1 text-[13px] font-medium text-white truncate">
+                    <span className="flex-1 text-[13px] font-medium text-text-primary truncate">
                         {node.label}
                     </span>
                     
                     {/* Menu Button */}
                     <button 
-                        className="opacity-0 group-hover:opacity-100 p-1 hover:bg-white/5 rounded transition-all"
+                        className="opacity-0 group-hover:opacity-100 p-1 hover:bg-surface-hover rounded transition-all"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <DotsThree className="w-4 h-4 text-white/40" weight="bold" />
+                        <DotsThree className="w-4 h-4 text-text-tertiary" weight="bold" />
                     </button>
                 </div>
 
@@ -213,10 +217,10 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                 <div className="px-3 pb-3 space-y-2">
                     {/* Type indicator with icon */}
                     <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-md flex items-center justify-center bg-white/[0.03] border border-white/[0.06]">
-                            <Icon className="w-3.5 h-3.5 text-white/50" />
+                        <div className="w-6 h-6 rounded-md flex items-center justify-center bg-surface-hover border border-[var(--card-border)]">
+                            <Icon className="w-3.5 h-3.5 text-text-tertiary" />
                         </div>
-                        <span className="text-xs text-white/30 capitalize">{node.type}</span>
+                        <span className="text-xs text-text-tertiary capitalize">{node.type}</span>
                     </div>
 
                     {/* Description label with neon accent */}
@@ -232,8 +236,8 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                     </div>
 
                     {/* Config field - Linear style input */}
-                    <div className="bg-[#0F0F12] rounded-lg px-2.5 py-2 border border-white/[0.06]">
-                        <span className="text-[11px] text-white/35">{nodeContent.config}</span>
+                    <div className="bg-background rounded-lg px-2.5 py-2 border border-[var(--card-border)]">
+                        <span className="text-[11px] text-text-tertiary">{nodeContent.config}</span>
                     </div>
 
                     {/* Execution Status */}
@@ -259,9 +263,9 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                 </div>
 
                 {/* Actions Footer - appears on hover */}
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity border-t border-white/[0.06] px-3 py-2 flex items-center justify-between bg-white/[0.02]">
+                <div className="opacity-0 group-hover:opacity-100 transition-opacity border-t border-[var(--card-border)] px-3 py-2 flex items-center justify-between bg-surface-hover/50">
                     <button 
-                        className="flex items-center gap-1.5 text-[11px] text-white/30 hover:text-white/60 transition-colors"
+                        className="flex items-center gap-1.5 text-[11px] text-text-tertiary hover:text-text-secondary transition-colors"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <Play className="w-3 h-3" weight="fill" />
@@ -272,7 +276,7 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                             e.stopPropagation();
                             if (onDelete) onDelete(node.id);
                         }}
-                        className="flex items-center gap-1.5 text-[11px] text-white/30 hover:text-red-400 transition-colors"
+                        className="flex items-center gap-1.5 text-[11px] text-text-tertiary hover:text-red-400 transition-colors"
                     >
                         <Trash className="w-3 h-3" />
                         <span>Delete</span>

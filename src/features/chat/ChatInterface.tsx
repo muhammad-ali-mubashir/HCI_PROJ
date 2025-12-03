@@ -52,11 +52,11 @@ export const ChatInterface = () => {
                             }}
                         />
                         <div className="flex-1 min-w-0">
-                            <div className="font-medium text-white/90">
+                            <div className="font-medium text-text-primary">
                                 {log.nodeName}
                             </div>
                             {log.message && (
-                                <div className="text-white/40 mt-0.5">
+                                <div className="text-text-tertiary mt-0.5">
                                     {log.message}
                                 </div>
                             )}
@@ -66,7 +66,7 @@ export const ChatInterface = () => {
                                 </div>
                             )}
                         </div>
-                        <div className="flex items-center gap-1 text-white/25 shrink-0">
+                        <div className="flex items-center gap-1 text-text-tertiary shrink-0">
                             <Clock className="w-3 h-3" />
                             <span>{new Date(log.timestamp).toLocaleTimeString()}</span>
                         </div>
@@ -180,10 +180,10 @@ export const ChatInterface = () => {
     };
 
     return (
-        <div className="flex flex-col h-full bg-[#0F0F12] border-r border-white/8">
+        <div className="flex flex-col h-full bg-background border-r border-[var(--card-border)] transition-colors duration-200">
             {/* Header - Linear style */}
-            <div className="p-4 border-b border-white/8">
-                <h2 className="text-[15px] font-semibold flex items-center gap-2 text-white/90">
+            <div className="p-4 border-b border-[var(--card-border)]">
+                <h2 className="text-[15px] font-semibold flex items-center gap-2 text-text-primary">
                     <div 
                         className="w-5 h-5 rounded flex items-center justify-center bg-violet-500"
                         style={{ boxShadow: '0 0 10px rgba(139, 92, 246, 0.4)' }}
@@ -192,7 +192,7 @@ export const ChatInterface = () => {
                     </div>
                     AI Assistant
                 </h2>
-                <p className="text-[11px] text-white/35 mt-1">
+                <p className="text-[11px] text-text-tertiary mt-1">
                     Create, trigger, and monitor workflows
                 </p>
             </div>
@@ -220,7 +220,7 @@ export const ChatInterface = () => {
                                         >
                                             <Robot className="w-3.5 h-3.5 text-white" weight="bold" />
                                         </div>
-                                        <div className="flex-1 bg-[#16161A] border border-white/6 p-3 rounded-xl rounded-tl-none">
+                                        <div className="flex-1 bg-surface border border-[var(--card-border)] p-3 rounded-xl rounded-tl-none">
                                             <ExecutionLogsDisplay logs={hasLogs} />
                                         </div>
                                     </motion.div>
@@ -246,7 +246,7 @@ export const ChatInterface = () => {
                                             </h4>
                                             <div className="space-y-2">
                                                 {(hasRecommendations as string[]).map((rec, idx) => (
-                                                    <div key={idx} className="text-[12px] text-white/70 bg-[#0F0F12] border border-white/6 p-2.5 rounded-lg">
+                                                    <div key={idx} className="text-[12px] text-text-secondary bg-background border border-[var(--card-border)] p-2.5 rounded-lg">
                                                         {rec}
                                                     </div>
                                                 ))}
@@ -287,8 +287,8 @@ export const ChatInterface = () => {
                                 <div className={clsx(
                                     "p-3 rounded-xl text-[13px] leading-relaxed whitespace-pre-line border",
                                     msg.role === 'user'
-                                        ? "bg-emerald-500/10 border-emerald-500/15 text-white/85 rounded-tr-none"
-                                        : "bg-[#16161A] border-white/6 text-white/70 rounded-tl-none"
+                                        ? "bg-emerald-500/10 border-emerald-500/15 text-text-primary rounded-tr-none"
+                                        : "bg-surface border-[var(--card-border)] text-text-secondary rounded-tl-none"
                                 )}>
                                     {msg.content}
                                 </div>
@@ -307,7 +307,7 @@ export const ChatInterface = () => {
                             >
                                 <Robot className="w-3.5 h-3.5 text-white" weight="bold" />
                             </div>
-                            <div className="bg-[#16161A] border border-white/6 p-3 rounded-xl rounded-tl-none flex gap-1.5 items-center">
+                            <div className="bg-surface border border-[var(--card-border)] p-3 rounded-xl rounded-tl-none flex gap-1.5 items-center">
                                 <span className="w-1.5 h-1.5 bg-violet-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
                                 <span className="w-1.5 h-1.5 bg-violet-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
                                 <span className="w-1.5 h-1.5 bg-violet-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
@@ -319,7 +319,7 @@ export const ChatInterface = () => {
             </div>
 
             {/* Input Area - Linear style */}
-            <div className="p-4 border-t border-white/8 space-y-3">
+            <div className="p-4 border-t border-[var(--card-border)] space-y-3">
                 {/* Suggested Prompts */}
                 {messages.length === 0 && (
                     <div className="flex flex-wrap gap-2 mb-2">
@@ -327,7 +327,7 @@ export const ChatInterface = () => {
                             <button
                                 key={index}
                                 onClick={() => handlePromptClick(prompt)}
-                                className="text-[11px] bg-[#16161A] hover:bg-white/5 border border-white/8 hover:border-white/12 rounded-full px-3 py-1.5 text-white/50 hover:text-white/70 transition-all font-medium"
+                                className="text-[11px] bg-surface hover:bg-surface-hover border border-[var(--card-border)] hover:border-[var(--card-border-hover)] rounded-full px-3 py-1.5 text-text-secondary hover:text-text-primary transition-all font-medium"
                             >
                                 {prompt}
                             </button>
@@ -355,7 +355,7 @@ export const ChatInterface = () => {
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             placeholder={conversationContext ? "Type your answer..." : "Describe a workflow or trigger one..."}
-                            className="w-full bg-[#16161A] border border-white/8 rounded-xl py-3 px-4 pr-12 focus:outline-none focus:border-white/20 transition-all text-white/90 placeholder-white/25 text-[13px]"
+                            className="w-full bg-surface border border-[var(--card-border)] rounded-xl py-3 px-4 pr-12 focus:outline-none focus:border-[var(--card-border-hover)] transition-all text-text-primary placeholder-text-tertiary text-[13px]"
                             disabled={isLoading}
                         />
                         <button

@@ -7,6 +7,7 @@ import { NodePalette } from '../features/builder/NodePalette';
 import { NodeLibrarySidebar } from '../features/builder/NodeLibrarySidebar';
 import { useWorkflowStore } from '../store/useWorkflowStore';
 import { useProjectStore } from '../store/useProjectStore';
+import { useThemeStore } from '../store/useThemeStore';
 import { Button } from '../components/ui/Button';
 
 export const WorkspacePage = () => {
@@ -16,6 +17,7 @@ export const WorkspacePage = () => {
 
     const { nodes, edges, setWorkflow, resetWorkflow } = useWorkflowStore();
     const { activeWorkflowId, workflows, saveWorkflow } = useProjectStore();
+    const { mode } = useThemeStore();
 
     // Load workflow on mount
     useEffect(() => {
@@ -49,9 +51,15 @@ export const WorkspacePage = () => {
                         animate={{ width: 280, opacity: 1 }}
                         exit={{ width: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="h-full border-r border-white/5 bg-surface/30 backdrop-blur-sm flex flex-col overflow-hidden"
+                        className={`h-full border-r backdrop-blur-sm flex flex-col overflow-hidden transition-colors ${
+                            mode === 'dark' 
+                                ? 'border-white/5 bg-surface/30' 
+                                : 'border-black/5 bg-surface/80 shadow-sm'
+                        }`}
                     >
-                        <div className="flex items-center justify-between p-3 border-b border-white/5">
+                        <div className={`flex items-center justify-between p-3 border-b transition-colors ${
+                            mode === 'dark' ? 'border-white/5' : 'border-black/5'
+                        }`}>
                             <h2 className="text-sm font-semibold text-text-primary">Node Library</h2>
                             <Button
                                 variant="ghost"
@@ -99,25 +107,28 @@ export const WorkspacePage = () => {
                     onNodeSelect={setSelectedNodeId}
                 />
                 <NodePalette />
-            </motion.div>
-
-            {/* Chat Toggle Button (when closed) */}
-            {!isChatOpen && (
+                
+                {/* Chat Toggle Button - Always visible, positioned in bottom right of canvas */}
                 <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 z-30"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="absolute bottom-6 right-6 z-30"
                 >
                     <Button
                         variant="secondary"
-                        size="icon"
-                        onClick={() => setIsChatOpen(true)}
-                        className="h-10 w-6 rounded-r-none rounded-l-lg border-r-0"
+                        onClick={() => setIsChatOpen(!isChatOpen)}
+                        className={`h-10 px-3 gap-2 shadow-lg ${
+                            mode === 'dark'
+                                ? 'bg-surface border-white/10 hover:border-white/20'
+                                : 'bg-surface border-black/10 hover:border-black/20 shadow-md'
+                        }`}
                     >
-                        <ChatCircle className="w-4 h-4" />
+                        <ChatCircle className="w-4 h-4" weight={isChatOpen ? 'fill' : 'regular'} />
+                        <span className="text-xs font-medium">{isChatOpen ? 'Hide Chat' : 'Show Chat'}</span>
+                        {isChatOpen ? <CaretRight className="w-3 h-3" /> : <CaretLeft className="w-3 h-3" />}
                     </Button>
                 </motion.div>
-            )}
+            </motion.div>
 
             {/* Right Panel: Chat */}
             <AnimatePresence mode="wait">
@@ -127,18 +138,12 @@ export const WorkspacePage = () => {
                         animate={{ width: 380, opacity: 1 }}
                         exit={{ width: 0, opacity: 0 }}
                         transition={{ duration: 0.3, ease: "easeInOut" }}
-                        className="h-full border-l border-white/5 bg-surface/30 backdrop-blur-sm flex flex-col overflow-hidden"
+                        className={`h-full border-l backdrop-blur-sm flex flex-col overflow-hidden transition-colors ${
+                            mode === 'dark' 
+                                ? 'border-white/5 bg-surface/30' 
+                                : 'border-black/5 bg-surface/80 shadow-sm'
+                        }`}
                     >
-                        <div className="absolute top-4 left-4 z-10">
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => setIsChatOpen(false)}
-                                className="h-8 w-8"
-                            >
-                                <CaretRight className="w-4 h-4" />
-                            </Button>
-                        </div>
                         <ChatInterface />
                     </motion.div>
                 )}

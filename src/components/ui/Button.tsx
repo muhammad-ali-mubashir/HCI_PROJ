@@ -14,10 +14,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading, leftIcon, rightIcon, children, disabled, ...props }, ref) => {
     
     const variants = {
-      primary: "bg-primary text-primary-foreground hover:bg-primary-hover shadow-glow border border-primary/20",
-      secondary: "bg-surface text-text-primary border border-white/10 hover:bg-surface-hover hover:border-white/20",
-      outline: "bg-transparent border border-white/10 text-text-primary hover:bg-white/5",
-      ghost: "bg-transparent text-text-secondary hover:text-text-primary hover:bg-white/5",
+      primary: "bg-primary text-primary-foreground hover:bg-primary-hover shadow-[var(--shadow-glow)] border border-primary/20",
+      secondary: "bg-surface text-text-primary border border-[var(--card-border)] hover:bg-surface-hover hover:border-[var(--card-border-hover)]",
+      outline: "bg-transparent border border-[var(--card-border)] text-text-primary hover:bg-surface-hover",
+      ghost: "bg-transparent text-text-secondary hover:text-text-primary hover:bg-surface-hover",
       danger: "bg-error/10 text-error border border-error/20 hover:bg-error/20",
     }
 

@@ -23,7 +23,7 @@ export const ExecutionVisualizer = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35, duration: 0.5 }}
-            className="p-6 rounded-xl bg-surface border border-white/[0.08] h-full overflow-hidden flex flex-col"
+            className="p-6 rounded-xl bg-surface border border-[var(--card-border)] h-full overflow-hidden flex flex-col"
         >
             <div className="flex items-center justify-between mb-5">
                 <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
@@ -44,7 +44,7 @@ export const ExecutionVisualizer = () => {
             <div className="space-y-3 overflow-y-auto flex-1 pr-2">
                 {executionLog.length === 0 ? (
                     <div className="flex flex-col items-center justify-center text-center py-12">
-                        <div className="w-12 h-12 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center mb-4">
+                        <div className="w-12 h-12 rounded-xl bg-surface-hover border border-[var(--card-border)] flex items-center justify-center mb-4">
                             <Clock className="w-6 h-6 text-text-tertiary" />
                         </div>
                         <p className="text-text-secondary text-sm mb-1">No executions yet</p>

@@ -19,13 +19,23 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     ];
 
     return (
-        <div className="min-h-screen bg-background text-text-primary font-sans selection:bg-primary/20">
-            <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-background/80 backdrop-blur-xl">
+        <div className="min-h-screen bg-background text-text-primary font-sans selection:bg-primary/20 transition-colors duration-200">
+            <nav className={cn(
+                "fixed top-0 left-0 right-0 z-50 backdrop-blur-xl transition-colors duration-200",
+                mode === 'dark' 
+                    ? "border-b border-white/5 bg-background/80" 
+                    : "border-b border-black/5 bg-background/80 shadow-sm"
+            )}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between h-16">
                         <div className="flex items-center">
                             <Link to="/home" className="flex items-center gap-2 font-bold text-xl tracking-tight group">
-                                <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center border border-primary/20 group-hover:bg-primary/20 transition-colors">
+                                <div className={cn(
+                                    "w-8 h-8 rounded-lg flex items-center justify-center transition-colors",
+                                    mode === 'dark'
+                                        ? "bg-primary/10 border border-primary/20 group-hover:bg-primary/20"
+                                        : "bg-primary/10 border border-primary/20 group-hover:bg-primary/20"
+                                )}>
                                     <Lightning className="w-5 h-5 text-primary" />
                                 </div>
                                 <span className="text-text-primary">AutoM8</span>
@@ -43,11 +53,20 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                                             className={cn(
                                                 "px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 group",
                                                 isActive
-                                                    ? "text-text-primary bg-white/5"
-                                                    : "text-text-secondary hover:text-text-primary hover:bg-white/5"
+                                                    ? mode === 'dark'
+                                                        ? "text-text-primary bg-white/5"
+                                                        : "text-text-primary bg-black/5"
+                                                    : mode === 'dark'
+                                                        ? "text-text-secondary hover:text-text-primary hover:bg-white/5"
+                                                        : "text-text-secondary hover:text-text-primary hover:bg-black/5"
                                             )}
                                         >
-                                            <item.icon className={cn("w-4 h-4 transition-colors", isActive ? "text-primary" : "text-text-tertiary group-hover:text-text-primary")} />
+                                            <item.icon className={cn(
+                                                "w-4 h-4 transition-colors", 
+                                                isActive 
+                                                    ? "text-primary" 
+                                                    : "text-text-tertiary group-hover:text-text-primary"
+                                            )} />
                                             {item.label}
                                         </Link>
                                     );

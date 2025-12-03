@@ -27,42 +27,60 @@ import {
 import { Button } from '../components/ui/Button';
 import { useState } from 'react';
 import FaultyTerminal from '../components/FaultyTerminal';
+import { useThemeStore } from '../store/useThemeStore';
+import { cn } from '../lib/utils';
 
 export const LandingPage = () => {
     const [openFaq, setOpenFaq] = useState<number | null>(null);
+    const { mode } = useThemeStore();
+    const isDark = mode === 'dark';
 
     return (
-        <div className="relative min-h-screen bg-background overflow-hidden">
-            {/* FaultyTerminal Background - Hero Section Only */}
-            <div className="absolute inset-0 h-[900px] pointer-events-none">
-                <FaultyTerminal
-                    scale={1.5}
-                    gridMul={[2, 1]}
-                    digitSize={1.2}
-                    timeScale={0.5}
-                    pause={false}
-                    scanlineIntensity={0.2}
-                    glitchAmount={0.5}
-                    flickerAmount={0.3}
-                    noiseAmp={0.8}
-                    chromaticAberration={0}
-                    dither={0}
-                    curvature={0}
-                    tint="#6366f1"
-                    mouseReact={true}
-                    mouseStrength={0.3}
-                    pageLoadAnimation={true}
-                    brightness={0.15}
-                />
-                {/* Gradient overlay to fade out the terminal effect */}
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
-            </div>
+        <div className="relative min-h-screen bg-background overflow-hidden transition-colors duration-200">
+            {/* FaultyTerminal Background - Hero Section Only (Dark mode only) */}
+            {isDark && (
+                <div className="absolute inset-0 h-[900px] pointer-events-none">
+                    <FaultyTerminal
+                        scale={1.5}
+                        gridMul={[2, 1]}
+                        digitSize={1.2}
+                        timeScale={0.5}
+                        pause={false}
+                        scanlineIntensity={0.2}
+                        glitchAmount={0.5}
+                        flickerAmount={0.3}
+                        noiseAmp={0.8}
+                        chromaticAberration={0}
+                        dither={0}
+                        curvature={0}
+                        tint="#6366f1"
+                        mouseReact={true}
+                        mouseStrength={0.3}
+                        pageLoadAnimation={true}
+                        brightness={0.15}
+                    />
+                    {/* Gradient overlay to fade out the terminal effect */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
+                </div>
+            )}
+
+            {/* Light mode: Gradient background */}
+            {!isDark && (
+                <div className="absolute inset-0 h-[900px] pointer-events-none">
+                    <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-background" />
+                    <div className="absolute inset-0 opacity-30" style={{
+                        backgroundImage: `radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.15), transparent 50%)`,
+                    }} />
+                </div>
+            )}
 
             {/* Subtle grid background for rest of page */}
             <div 
                 className="fixed inset-0 pointer-events-none opacity-30"
                 style={{
-                    backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)`,
+                    backgroundImage: isDark 
+                        ? `radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)`
+                        : `radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px)`,
                     backgroundSize: '32px 32px',
                 }}
             />
@@ -74,7 +92,12 @@ export const LandingPage = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface/80 backdrop-blur-sm border border-white/10 mb-8"
+                        className={cn(
+                            "inline-flex items-center gap-2 px-4 py-1.5 rounded-full backdrop-blur-sm mb-8",
+                            isDark 
+                                ? "bg-surface/80 border border-white/10" 
+                                : "bg-white/80 border border-black/10 shadow-sm"
+                        )}
                     >
                         <Sparkle className="w-3.5 h-3.5 text-primary" weight="fill" />
                         <span className="text-xs font-medium text-text-secondary uppercase tracking-wider">
@@ -153,16 +176,27 @@ export const LandingPage = () => {
                     transition={{ duration: 0.7, delay: 0.6 }}
                     className="mt-16 w-full max-w-5xl mx-auto"
                 >
-                    <div className="relative rounded-xl overflow-hidden border border-white/[0.08] bg-surface/80 backdrop-blur-sm shadow-2xl">
+                    <div className={cn(
+                        "relative rounded-xl overflow-hidden backdrop-blur-sm",
+                        isDark 
+                            ? "border border-white/[0.08] bg-surface/80 shadow-2xl" 
+                            : "border border-black/[0.08] bg-white shadow-xl"
+                    )}>
                         {/* Browser chrome */}
-                        <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.08] bg-surface/50">
+                        <div className={cn(
+                            "flex items-center gap-2 px-4 py-3 border-b",
+                            isDark ? "border-white/[0.08] bg-surface/50" : "border-black/[0.08] bg-gray-50"
+                        )}>
                             <div className="flex gap-1.5">
                                 <div className="w-3 h-3 rounded-full bg-red-500/80" />
                                 <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
                                 <div className="w-3 h-3 rounded-full bg-green-500/80" />
                             </div>
                             <div className="flex-1 flex justify-center">
-                                <div className="px-4 py-1 rounded-md bg-white/5 text-xs text-text-tertiary">
+                                <div className={cn(
+                                    "px-4 py-1 rounded-md text-xs text-text-tertiary",
+                                    isDark ? "bg-white/5" : "bg-black/5"
+                                )}>
                                     app.flowai.dev/builder
                                 </div>
                             </div>
@@ -171,7 +205,10 @@ export const LandingPage = () => {
                         {/* App content mockup */}
                         <div className="flex h-[400px]">
                             {/* Sidebar */}
-                            <div className="w-64 border-r border-white/[0.08] bg-surface/30 p-4 hidden md:block">
+                            <div className={cn(
+                                "w-64 border-r p-4 hidden md:block",
+                                isDark ? "border-white/[0.08] bg-surface/30" : "border-black/[0.08] bg-gray-50/50"
+                            )}>
                                 <div className="text-xs font-semibold text-text-tertiary uppercase tracking-wider mb-3">Node Library</div>
                                 {[
                                     { icon: Lightning, label: 'Trigger', color: 'text-pink-500' },
@@ -184,9 +221,18 @@ export const LandingPage = () => {
                                         initial={{ opacity: 0, x: -10 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: 0.8 + i * 0.1 }}
-                                        className="flex items-center gap-3 p-2.5 rounded-lg bg-white/5 border border-white/[0.08] mb-2 cursor-pointer hover:border-white/[0.15] transition-all"
+                                        className={cn(
+                                            "flex items-center gap-3 p-2.5 rounded-lg border mb-2 cursor-pointer transition-all",
+                                            isDark 
+                                                ? "bg-white/5 border-white/[0.08] hover:border-white/[0.15]" 
+                                                : "bg-white border-black/[0.08] hover:border-black/[0.15]"
+                                        )}
                                     >
-                                        <div className={`w-8 h-8 rounded-md bg-white/5 flex items-center justify-center ${node.color}`}>
+                                        <div className={cn(
+                                            "w-8 h-8 rounded-md flex items-center justify-center",
+                                            isDark ? "bg-white/5" : "bg-gray-100",
+                                            node.color
+                                        )}>
                                             <node.icon className="w-4 h-4" weight="duotone" />
                                         </div>
                                         <span className="text-sm text-text-secondary">{node.label}</span>
@@ -200,7 +246,9 @@ export const LandingPage = () => {
                                 <div 
                                     className="absolute inset-0 opacity-30"
                                     style={{
-                                        backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)`,
+                                        backgroundImage: isDark 
+                                            ? `radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)`
+                                            : `radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px)`,
                                         backgroundSize: '24px 24px',
                                     }}
                                 />
@@ -210,7 +258,7 @@ export const LandingPage = () => {
                                     {/* Connection line 1 */}
                                     <motion.path
                                         d="M 180 100 C 250 100, 270 180, 340 180"
-                                        stroke="rgba(255,255,255,0.15)"
+                                        stroke={isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)"}
                                         strokeWidth="2"
                                         fill="none"
                                         initial={{ pathLength: 0 }}
@@ -220,7 +268,7 @@ export const LandingPage = () => {
                                     {/* Connection line 2 */}
                                     <motion.path
                                         d="M 500 180 C 570 180, 590 260, 660 260"
-                                        stroke="rgba(255,255,255,0.15)"
+                                        stroke={isDark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.15)"}
                                         strokeWidth="2"
                                         fill="none"
                                         initial={{ pathLength: 0 }}
@@ -236,13 +284,19 @@ export const LandingPage = () => {
                                     transition={{ delay: 0.9, type: "spring" }}
                                     className="absolute left-8 top-12 w-44"
                                 >
-                                    <div className="p-3 rounded-xl bg-[#16161A] border border-white/[0.08] group">
+                                    <div className={cn(
+                                        "p-3 rounded-xl border group",
+                                        isDark ? "bg-surface border-white/[0.08]" : "bg-white border-black/[0.08] shadow-sm"
+                                    )}>
                                         <div className="flex items-center justify-between mb-2">
                                             <span className="text-xs font-medium text-text-primary">Webhook Trigger</span>
                                             <DotsThree className="w-4 h-4 text-text-tertiary" />
                                         </div>
                                         <div className="flex items-center gap-2 mb-2">
-                                            <div className="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center">
+                                            <div className={cn(
+                                                "w-6 h-6 rounded-md flex items-center justify-center",
+                                                isDark ? "bg-white/5" : "bg-gray-100"
+                                            )}>
                                                 <Plugs className="w-3.5 h-3.5 text-violet-500" />
                                             </div>
                                             <span className="text-[10px] text-text-tertiary">webhook</span>
@@ -252,7 +306,10 @@ export const LandingPage = () => {
                                             RECEIVE DATA
                                         </div>
                                         {/* Output dot */}
-                                        <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-pink-500 border-2 border-[#16161A]" style={{ boxShadow: '0 0 10px rgba(236, 72, 153, 0.6)' }} />
+                                        <div className={cn(
+                                            "absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-pink-500 border-2",
+                                            isDark ? "border-surface" : "border-white"
+                                        )} style={{ boxShadow: '0 0 10px rgba(236, 72, 153, 0.6)' }} />
                                     </div>
                                 </motion.div>
                                 
@@ -263,13 +320,21 @@ export const LandingPage = () => {
                                     transition={{ delay: 1.1, type: "spring" }}
                                     className="absolute left-52 top-32 w-44"
                                 >
-                                    <div className="p-3 rounded-xl bg-[#16161A] border border-primary/30 shadow-[0_0_20px_rgba(99,102,241,0.15)]">
+                                    <div className={cn(
+                                        "p-3 rounded-xl border-primary/30",
+                                        isDark 
+                                            ? "bg-surface shadow-[0_0_20px_rgba(99,102,241,0.15)]" 
+                                            : "bg-white shadow-lg border border-primary/30"
+                                    )}>
                                         <div className="flex items-center justify-between mb-2">
                                             <span className="text-xs font-medium text-text-primary">Send Email</span>
                                             <DotsThree className="w-4 h-4 text-text-tertiary" />
                                         </div>
                                         <div className="flex items-center gap-2 mb-2">
-                                            <div className="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center">
+                                            <div className={cn(
+                                                "w-6 h-6 rounded-md flex items-center justify-center",
+                                                isDark ? "bg-white/5" : "bg-gray-100"
+                                            )}>
                                                 <Envelope className="w-3.5 h-3.5 text-emerald-500" />
                                             </div>
                                             <span className="text-[10px] text-text-tertiary">action</span>
@@ -279,9 +344,15 @@ export const LandingPage = () => {
                                             SEND EMAIL
                                         </div>
                                         {/* Input dot */}
-                                        <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-emerald-500 border-2 border-[#16161A]" style={{ boxShadow: '0 0 10px rgba(16, 185, 129, 0.6)' }} />
+                                        <div className={cn(
+                                            "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-emerald-500 border-2",
+                                            isDark ? "border-surface" : "border-white"
+                                        )} style={{ boxShadow: '0 0 10px rgba(16, 185, 129, 0.6)' }} />
                                         {/* Output dot */}
-                                        <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-emerald-500 border-2 border-[#16161A]" style={{ boxShadow: '0 0 10px rgba(16, 185, 129, 0.6)' }} />
+                                        <div className={cn(
+                                            "absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-3 h-3 rounded-full bg-emerald-500 border-2",
+                                            isDark ? "border-surface" : "border-white"
+                                        )} style={{ boxShadow: '0 0 10px rgba(16, 185, 129, 0.6)' }} />
                                     </div>
                                 </motion.div>
                                 
@@ -292,13 +363,19 @@ export const LandingPage = () => {
                                     transition={{ delay: 1.3, type: "spring" }}
                                     className="absolute right-8 top-48 w-44"
                                 >
-                                    <div className="p-3 rounded-xl bg-[#16161A] border border-white/[0.08]">
+                                    <div className={cn(
+                                        "p-3 rounded-xl border",
+                                        isDark ? "bg-surface border-white/[0.08]" : "bg-white border-black/[0.08] shadow-sm"
+                                    )}>
                                         <div className="flex items-center justify-between mb-2">
                                             <span className="text-xs font-medium text-text-primary">Transform Data</span>
                                             <DotsThree className="w-4 h-4 text-text-tertiary" />
                                         </div>
                                         <div className="flex items-center gap-2 mb-2">
-                                            <div className="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center">
+                                            <div className={cn(
+                                                "w-6 h-6 rounded-md flex items-center justify-center",
+                                                isDark ? "bg-white/5" : "bg-gray-100"
+                                            )}>
                                                 <Code className="w-3.5 h-3.5 text-amber-500" />
                                             </div>
                                             <span className="text-[10px] text-text-tertiary">function</span>
@@ -308,14 +385,23 @@ export const LandingPage = () => {
                                             PROCESS DATA
                                         </div>
                                         {/* Input dot */}
-                                        <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-amber-500 border-2 border-[#16161A]" style={{ boxShadow: '0 0 10px rgba(245, 158, 11, 0.6)' }} />
+                                        <div className={cn(
+                                            "absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-amber-500 border-2",
+                                            isDark ? "border-surface" : "border-white"
+                                        )} style={{ boxShadow: '0 0 10px rgba(245, 158, 11, 0.6)' }} />
                                     </div>
                                 </motion.div>
                             </div>
                             
                             {/* Chat sidebar */}
-                            <div className="w-72 border-l border-white/[0.08] bg-surface/30 flex flex-col hidden lg:flex">
-                                <div className="p-4 border-b border-white/[0.08]">
+                            <div className={cn(
+                                "w-72 border-l flex-col hidden lg:flex",
+                                isDark ? "border-white/[0.08] bg-surface/30" : "border-black/[0.08] bg-gray-50/50"
+                            )}>
+                                <div className={cn(
+                                    "p-4 border-b",
+                                    isDark ? "border-white/[0.08]" : "border-black/[0.08]"
+                                )}>
                                     <div className="flex items-center gap-2">
                                         <Robot className="w-4 h-4 text-primary" />
                                         <span className="text-sm font-medium text-text-primary">AI Assistant</span>
@@ -336,7 +422,10 @@ export const LandingPage = () => {
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: 1.8 }}
-                                        className="p-3 rounded-lg bg-white/5 border border-white/[0.08]"
+                                        className={cn(
+                                            "p-3 rounded-lg border",
+                                            isDark ? "bg-white/5 border-white/[0.08]" : "bg-white border-black/[0.08]"
+                                        )}
                                     >
                                         <div className="flex items-center gap-2 mb-2">
                                             <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center">
@@ -349,8 +438,14 @@ export const LandingPage = () => {
                                         </p>
                                     </motion.div>
                                 </div>
-                                <div className="p-3 border-t border-white/[0.08]">
-                                    <div className="flex items-center gap-2 p-2 rounded-lg bg-white/5 border border-white/[0.08]">
+                                <div className={cn(
+                                    "p-3 border-t",
+                                    isDark ? "border-white/[0.08]" : "border-black/[0.08]"
+                                )}>
+                                    <div className={cn(
+                                        "flex items-center gap-2 p-2 rounded-lg border",
+                                        isDark ? "bg-white/5 border-white/[0.08]" : "bg-white border-black/[0.08]"
+                                    )}>
                                         <input 
                                             type="text" 
                                             placeholder="Ask AI to build..." 
@@ -367,7 +462,10 @@ export const LandingPage = () => {
             </section>
 
             {/* ==================== PRODUCTIVITY FEATURES ==================== */}
-            <section className="relative z-10 py-24 px-4 border-t border-white/5">
+            <section className={cn(
+                "relative z-10 py-24 px-4 border-t",
+                isDark ? "border-white/5" : "border-black/5"
+            )}>
                 <div className="max-w-7xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -391,42 +489,42 @@ export const LandingPage = () => {
                                 title: 'AI-First Design',
                                 desc: 'Just describe what you want to automate. Our AI builds the workflow for you.',
                                 color: 'text-pink-500',
-                                glow: 'group-hover:shadow-[0_0_30px_rgba(236,72,153,0.15)]'
+                                glow: isDark ? 'group-hover:shadow-[0_0_30px_rgba(236,72,153,0.15)]' : ''
                             },
                             {
                                 icon: GitBranch,
                                 title: 'Visual Flow Builder',
                                 desc: 'Drag, drop, and connect nodes with an intuitive interface. No code required.',
                                 color: 'text-emerald-500',
-                                glow: 'group-hover:shadow-[0_0_30px_rgba(16,185,129,0.15)]'
+                                glow: isDark ? 'group-hover:shadow-[0_0_30px_rgba(16,185,129,0.15)]' : ''
                             },
                             {
                                 icon: Lightning,
                                 title: 'Instant Execution',
                                 desc: 'Run workflows in milliseconds with our optimized execution engine.',
                                 color: 'text-amber-500',
-                                glow: 'group-hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]'
+                                glow: isDark ? 'group-hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]' : ''
                             },
                             {
                                 icon: Clock,
                                 title: 'Smart Scheduling',
                                 desc: 'Set up cron jobs, delays, and conditional triggers with ease.',
                                 color: 'text-cyan-500',
-                                glow: 'group-hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]'
+                                glow: isDark ? 'group-hover:shadow-[0_0_30px_rgba(6,182,212,0.15)]' : ''
                             },
                             {
                                 icon: Plugs,
                                 title: '500+ Integrations',
                                 desc: 'Connect with all your favorite tools—from Slack to Salesforce.',
                                 color: 'text-violet-500',
-                                glow: 'group-hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]'
+                                glow: isDark ? 'group-hover:shadow-[0_0_30px_rgba(139,92,246,0.15)]' : ''
                             },
                             {
                                 icon: ShieldCheck,
                                 title: 'Enterprise Security',
                                 desc: 'Bank-grade encryption, SSO, and compliance built in from day one.',
                                 color: 'text-blue-500',
-                                glow: 'group-hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]'
+                                glow: isDark ? 'group-hover:shadow-[0_0_30px_rgba(59,130,246,0.15)]' : ''
                             }
                         ].map((feature, index) => (
                             <motion.div
@@ -435,9 +533,19 @@ export const LandingPage = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                                className={`group p-6 rounded-xl bg-surface border border-white/[0.08] hover:border-white/[0.15] transition-all duration-300 ${feature.glow}`}
+                                className={cn(
+                                    "group p-6 rounded-xl bg-surface border transition-all duration-300",
+                                    isDark 
+                                        ? "border-white/[0.08] hover:border-white/[0.15]" 
+                                        : "border-black/[0.08] hover:border-black/[0.15] shadow-sm hover:shadow-md",
+                                    feature.glow
+                                )}
                             >
-                                <div className={`w-10 h-10 rounded-lg bg-white/5 border border-white/[0.08] flex items-center justify-center mb-4 ${feature.color}`}>
+                                <div className={cn(
+                                    "w-10 h-10 rounded-lg border flex items-center justify-center mb-4",
+                                    isDark ? "bg-white/5 border-white/[0.08]" : "bg-gray-100 border-black/[0.08]",
+                                    feature.color
+                                )}>
                                     <feature.icon className="w-5 h-5" weight="duotone" />
                                 </div>
                                 <h3 className="text-lg font-semibold text-text-primary mb-2">
@@ -453,7 +561,10 @@ export const LandingPage = () => {
             </section>
 
             {/* ==================== KEY CAPABILITIES ==================== */}
-            <section className="relative z-10 py-24 px-4 border-t border-white/5 bg-surface/30">
+            <section className={cn(
+                "relative z-10 py-24 px-4 border-t",
+                isDark ? "border-white/5 bg-surface/30" : "border-black/5 bg-gray-50/50"
+            )}>
                 <div className="max-w-7xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -476,7 +587,12 @@ export const LandingPage = () => {
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            className="p-8 rounded-xl bg-surface border border-white/[0.08] hover:border-white/[0.15] transition-all"
+                            className={cn(
+                                "p-8 rounded-xl bg-surface border transition-all",
+                                isDark 
+                                    ? "border-white/[0.08] hover:border-white/[0.15]" 
+                                    : "border-black/[0.08] hover:border-black/[0.15] shadow-sm"
+                            )}
                         >
                             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-violet-500/20 border border-primary/20 flex items-center justify-center mb-6">
                                 <Brain className="w-6 h-6 text-primary" weight="duotone" />
@@ -532,9 +648,18 @@ export const LandingPage = () => {
                                     whileInView={{ opacity: 1, x: 0 }}
                                     viewport={{ once: true }}
                                     transition={{ delay: index * 0.1 }}
-                                    className="p-6 rounded-xl bg-surface border border-white/[0.08] hover:border-white/[0.15] transition-all flex gap-5"
+                                    className={cn(
+                                        "p-6 rounded-xl bg-surface border transition-all flex gap-5",
+                                        isDark 
+                                            ? "border-white/[0.08] hover:border-white/[0.15]" 
+                                            : "border-black/[0.08] hover:border-black/[0.15] shadow-sm"
+                                    )}
                                 >
-                                    <div className={`w-12 h-12 shrink-0 rounded-xl bg-gradient-to-br ${item.accent} border border-white/[0.08] flex items-center justify-center`}>
+                                    <div className={cn(
+                                        "w-12 h-12 shrink-0 rounded-xl bg-gradient-to-br border flex items-center justify-center",
+                                        item.accent,
+                                        isDark ? "border-white/[0.08]" : "border-black/[0.08]"
+                                    )}>
                                         <item.icon className={`w-6 h-6 ${item.iconColor}`} weight="duotone" />
                                     </div>
                                     <div>
@@ -549,7 +674,10 @@ export const LandingPage = () => {
             </section>
 
             {/* ==================== METRICS ==================== */}
-            <section className="relative z-10 py-24 px-4 border-t border-white/5">
+            <section className={cn(
+                "relative z-10 py-24 px-4 border-t",
+                isDark ? "border-white/5" : "border-black/5"
+            )}>
                 <div className="max-w-7xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -576,7 +704,10 @@ export const LandingPage = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1 }}
-                                className="p-6 rounded-xl bg-surface border border-white/[0.08] text-center"
+                                className={cn(
+                                    "p-6 rounded-xl bg-surface border text-center",
+                                    isDark ? "border-white/[0.08]" : "border-black/[0.08] shadow-sm"
+                                )}
                             >
                                 <metric.icon className="w-6 h-6 text-primary mx-auto mb-3" weight="duotone" />
                                 <div className="text-3xl sm:text-4xl font-bold text-text-primary mb-1">{metric.value}</div>
@@ -588,7 +719,10 @@ export const LandingPage = () => {
             </section>
 
             {/* ==================== PRICING ==================== */}
-            <section className="relative z-10 py-24 px-4 border-t border-white/5 bg-surface/30">
+            <section className={cn(
+                "relative z-10 py-24 px-4 border-t",
+                isDark ? "border-white/5 bg-surface/30" : "border-black/5 bg-gray-50/50"
+            )}>
                 <div className="max-w-7xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -641,11 +775,16 @@ export const LandingPage = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1 }}
-                                className={`relative p-6 rounded-xl border transition-all ${
+                                className={cn(
+                                    "relative p-6 rounded-xl border transition-all",
                                     plan.popular 
-                                        ? 'bg-surface border-primary/30 shadow-[0_0_40px_rgba(99,102,241,0.1)]' 
-                                        : 'bg-surface border-white/[0.08] hover:border-white/[0.15]'
-                                }`}
+                                        ? isDark 
+                                            ? 'bg-surface border-primary/30 shadow-[0_0_40px_rgba(99,102,241,0.1)]' 
+                                            : 'bg-white border-primary shadow-lg'
+                                        : isDark 
+                                            ? 'bg-surface border-white/[0.08] hover:border-white/[0.15]'
+                                            : 'bg-white border-black/[0.08] hover:border-black/[0.15] shadow-sm'
+                                )}
                             >
                                 {plan.popular && (
                                     <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-primary text-xs font-semibold text-white rounded-full">
@@ -681,7 +820,10 @@ export const LandingPage = () => {
             </section>
 
             {/* ==================== COMPARISON ==================== */}
-            <section className="relative z-10 py-24 px-4 border-t border-white/5">
+            <section className={cn(
+                "relative z-10 py-24 px-4 border-t",
+                isDark ? "border-white/5" : "border-black/5"
+            )}>
                 <div className="max-w-7xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -706,7 +848,10 @@ export const LandingPage = () => {
                     >
                         <table className="w-full min-w-[800px]">
                             <thead>
-                                <tr className="border-b border-white/[0.08]">
+                                <tr className={cn(
+                                    "border-b",
+                                    isDark ? "border-white/[0.08]" : "border-black/[0.08]"
+                                )}>
                                     <th className="text-left py-4 px-4 text-sm font-medium text-text-secondary">Feature</th>
                                     <th className="py-4 px-4 text-sm font-medium text-primary">FlowAI</th>
                                     <th className="py-4 px-4 text-sm font-medium text-text-secondary">Zapier</th>
@@ -725,7 +870,10 @@ export const LandingPage = () => {
                                     { feature: 'Sub-50ms Response', flowai: true, zapier: false, make: false, n8n: false },
                                     { feature: 'Built-in Error Recovery', flowai: true, zapier: true, make: true, n8n: false },
                                 ].map((row, index) => (
-                                    <tr key={index} className="border-b border-white/[0.05]">
+                                    <tr key={index} className={cn(
+                                        "border-b",
+                                        isDark ? "border-white/[0.05]" : "border-black/[0.05]"
+                                    )}>
                                         <td className="py-4 px-4 text-sm text-text-primary">{row.feature}</td>
                                         <td className="py-4 px-4 text-center">
                                             {row.flowai ? (
@@ -764,7 +912,10 @@ export const LandingPage = () => {
             </section>
 
             {/* ==================== TESTIMONIALS ==================== */}
-            <section className="relative z-10 py-24 px-4 border-t border-white/5 bg-surface/30">
+            <section className={cn(
+                "relative z-10 py-24 px-4 border-t",
+                isDark ? "border-white/5 bg-surface/30" : "border-black/5 bg-gray-50/50"
+            )}>
                 <div className="max-w-7xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -808,7 +959,10 @@ export const LandingPage = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1 }}
-                                className="p-6 rounded-xl bg-surface border border-white/[0.08]"
+                                className={cn(
+                                    "p-6 rounded-xl bg-surface border",
+                                    isDark ? "border-white/[0.08]" : "border-black/[0.08] shadow-sm"
+                                )}
                             >
                                 <div className="flex gap-1 mb-4">
                                     {[...Array(5)].map((_, i) => (
@@ -817,7 +971,10 @@ export const LandingPage = () => {
                                 </div>
                                 <p className="text-text-secondary mb-6 leading-relaxed">"{testimonial.quote}"</p>
                                 <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-violet-500/20 border border-white/[0.08] flex items-center justify-center text-sm font-semibold text-primary">
+                                    <div className={cn(
+                                        "w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-violet-500/20 border flex items-center justify-center text-sm font-semibold text-primary",
+                                        isDark ? "border-white/[0.08]" : "border-black/[0.08]"
+                                    )}>
                                         {testimonial.avatar}
                                     </div>
                                     <div>
@@ -832,7 +989,10 @@ export const LandingPage = () => {
             </section>
 
             {/* ==================== FAQ ==================== */}
-            <section className="relative z-10 py-24 px-4 border-t border-white/5">
+            <section className={cn(
+                "relative z-10 py-24 px-4 border-t",
+                isDark ? "border-white/5" : "border-black/5"
+            )}>
                 <div className="max-w-3xl mx-auto">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -879,11 +1039,17 @@ export const LandingPage = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.05 }}
-                                className="rounded-xl bg-surface border border-white/[0.08] overflow-hidden"
+                                className={cn(
+                                    "rounded-xl bg-surface border overflow-hidden",
+                                    isDark ? "border-white/[0.08]" : "border-black/[0.08] shadow-sm"
+                                )}
                             >
                                 <button
                                     onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                                    className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-white/[0.02] transition-colors"
+                                    className={cn(
+                                        "w-full px-6 py-4 flex items-center justify-between text-left transition-colors",
+                                        isDark ? "hover:bg-white/[0.02]" : "hover:bg-black/[0.02]"
+                                    )}
                                 >
                                     <span className="font-medium text-text-primary">{faq.q}</span>
                                     <CaretDown 
@@ -906,7 +1072,10 @@ export const LandingPage = () => {
             </section>
 
             {/* ==================== CTA ==================== */}
-            <section className="relative z-10 py-24 px-4 border-t border-white/5 bg-surface/30">
+            <section className={cn(
+                "relative z-10 py-24 px-4 border-t",
+                isDark ? "border-white/5 bg-surface/30" : "border-black/5 bg-gray-50/50"
+            )}>
                 <div className="max-w-4xl mx-auto text-center">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -938,7 +1107,10 @@ export const LandingPage = () => {
             </section>
 
             {/* Footer */}
-            <footer className="relative z-10 py-12 px-4 border-t border-white/5">
+            <footer className={cn(
+                "relative z-10 py-12 px-4 border-t",
+                isDark ? "border-white/5" : "border-black/5"
+            )}>
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
                         <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
