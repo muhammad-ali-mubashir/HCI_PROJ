@@ -111,7 +111,7 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
     return (
         <div
             ref={containerRef}
-            className={`relative w-full h-full overflow-hidden bg-background transition-colors duration-500 ${isFullscreen ? 'fixed inset-0 z-50' : ''
+            className={`relative w-full h-full overflow-hidden bg-[#0F0F12] transition-colors duration-300 ${isFullscreen ? 'fixed inset-0 z-50' : ''
                 } ${panMode ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'}`}
             onWheel={handleWheel}
             onMouseDown={handleMouseDown}
@@ -119,39 +119,35 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
             onMouseUp={handleMouseUp}
             onMouseLeave={handleMouseUp}
         >
-            {/* UI Controls */}
+            {/* UI Controls - Linear style */}
             <div className="absolute top-4 right-4 z-50 flex gap-2">
                 {/* Pan Mode Indicator */}
-                <div className={`px-3 py-2 rounded-lg backdrop-blur-md border transition-all duration-300 ${panMode
-                    ? 'bg-primary/20 border-primary/50 text-primary'
-                    : 'bg-surface/80 border-white/10 text-text-secondary'
+                <div className={`px-3 py-2 rounded-lg border transition-all duration-200 ${panMode
+                    ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+                    : 'bg-[#16161A] border-white/8 text-white/40'
                     }`}>
                     <div className="flex items-center gap-2">
-                        <Hand className="w-4 h-4" />
-                        <span className="text-xs font-medium">Pan Mode (H)</span>
+                        <Hand className="w-4 h-4" weight={panMode ? 'fill' : 'regular'} />
+                        <span className="text-[11px] font-medium">Pan (H)</span>
                     </div>
                 </div>
 
                 {/* Fullscreen Toggle */}
                 <button
                     onClick={() => setIsFullscreen(!isFullscreen)}
-                    className="px-3 py-2 rounded-lg backdrop-blur-md bg-surface/80 border border-white/10 hover:bg-surface-hover hover:border-primary/50 transition-all text-text-secondary hover:text-text-primary"
+                    className="px-3 py-2 rounded-lg bg-[#16161A] border border-white/8 hover:border-white/15 transition-all text-white/40 hover:text-white/70"
                 >
                     {isFullscreen ? <CornersIn className="w-4 h-4" /> : <CornersOut className="w-4 h-4" />}
                 </button>
             </div>
 
-            {/* Infinite Grid Background */}
+            {/* Linear-style Dot Grid Background */}
             <div
-                className="absolute inset-0 pointer-events-none opacity-10"
+                className="absolute inset-0 pointer-events-none"
                 style={{
-                    backgroundImage: `
-                        linear-gradient(to right, rgba(59, 130, 246, 0.2) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(59, 130, 246, 0.2) 1px, transparent 1px)
-                    `,
-                    backgroundSize: '40px 40px',
-                    transform: `translate(${transform.x % 40}px, ${transform.y % 40}px) scale(${transform.scale})`,
-                    transformOrigin: '0 0'
+                    backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)`,
+                    backgroundSize: '24px 24px',
+                    transform: `translate(${transform.x % 24}px, ${transform.y % 24}px)`,
                 }}
             />
 
@@ -180,53 +176,45 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                             />
                         );
                     })}
-                    {/* Temporary Connection Line */}
+                    {/* Temporary Connection Line - Linear style */}
                     {connectingNodeId && (() => {
                         const sourceNode = nodes.find(n => n.id === connectingNodeId);
                         if (!sourceNode) return null;
-                        // Start from right connection dot - centered on the dot
-                        const startX = sourceNode.position.x + NODE_WIDTH + 8;
+                        // Start from right connection dot
+                        const startX = sourceNode.position.x + NODE_WIDTH + 7;
                         const startY = sourceNode.position.y + NODE_HEIGHT / 2;
                         
                         // Create bezier curve to mouse
                         const deltaX = Math.abs(mousePos.x - startX);
-                        const controlOffset = Math.max(deltaX * 0.4, 40);
+                        const controlOffset = Math.max(deltaX * 0.5, 50);
                         const path = `M ${startX} ${startY} C ${startX + controlOffset} ${startY}, ${mousePos.x - controlOffset} ${mousePos.y}, ${mousePos.x} ${mousePos.y}`;
                         
                         return (
                             <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
                                 <defs>
                                     <filter id="tempGlow" x="-50%" y="-50%" width="200%" height="200%">
-                                        <feGaussianBlur stdDeviation="3" result="coloredBlur" />
+                                        <feGaussianBlur stdDeviation="4" result="coloredBlur" />
                                         <feMerge>
                                             <feMergeNode in="coloredBlur" />
                                             <feMergeNode in="SourceGraphic" />
                                         </feMerge>
                                     </filter>
                                 </defs>
-                                {/* Glow layer */}
+                                {/* Main dashed line */}
                                 <path
                                     d={path}
-                                    stroke="rgba(255,255,255,0.1)"
-                                    strokeWidth="8"
-                                    fill="none"
-                                    strokeLinecap="round"
-                                />
-                                {/* Main line */}
-                                <path
-                                    d={path}
-                                    stroke="rgba(255,255,255,0.4)"
-                                    strokeWidth="2"
+                                    stroke="rgba(255,255,255,0.25)"
+                                    strokeWidth="1.5"
                                     strokeDasharray="6,4"
                                     fill="none"
                                     strokeLinecap="round"
                                 />
-                                {/* Endpoint indicator */}
+                                {/* Neon endpoint indicator */}
                                 <circle
                                     cx={mousePos.x}
                                     cy={mousePos.y}
-                                    r="6"
-                                    fill="rgba(255,255,255,0.6)"
+                                    r="5"
+                                    fill="#10B981"
                                     filter="url(#tempGlow)"
                                 />
                             </svg>
@@ -254,7 +242,7 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                 </div>
             </motion.div>
 
-            {/* Empty State */}
+            {/* Empty State - Linear style */}
             {nodes.length === 0 && (
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                     <motion.div
@@ -262,12 +250,15 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                         animate={{ opacity: 1, y: 0 }}
                         className="text-center"
                     >
-                        <div className="w-16 h-16 bg-linear-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-white/10 backdrop-blur-sm">
-                            <div className="w-8 h-8 bg-linear-to-br from-primary to-primary-hover rounded-lg" />
+                        <div className="w-14 h-14 bg-[#16161A] border border-white/8 rounded-xl flex items-center justify-center mx-auto mb-4">
+                            <div 
+                                className="w-6 h-6 rounded-lg bg-emerald-500"
+                                style={{ boxShadow: '0 0 16px rgba(16, 185, 129, 0.4)' }}
+                            />
                         </div>
-                        <h3 className="text-xl font-bold text-text-primary mb-2">Start Your Workflow</h3>
-                        <p className="text-text-secondary max-w-xs mx-auto">
-                            Describe what you want to automate in the chat, and watch the magic happen.
+                        <h3 className="text-lg font-semibold text-white/90 mb-2">Start Your Workflow</h3>
+                        <p className="text-[13px] text-white/40 max-w-[280px] mx-auto leading-relaxed">
+                            Describe what you want to automate in the chat, or drag nodes from the sidebar.
                         </p>
                     </motion.div>
                 </div>

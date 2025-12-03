@@ -21,8 +21,6 @@ import {
     Trash
 } from '@phosphor-icons/react';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
-import { Input } from '../../components/ui/Input';
-import { Button } from '../../components/ui/Button';
 import type { NodeType } from '../../lib/types';
 
 interface NodeItem {
@@ -31,6 +29,7 @@ interface NodeItem {
     description: string;
     icon: Icon;
     color: string;
+    glow: string;
 }
 
 interface NodeCategory {
@@ -44,39 +43,40 @@ interface NodeLibrarySidebarProps {
     onNodeSelect: (nodeId: string | null) => void;
 }
 
+// Linear-style neon colors with glows
 const nodeCategories: NodeCategory[] = [
     {
         name: 'Triggers',
         icon: Lightning,
         nodes: [
-            { type: 'trigger', label: 'Manual Trigger', description: 'Start workflow manually', icon: Lightning, color: 'bg-pink-500' },
-            { type: 'webhook', label: 'Webhook', description: 'HTTP webhook trigger', icon: Plugs, color: 'bg-orange-500' },
-            { type: 'schedule', label: 'Schedule', description: 'Time-based trigger', icon: Clock, color: 'bg-green-500' },
+            { type: 'trigger', label: 'Manual Trigger', description: 'Start workflow manually', icon: Lightning, color: 'bg-pink-500', glow: '0 0 12px rgba(236, 72, 153, 0.5)' },
+            { type: 'webhook', label: 'Webhook', description: 'HTTP webhook trigger', icon: Plugs, color: 'bg-violet-500', glow: '0 0 12px rgba(139, 92, 246, 0.5)' },
+            { type: 'schedule', label: 'Schedule', description: 'Time-based trigger', icon: Clock, color: 'bg-cyan-500', glow: '0 0 12px rgba(6, 182, 212, 0.5)' },
         ]
     },
     {
         name: 'Actions',
         icon: Envelope,
         nodes: [
-            { type: 'action', label: 'Send Email', description: 'Send an email message', icon: Envelope, color: 'bg-blue-500' },
-            { type: 'action', label: 'HTTP Request', description: 'Make API calls', icon: Globe, color: 'bg-cyan-500' },
-            { type: 'action', label: 'Send Notification', description: 'Push notification', icon: Bell, color: 'bg-yellow-500' },
+            { type: 'action', label: 'Send Email', description: 'Send an email message', icon: Envelope, color: 'bg-emerald-500', glow: '0 0 12px rgba(16, 185, 129, 0.5)' },
+            { type: 'action', label: 'HTTP Request', description: 'Make API calls', icon: Globe, color: 'bg-cyan-500', glow: '0 0 12px rgba(6, 182, 212, 0.5)' },
+            { type: 'action', label: 'Send Notification', description: 'Push notification', icon: Bell, color: 'bg-amber-500', glow: '0 0 12px rgba(245, 158, 11, 0.5)' },
         ]
     },
     {
         name: 'Logic',
         icon: ArrowsClockwise,
         nodes: [
-            { type: 'function', label: 'Code', description: 'Custom JavaScript', icon: Code, color: 'bg-purple-500' },
-            { type: 'function', label: 'Transform', description: 'Transform data', icon: ArrowsClockwise, color: 'bg-indigo-500' },
+            { type: 'function', label: 'Code', description: 'Custom JavaScript', icon: Code, color: 'bg-violet-500', glow: '0 0 12px rgba(139, 92, 246, 0.5)' },
+            { type: 'function', label: 'Transform', description: 'Transform data', icon: ArrowsClockwise, color: 'bg-indigo-500', glow: '0 0 12px rgba(99, 102, 241, 0.5)' },
         ]
     },
     {
         name: 'Data',
         icon: Database,
         nodes: [
-            { type: 'action', label: 'Database', description: 'Query database', icon: Database, color: 'bg-emerald-500' },
-            { type: 'action', label: 'Chat/AI', description: 'AI processing', icon: ChatCircle, color: 'bg-violet-500' },
+            { type: 'action', label: 'Database', description: 'Query database', icon: Database, color: 'bg-emerald-500', glow: '0 0 12px rgba(16, 185, 129, 0.5)' },
+            { type: 'action', label: 'Chat/AI', description: 'AI processing', icon: ChatCircle, color: 'bg-violet-500', glow: '0 0 12px rgba(139, 92, 246, 0.5)' },
         ]
     },
 ];
@@ -103,7 +103,6 @@ export const NodeLibrarySidebar = ({ selectedNodeId, onNodeSelect }: NodeLibrary
     };
 
     const handleAddNode = (type: NodeType, label: string) => {
-        // Use requestAnimationFrame to move impure calls outside of React's render phase
         requestAnimationFrame(() => {
             const newNode = {
                 id: `node-${Date.now()}`,
@@ -125,15 +124,16 @@ export const NodeLibrarySidebar = ({ selectedNodeId, onNodeSelect }: NodeLibrary
 
     return (
         <div className="flex flex-col h-full">
-            {/* Search */}
-            <div className="p-3 border-b border-white/5">
+            {/* Search - Linear style */}
+            <div className="p-3 border-b border-white/8">
                 <div className="relative">
-                    <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-tertiary" />
-                    <Input
+                    <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
+                    <input
+                        type="text"
                         placeholder="Search nodes..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-9 h-9 text-sm bg-surface/50"
+                        className="w-full pl-9 pr-3 h-9 text-sm bg-[#0F0F12] border border-white/8 rounded-lg text-white/90 placeholder:text-white/25 focus:outline-none focus:border-white/20 transition-colors"
                     />
                 </div>
             </div>
@@ -141,18 +141,18 @@ export const NodeLibrarySidebar = ({ selectedNodeId, onNodeSelect }: NodeLibrary
             {/* Node Categories */}
             <div className="flex-1 overflow-y-auto">
                 {filteredCategories.map((category) => (
-                    <div key={category.name} className="border-b border-white/5">
-                        {/* Category Header */}
+                    <div key={category.name} className="border-b border-white/6">
+                        {/* Category Header - Linear style */}
                         <button
                             onClick={() => toggleCategory(category.name)}
-                            className="w-full px-3 py-2.5 flex items-center gap-2 hover:bg-white/5 transition-colors text-left"
+                            className="w-full px-3 py-2.5 flex items-center gap-2 hover:bg-white/3 transition-colors text-left"
                         >
-                            <category.icon className="w-4 h-4 text-text-secondary" />
-                            <span className="flex-1 text-sm font-medium text-text-primary">{category.name}</span>
+                            <category.icon className="w-4 h-4 text-white/40" />
+                            <span className="flex-1 text-[13px] font-medium text-white/80">{category.name}</span>
                             {expandedCategories.includes(category.name) ? (
-                                <CaretDown className="w-4 h-4 text-text-tertiary" />
+                                <CaretDown className="w-4 h-4 text-white/30" />
                             ) : (
-                                <CaretRight className="w-4 h-4 text-text-tertiary" />
+                                <CaretRight className="w-4 h-4 text-white/30" />
                             )}
                         </button>
 
@@ -163,7 +163,7 @@ export const NodeLibrarySidebar = ({ selectedNodeId, onNodeSelect }: NodeLibrary
                                     initial={{ height: 0, opacity: 0 }}
                                     animate={{ height: 'auto', opacity: 1 }}
                                     exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.2 }}
+                                    transition={{ duration: 0.15 }}
                                     className="overflow-hidden"
                                 >
                                     <div className="px-2 pb-2 space-y-1">
@@ -173,19 +173,22 @@ export const NodeLibrarySidebar = ({ selectedNodeId, onNodeSelect }: NodeLibrary
                                                 draggable
                                                 onDragStart={(e) => handleDragStart(e as unknown as React.DragEvent, node.type, node.label)}
                                                 onClick={() => handleAddNode(node.type, node.label)}
-                                                whileHover={{ scale: 1.02, x: 4 }}
+                                                whileHover={{ x: 2 }}
                                                 whileTap={{ scale: 0.98 }}
-                                                className="flex items-center gap-3 p-2.5 rounded-lg bg-surface/50 hover:bg-surface-hover border border-transparent hover:border-white/10 cursor-grab active:cursor-grabbing transition-colors group"
+                                                className="flex items-center gap-3 p-2.5 rounded-lg bg-[#16161A] border border-white/6 hover:border-white/12 cursor-grab active:cursor-grabbing transition-all group"
                                             >
-                                                <div className="text-text-tertiary opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div className="text-white/20 opacity-0 group-hover:opacity-100 transition-opacity">
                                                     <DotsSixVertical className="w-3 h-3" />
                                                 </div>
-                                                <div className={`w-8 h-8 rounded-lg ${node.color} flex items-center justify-center shrink-0`}>
-                                                    <node.icon className="w-4 h-4 text-white" />
+                                                <div 
+                                                    className={`w-8 h-8 rounded-lg ${node.color} flex items-center justify-center shrink-0`}
+                                                    style={{ boxShadow: node.glow }}
+                                                >
+                                                    <node.icon className="w-4 h-4 text-white" weight="bold" />
                                                 </div>
                                                 <div className="flex-1 min-w-0">
-                                                    <p className="text-sm font-medium text-text-primary truncate">{node.label}</p>
-                                                    <p className="text-xs text-text-tertiary truncate">{node.description}</p>
+                                                    <p className="text-[13px] font-medium text-white/90 truncate">{node.label}</p>
+                                                    <p className="text-[11px] text-white/35 truncate">{node.description}</p>
                                                 </div>
                                             </motion.div>
                                         ))}
@@ -197,89 +200,91 @@ export const NodeLibrarySidebar = ({ selectedNodeId, onNodeSelect }: NodeLibrary
                 ))}
             </div>
 
-            {/* Node Inspector */}
+            {/* Node Inspector - Linear style */}
             <AnimatePresence>
                 {selectedNode && (
                     <motion.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="border-t border-white/10 bg-surface/50"
+                        transition={{ duration: 0.15 }}
+                        className="border-t border-white/8 bg-[#16161A]"
                     >
-                        <div className="p-3 border-b border-white/5 flex items-center justify-between">
+                        <div className="p-3 border-b border-white/6 flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                                <Sliders className="w-4 h-4 text-text-secondary" />
-                                <span className="text-sm font-semibold text-text-primary">Node Inspector</span>
+                                <Sliders className="w-4 h-4 text-white/40" />
+                                <span className="text-[13px] font-semibold text-white/90">Inspector</span>
                             </div>
-                            <Button
-                                variant="ghost"
-                                size="icon"
+                            <button
                                 onClick={() => onNodeSelect(null)}
-                                className="h-6 w-6"
+                                className="h-6 w-6 flex items-center justify-center rounded hover:bg-white/6 transition-colors"
                             >
-                                <X className="w-3 h-3" />
-                            </Button>
+                                <X className="w-3.5 h-3.5 text-white/40" />
+                            </button>
                         </div>
                         <div className="p-3 space-y-3">
-                            {/* Node Type Badge */}
+                            {/* Node Type Badge - neon style */}
                             <div className="flex items-center gap-2">
-                                <span className={`px-2 py-0.5 text-xs font-medium rounded-full capitalize
-                                    ${selectedNode.type === 'trigger' ? 'bg-pink-500/20 text-pink-400' :
-                                      selectedNode.type === 'action' ? 'bg-blue-500/20 text-blue-400' :
-                                      selectedNode.type === 'function' ? 'bg-purple-500/20 text-purple-400' :
-                                      'bg-gray-500/20 text-gray-400'
-                                    }`}>
+                                <span 
+                                    className={`px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider rounded-full border
+                                        ${selectedNode.type === 'trigger' ? 'bg-pink-500/10 text-pink-400 border-pink-500/20' :
+                                          selectedNode.type === 'action' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' :
+                                          selectedNode.type === 'function' ? 'bg-violet-500/10 text-violet-400 border-violet-500/20' :
+                                          selectedNode.type === 'webhook' ? 'bg-violet-500/10 text-violet-400 border-violet-500/20' :
+                                          selectedNode.type === 'schedule' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20' :
+                                          'bg-white/5 text-white/50 border-white/10'
+                                        }`}
+                                >
                                     {selectedNode.type}
                                 </span>
                             </div>
 
                             {/* Node Label */}
-                            <div className="space-y-1">
-                                <label className="text-xs text-text-tertiary">Label</label>
-                                <Input
+                            <div className="space-y-1.5">
+                                <label className="text-[11px] text-white/35 uppercase tracking-wider">Label</label>
+                                <input
+                                    type="text"
                                     value={selectedNode.label}
                                     onChange={(e) => updateNode(selectedNode.id, { label: e.target.value })}
-                                    className="h-8 text-sm bg-surface/50"
+                                    className="w-full h-8 px-2.5 text-sm bg-[#0F0F12] border border-white/8 rounded-lg text-white/90 focus:outline-none focus:border-white/20 transition-colors"
                                 />
                             </div>
 
                             {/* Node ID (readonly) */}
-                            <div className="space-y-1">
-                                <label className="text-xs text-text-tertiary">ID</label>
-                                <p className="text-xs text-text-secondary font-mono bg-surface/30 px-2 py-1.5 rounded truncate">
+                            <div className="space-y-1.5">
+                                <label className="text-[11px] text-white/35 uppercase tracking-wider">ID</label>
+                                <p className="text-[11px] text-white/40 font-mono bg-[#0F0F12] border border-white/6 px-2.5 py-2 rounded-lg truncate">
                                     {selectedNode.id}
                                 </p>
                             </div>
 
                             {/* Position */}
                             <div className="grid grid-cols-2 gap-2">
-                                <div className="space-y-1">
-                                    <label className="text-xs text-text-tertiary">X Position</label>
-                                    <p className="text-xs text-text-secondary font-mono bg-surface/30 px-2 py-1.5 rounded">
+                                <div className="space-y-1.5">
+                                    <label className="text-[11px] text-white/35 uppercase tracking-wider">X</label>
+                                    <p className="text-[11px] text-white/50 font-mono bg-[#0F0F12] border border-white/6 px-2.5 py-2 rounded-lg">
                                         {Math.round(selectedNode.position.x)}
                                     </p>
                                 </div>
-                                <div className="space-y-1">
-                                    <label className="text-xs text-text-tertiary">Y Position</label>
-                                    <p className="text-xs text-text-secondary font-mono bg-surface/30 px-2 py-1.5 rounded">
+                                <div className="space-y-1.5">
+                                    <label className="text-[11px] text-white/35 uppercase tracking-wider">Y</label>
+                                    <p className="text-[11px] text-white/50 font-mono bg-[#0F0F12] border border-white/6 px-2.5 py-2 rounded-lg">
                                         {Math.round(selectedNode.position.y)}
                                     </p>
                                 </div>
                             </div>
 
-                            {/* Delete Button */}
-                            <Button
-                                variant="ghost"
+                            {/* Delete Button - Linear style */}
+                            <button
                                 onClick={() => {
                                     removeNode(selectedNode.id);
                                     onNodeSelect(null);
                                 }}
-                                className="w-full h-8 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 mt-2"
+                                className="w-full h-8 text-[12px] font-medium text-red-400 bg-red-500/5 border border-red-500/15 rounded-lg hover:bg-red-500/10 hover:border-red-500/25 transition-all flex items-center justify-center gap-2 mt-2"
                             >
-                                <Trash className="w-4 h-4 mr-2" />
+                                <Trash className="w-3.5 h-3.5" />
                                 Delete Node
-                            </Button>
+                            </button>
                         </div>
                     </motion.div>
                 )}

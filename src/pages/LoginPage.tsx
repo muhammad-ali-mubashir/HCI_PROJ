@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate, Link } from 'react-router-dom';
-import { CircleNotch, GithubLogo, Lightning, Envelope, Lock, ArrowRight } from '@phosphor-icons/react';
+import { Lightning, Envelope, Lock, ArrowRight } from '@phosphor-icons/react';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Card } from '../components/ui/Card';

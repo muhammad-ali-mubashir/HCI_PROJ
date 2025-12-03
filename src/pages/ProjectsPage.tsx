@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Folder, FileCode, Trash, PencilSimple, CaretRight, ArrowLeft } from '@phosphor-icons/react';
+import { Plus, Folder, FileCode, Trash, CaretRight, ArrowLeft } from '@phosphor-icons/react';
 import { useProjectStore } from '../store/useProjectStore';
 import { Button } from '../components/ui/Button';
 import { Card } from '../components/ui/Card';

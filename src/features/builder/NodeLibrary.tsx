@@ -4,7 +4,13 @@ import type { NodeType } from '../../lib/types';
 import { Plugs, Envelope, Clock, Code, Lightning } from '@phosphor-icons/react';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 
-const nodeTypes: { type: NodeType; label: string; icon: React.ElementType }[] = [
+interface NodeTypeItem {
+    type: NodeType;
+    label: string;
+    icon: React.ElementType;
+}
+
+const nodeTypes: NodeTypeItem[] = [
     { type: 'trigger', label: 'Webhook', icon: Plugs },
     { type: 'schedule', label: 'Schedule', icon: Clock },
     { type: 'action', label: 'Send Email', icon: Envelope },

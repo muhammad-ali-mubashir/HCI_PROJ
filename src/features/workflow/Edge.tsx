@@ -16,17 +16,17 @@ export const Edge: React.FC<EdgeProps> = ({ edge, sourceNode, targetNode }) => {
     if (!sourceNode || !targetNode) return null;
     
     // Calculate connection points at the center of the dots
-    // Source: right side of node + dot offset (8px from edge, dot is 16px wide, so center is at +8)
-    const sx = sourceNode.position.x + NODE_WIDTH + 8;
-    const sy = sourceNode.position.y + NODE_HEIGHT / 2 + 15;
+    // Source: right side of node (dot is 14px, positioned at -7px from edge)
+    const sx = sourceNode.position.x + NODE_WIDTH + 7;
+    const sy = sourceNode.position.y + NODE_HEIGHT / 2;
     
-    // Target: left side of node - dot offset
-    const tx = targetNode.position.x - 8;
+    // Target: left side of node
+    const tx = targetNode.position.x - 7;
     const ty = targetNode.position.y + NODE_HEIGHT / 2;
 
-    // Control points for smooth bezier curves
+    // Control points for smooth bezier curves - Linear style: gentle curves
     const deltaX = Math.abs(tx - sx);
-    const controlPointOffset = Math.max(deltaX * 0.4, 50);
+    const controlPointOffset = Math.max(deltaX * 0.5, 60);
 
     const cp1x = sx + controlPointOffset;
     const cp1y = sy;
@@ -38,9 +38,9 @@ export const Edge: React.FC<EdgeProps> = ({ edge, sourceNode, targetNode }) => {
     return (
         <svg className="absolute inset-0 pointer-events-none overflow-visible w-full h-full">
             <defs>
-                {/* Subtle glow filter */}
+                {/* Neon glow filter for execution */}
                 <filter id={`glow-${edge.id}`} x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+                    <feGaussianBlur stdDeviation="3" result="coloredBlur" />
                     <feMerge>
                         <feMergeNode in="coloredBlur" />
                         <feMergeNode in="SourceGraphic" />
@@ -48,33 +48,25 @@ export const Edge: React.FC<EdgeProps> = ({ edge, sourceNode, targetNode }) => {
                 </filter>
             </defs>
 
-            {/* Shadow/glow layer */}
-            <path
-                d={path}
-                stroke="rgba(255,255,255,0.05)"
-                strokeWidth="6"
-                fill="none"
-                strokeLinecap="round"
-            />
-
-            {/* Main connection line - subtle white like reference */}
+            {/* Main connection line - Linear style: subtle, border-like */}
             <motion.path
                 d={path}
-                stroke="rgba(255,255,255,0.2)"
-                strokeWidth="2"
+                stroke="rgba(255,255,255,0.12)"
+                strokeWidth="1.5"
                 fill="none"
                 strokeLinecap="round"
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
+                transition={{ duration: 0.5, ease: "easeOut" }}
             />
 
-            {/* Data Flow Particles when executing */}
+            {/* Data Flow Particles when executing - neon style */}
             {isExecuting && (
                 <>
-                    <circle r="3" fill="rgba(255,255,255,0.8)" filter={`url(#glow-${edge.id})`}>
+                    {/* Glowing particle */}
+                    <circle r="4" fill="#10B981" filter={`url(#glow-${edge.id})`}>
                         <animateMotion
-                            dur="2s"
+                            dur="1.5s"
                             repeatCount="indefinite"
                             path={path}
                             keyPoints="0;1"
@@ -82,10 +74,11 @@ export const Edge: React.FC<EdgeProps> = ({ edge, sourceNode, targetNode }) => {
                             calcMode="linear"
                         />
                     </circle>
-                    <circle r="2" fill="rgba(255,255,255,0.4)">
+                    {/* Trail particle */}
+                    <circle r="2" fill="rgba(16, 185, 129, 0.5)">
                         <animateMotion
-                            dur="2s"
-                            begin="0.3s"
+                            dur="1.5s"
+                            begin="0.2s"
                             repeatCount="indefinite"
                             path={path}
                             keyPoints="0;1"
@@ -98,4 +91,3 @@ export const Edge: React.FC<EdgeProps> = ({ edge, sourceNode, targetNode }) => {
         </svg>
     );
 };
-

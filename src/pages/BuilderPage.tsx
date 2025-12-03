@@ -4,12 +4,10 @@ import { motion } from 'framer-motion';
 import { useWorkflowStore } from '../store/useWorkflowStore';
 import { useProjectStore } from '../store/useProjectStore';
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 export const BuilderPage = () => {
     const { nodes, edges, setWorkflow, resetWorkflow } = useWorkflowStore();
     const { activeWorkflowId, workflows, saveWorkflow } = useProjectStore();
-    const navigate = useNavigate();
 
     // Load workflow on mount
     useEffect(() => {
