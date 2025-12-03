@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
-import { Activity, CheckCircle, AlertCircle } from 'lucide-react';
+import { Pulse, CheckCircle, WarningCircle } from '@phosphor-icons/react';
 import clsx from 'clsx';
 
 export const ExecutionVisualizer = () => {
@@ -10,7 +10,7 @@ export const ExecutionVisualizer = () => {
         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm h-full overflow-hidden flex flex-col">
             <div className="flex items-center justify-between mb-6">
                 <h3 className="text-white font-semibold flex items-center gap-2">
-                    <Activity className="w-5 h-5 text-blue-400" />
+                    <Pulse className="w-5 h-5 text-blue-400" />
                     Live Execution Log
                 </h3>
                 {isExecuting && (
@@ -36,13 +36,13 @@ export const ExecutionVisualizer = () => {
                             className="flex items-center gap-4 p-3 rounded-xl bg-white/5 border border-white/5"
                         >
                             <div className={clsx(
-                                "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
+                                "w-8 h-8 rounded-full flex items-center justify-center shrink-0",
                                 step.status === 'success' ? "bg-green-500/20 text-green-400" :
                                     step.status === 'error' ? "bg-red-500/20 text-red-400" : "bg-blue-500/20 text-blue-400"
                             )}>
                                 {step.status === 'success' ? <CheckCircle className="w-4 h-4" /> :
-                                    step.status === 'error' ? <AlertCircle className="w-4 h-4" /> :
-                                        <Activity className="w-4 h-4 animate-spin" />}
+                                    step.status === 'error' ? <WarningCircle className="w-4 h-4" /> :
+                                        <Pulse className="w-4 h-4 animate-spin" />}
                             </div>
 
                             <div className="flex-1 min-w-0">

@@ -4,13 +4,13 @@ import { motion } from 'framer-motion';
 
 export const ChatPage = () => {
     return (
-        <div className="flex h-[calc(100vh-4rem)] overflow-hidden bg-gradient-to-br from-[#FDFCFA] to-[#F5F1E8]">
+        <div className="flex h-[calc(100vh-4rem)] overflow-hidden bg-background">
             {/* Left Panel: Chat */}
             <motion.div
                 initial={{ x: -50, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="w-1/3 min-w-[350px] max-w-[500px] h-full z-20 border-r border-[#E5E0D8]"
+                className="w-1/3 min-w-[350px] max-w-[500px] h-full z-20 border-r border-white/5 bg-surface/30 backdrop-blur-sm"
             >
                 <ChatInterface />
             </motion.div>

@@ -18,10 +18,25 @@ export interface Edge {
 
 export interface Workflow {
     id: string;
+    projectId?: string;
     name: string;
+    description?: string;
     nodes: Node[];
     edges: Edge[];
+    createdAt?: number;
+    updatedAt?: number;
 }
+
+export interface Project {
+    id: string;
+    name: string;
+    description?: string;
+    createdAt: number;
+    updatedAt: number;
+    workflows: string[]; // Array of Workflow IDs
+}
+
+// Chat Types
 
 export interface ChatMessage {
     id: string;
@@ -90,8 +105,12 @@ export interface ExecutionRecord {
     logs: ExecutionLogEntry[];
 }
 
-export interface WorkflowDefinition extends Workflow {
+export interface WorkflowDefinition {
+    id: string;
+    name: string;
     description?: string;
     requiredParams?: string[];
     canFail?: boolean;
+    nodes: Node[];
+    edges: Edge[];
 }

@@ -23,6 +23,7 @@ interface WorkflowState {
     // Actions
     addNode: (node: Node) => void;
     removeNode: (id: string) => void;
+    updateNode: (id: string, updates: Partial<Node>) => void;
     updateNodePosition: (id: string, position: { x: number; y: number }) => void;
     addEdge: (edge: Edge) => void;
     removeEdge: (id: string) => void;
@@ -52,6 +53,10 @@ export const useWorkflowStore = create<WorkflowState>((set) => ({
     removeNode: (id) => set((state) => ({
         nodes: state.nodes.filter((n) => n.id !== id),
         edges: state.edges.filter((e) => e.source !== id && e.target !== id)
+    })),
+
+    updateNode: (id, updates) => set((state) => ({
+        nodes: state.nodes.map((n) => n.id === id ? { ...n, ...updates } : n)
     })),
 
     updateNodePosition: (id, position) => set((state) => ({
