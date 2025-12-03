@@ -1,13 +1,13 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import type { NodeType } from '../../lib/types';
+import type { Icon as PhosphorIcon } from '@phosphor-icons/react';
 import { Plugs, Envelope, Clock, Code, Lightning } from '@phosphor-icons/react';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 
 interface NodeTypeItem {
     type: NodeType;
     label: string;
-    icon: React.ElementType;
+    icon: PhosphorIcon;
 }
 
 const nodeTypes: NodeTypeItem[] = [
@@ -37,9 +37,9 @@ export const NodeLibrary = () => {
             </h2>
 
             <div className="space-y-3">
-                {nodeTypes.map((item) => (
+                {nodeTypes.map((item, index) => (
                     <motion.button
-                        key={item.type}
+                        key={`${item.type}-${index}`}
                         whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.1)" }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => handleAddNode(item.type)}

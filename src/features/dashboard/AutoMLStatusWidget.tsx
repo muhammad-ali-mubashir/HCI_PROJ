@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Shield, Zap, Activity, Cpu } from 'lucide-react';
+import { ShieldCheck, Lightning, Pulse, Cpu } from '@phosphor-icons/react';
 
 export const AutoMLStatusWidget = () => {
     const [stats, setStats] = useState({
@@ -29,49 +29,55 @@ export const AutoMLStatusWidget = () => {
     }, []);
 
     return (
-        <div className="bg-white/80 dark:bg-[#1E293B]/80 backdrop-blur-sm border-2 border-[#E5E0D8] dark:border-white/10 rounded-3xl p-6 shadow-xl h-full flex flex-col justify-between">
+        <div className="bg-[#16161A] border border-white/8 rounded-xl p-5 h-full flex flex-col justify-between">
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
-                    <div className="p-2 bg-purple-500/10 rounded-xl">
-                        <Cpu className="w-6 h-6 text-purple-500" />
+                    <div 
+                        className="p-2 bg-violet-500/10 rounded-lg border border-violet-500/20"
+                        style={{ boxShadow: '0 0 12px rgba(139, 92, 246, 0.15)' }}
+                    >
+                        <Cpu className="w-5 h-5 text-violet-400" weight="bold" />
                     </div>
                     <div>
-                        <h3 className="text-lg font-bold text-[#1E293B] dark:text-white">AutoML Engine</h3>
+                        <h3 className="text-[15px] font-semibold text-white/90">AutoML Engine</h3>
                         <div className="flex items-center gap-2">
-                            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                            <span className="text-xs text-green-600 dark:text-green-400 font-medium">System Online</span>
+                            <span 
+                                className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"
+                                style={{ boxShadow: '0 0 8px rgba(16, 185, 129, 0.5)' }}
+                            />
+                            <span className="text-[11px] text-emerald-400 font-medium">System Online</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-3 gap-4">
-                <div className="bg-purple-50 dark:bg-purple-900/20 p-3 rounded-2xl border border-purple-100 dark:border-purple-800/30">
-                    <div className="flex items-center gap-2 mb-1 text-purple-600 dark:text-purple-400">
-                        <Zap className="w-4 h-4" />
-                        <span className="text-xs font-bold">Optimized</span>
+            <div className="grid grid-cols-3 gap-3">
+                <div className="bg-violet-500/5 border border-violet-500/15 p-3 rounded-lg">
+                    <div className="flex items-center gap-1.5 mb-1.5 text-violet-400">
+                        <Lightning className="w-3.5 h-3.5" weight="bold" />
+                        <span className="text-[10px] font-semibold uppercase tracking-wider">Optimized</span>
                     </div>
-                    <div className="text-2xl font-black text-[#1E293B] dark:text-white">
+                    <div className="text-xl font-bold text-white/90">
                         {stats.optimizations}
                     </div>
                 </div>
 
-                <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-2xl border border-blue-100 dark:border-blue-800/30">
-                    <div className="flex items-center gap-2 mb-1 text-blue-600 dark:text-blue-400">
-                        <Shield className="w-4 h-4" />
-                        <span className="text-xs font-bold">Healed</span>
+                <div className="bg-cyan-500/5 border border-cyan-500/15 p-3 rounded-lg">
+                    <div className="flex items-center gap-1.5 mb-1.5 text-cyan-400">
+                        <ShieldCheck className="w-3.5 h-3.5" weight="bold" />
+                        <span className="text-[10px] font-semibold uppercase tracking-wider">Healed</span>
                     </div>
-                    <div className="text-2xl font-black text-[#1E293B] dark:text-white">
+                    <div className="text-xl font-bold text-white/90">
                         {stats.healed}
                     </div>
                 </div>
 
-                <div className="bg-green-50 dark:bg-green-900/20 p-3 rounded-2xl border border-green-100 dark:border-green-800/30">
-                    <div className="flex items-center gap-2 mb-1 text-green-600 dark:text-green-400">
-                        <Activity className="w-4 h-4" />
-                        <span className="text-xs font-bold">Efficiency</span>
+                <div className="bg-emerald-500/5 border border-emerald-500/15 p-3 rounded-lg">
+                    <div className="flex items-center gap-1.5 mb-1.5 text-emerald-400">
+                        <Pulse className="w-3.5 h-3.5" weight="bold" />
+                        <span className="text-[10px] font-semibold uppercase tracking-wider">Efficiency</span>
                     </div>
-                    <div className="text-2xl font-black text-[#1E293B] dark:text-white">
+                    <div className="text-xl font-bold text-white/90">
                         {stats.efficiency.toFixed(0)}%
                     </div>
                 </div>

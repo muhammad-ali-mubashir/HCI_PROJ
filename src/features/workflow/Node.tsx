@@ -1,11 +1,12 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import type { Node as WorkflowNode } from '../../lib/types';
+import type { Icon as PhosphorIcon } from '@phosphor-icons/react';
 import { Lightning, Plugs, Envelope, Clock, Code, Play, Trash, DotsThree } from '@phosphor-icons/react';
 import { cn } from '../../lib/utils';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 
-const iconMap: Record<string, React.ElementType> = {
+const iconMap: Record<string, PhosphorIcon> = {
     trigger: Lightning,
     action: Envelope,
     function: Code,
@@ -14,12 +15,12 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 // Linear-style neon accent colors for connection dots
-const dotColorMap: Record<string, { bg: string; glow: string }> = {
-    trigger: { bg: 'bg-pink-500', glow: '0 0 10px rgba(236, 72, 153, 0.6)' },
-    action: { bg: 'bg-emerald-500', glow: '0 0 10px rgba(16, 185, 129, 0.6)' },
-    function: { bg: 'bg-amber-500', glow: '0 0 10px rgba(245, 158, 11, 0.6)' },
-    webhook: { bg: 'bg-violet-500', glow: '0 0 10px rgba(139, 92, 246, 0.6)' },
-    schedule: { bg: 'bg-cyan-500', glow: '0 0 10px rgba(6, 182, 212, 0.6)' },
+const dotColorMap: Record<string, { bg: string; glow: string; text: string }> = {
+    trigger: { bg: 'bg-pink-500', glow: '0 0 10px rgba(236, 72, 153, 0.6)', text: '#EC4899' },
+    action: { bg: 'bg-emerald-500', glow: '0 0 10px rgba(16, 185, 129, 0.6)', text: '#10B981' },
+    function: { bg: 'bg-amber-500', glow: '0 0 10px rgba(245, 158, 11, 0.6)', text: '#F59E0B' },
+    webhook: { bg: 'bg-violet-500', glow: '0 0 10px rgba(139, 92, 246, 0.6)', text: '#8B5CF6' },
+    schedule: { bg: 'bg-cyan-500', glow: '0 0 10px rgba(6, 182, 212, 0.6)', text: '#06B6D4' },
 };
 
 // Node-specific content based on label/type
@@ -92,7 +93,7 @@ interface NodeProps {
 
 export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onClick, onDragEnd, onDragStart, onDelete, onConnectStart, onConnectEnd }) => {
     const Icon = iconMap[node.type] || Lightning;
-    const dotColors = dotColorMap[node.type] || { bg: 'bg-gray-500', glow: '0 0 10px rgba(107, 114, 128, 0.6)' };
+    const dotColors = dotColorMap[node.type] || { bg: 'bg-gray-500', glow: '0 0 10px rgba(107, 114, 128, 0.6)', text: '#6B7280' };
     const { isExecuting, executionLog } = useWorkflowStore();
     const isDraggingConnection = useRef(false);
 
@@ -221,11 +222,7 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                     {/* Description label with neon accent */}
                     <div 
                         className={cn("text-[10px] uppercase tracking-wider font-medium flex items-center gap-1.5")}
-                        style={{ color: dotColors.bg.includes('pink') ? '#EC4899' : 
-                                        dotColors.bg.includes('emerald') ? '#10B981' :
-                                        dotColors.bg.includes('amber') ? '#F59E0B' :
-                                        dotColors.bg.includes('violet') ? '#8B5CF6' :
-                                        dotColors.bg.includes('cyan') ? '#06B6D4' : '#6B7280' }}
+                        style={{ color: dotColors.text }}
                     >
                         <div 
                             className={cn("w-1.5 h-1.5 rounded-full", dotColors.bg)}
