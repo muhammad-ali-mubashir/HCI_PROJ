@@ -14,12 +14,15 @@ function App() {
     <ThemeProvider>
       <Router>
         <Routes>
-          {/* Login & Register Pages - Isolated without Layout */}
-          <Route path="/" element={<LoginPage />} />
+          {/* Public Routes */}
+          <Route path="/" element={<Layout><LandingPage /></Layout>} />
+          <Route path="/home" element={<Layout><LandingPage /></Layout>} />
+
+          {/* Auth Pages - Isolated without Layout */}
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
 
-          {/* All other pages with Layout */}
-          <Route path="/home" element={<Layout><LandingPage /></Layout>} />
+          {/* Protected/App Routes */}
           <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
           <Route path="/workspace" element={<Layout><WorkspacePage /></Layout>} />
           <Route path="/dashboard" element={<Layout><DashboardPage /></Layout>} />

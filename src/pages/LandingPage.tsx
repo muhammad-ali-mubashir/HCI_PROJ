@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { 
-    ArrowRight, 
-    Lightning, 
+import {
+    ArrowRight,
+    Lightning,
     Sparkle,
     Robot,
     GitBranch,
@@ -11,8 +11,6 @@ import {
     Gauge,
     Users,
     Check,
-    X,
-    Star,
     CaretDown,
     Rocket,
     Brain,
@@ -75,10 +73,10 @@ export const LandingPage = () => {
             )}
 
             {/* Subtle grid background for rest of page */}
-            <div 
+            <div
                 className="fixed inset-0 pointer-events-none opacity-30"
                 style={{
-                    backgroundImage: isDark 
+                    backgroundImage: isDark
                         ? `radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px)`
                         : `radial-gradient(circle, rgba(0,0,0,0.03) 1px, transparent 1px)`,
                     backgroundSize: '32px 32px',
@@ -94,8 +92,8 @@ export const LandingPage = () => {
                         transition={{ duration: 0.5 }}
                         className={cn(
                             "inline-flex items-center gap-2 px-4 py-1.5 rounded-full backdrop-blur-sm mb-8",
-                            isDark 
-                                ? "bg-surface/80 border border-white/10" 
+                            isDark
+                                ? "bg-surface/80 border border-white/10"
                                 : "bg-white/80 border border-black/10 shadow-sm"
                         )}
                     >
@@ -111,7 +109,7 @@ export const LandingPage = () => {
                         transition={{ duration: 0.5, delay: 0.1 }}
                         className="text-5xl sm:text-7xl font-bold tracking-tight mb-6 text-text-primary font-serif"
                     >
-                        Build workflows that<br/>
+                        Build workflows that<br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-violet-400 to-primary/50 italic">
                             work like magic
                         </span>
@@ -178,8 +176,8 @@ export const LandingPage = () => {
                 >
                     <div className={cn(
                         "relative rounded-xl overflow-hidden backdrop-blur-sm",
-                        isDark 
-                            ? "border border-white/[0.08] bg-surface/80 shadow-2xl" 
+                        isDark
+                            ? "border border-white/[0.08] bg-surface/80 shadow-2xl"
                             : "border border-black/[0.08] bg-white shadow-xl"
                     )}>
                         {/* Browser chrome */}
@@ -201,7 +199,7 @@ export const LandingPage = () => {
                                 </div>
                             </div>
                         </div>
-                        
+
                         {/* App content mockup */}
                         <div className="flex h-[400px]">
                             {/* Sidebar */}
@@ -223,8 +221,8 @@ export const LandingPage = () => {
                                         transition={{ delay: 0.8 + i * 0.1 }}
                                         className={cn(
                                             "flex items-center gap-3 p-2.5 rounded-lg border mb-2 cursor-pointer transition-all",
-                                            isDark 
-                                                ? "bg-white/5 border-white/[0.08] hover:border-white/[0.15]" 
+                                            isDark
+                                                ? "bg-white/5 border-white/[0.08] hover:border-white/[0.15]"
                                                 : "bg-white border-black/[0.08] hover:border-black/[0.15]"
                                         )}
                                     >
@@ -239,20 +237,20 @@ export const LandingPage = () => {
                                     </motion.div>
                                 ))}
                             </div>
-                            
+
                             {/* Canvas area with nodes */}
                             <div className="flex-1 relative overflow-hidden">
                                 {/* Dot grid */}
-                                <div 
+                                <div
                                     className="absolute inset-0 opacity-30"
                                     style={{
-                                        backgroundImage: isDark 
+                                        backgroundImage: isDark
                                             ? `radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px)`
                                             : `radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px)`,
                                         backgroundSize: '24px 24px',
                                     }}
                                 />
-                                
+
                                 {/* Sample workflow nodes */}
                                 <svg className="absolute inset-0 w-full h-full pointer-events-none">
                                     {/* Connection line 1 */}
@@ -276,7 +274,7 @@ export const LandingPage = () => {
                                         transition={{ duration: 1, delay: 1.4 }}
                                     />
                                 </svg>
-                                
+
                                 {/* Node 1 - Trigger */}
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.8 }}
@@ -312,7 +310,7 @@ export const LandingPage = () => {
                                         )} style={{ boxShadow: '0 0 10px rgba(236, 72, 153, 0.6)' }} />
                                     </div>
                                 </motion.div>
-                                
+
                                 {/* Node 2 - Action */}
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.8 }}
@@ -322,8 +320,8 @@ export const LandingPage = () => {
                                 >
                                     <div className={cn(
                                         "p-3 rounded-xl border-primary/30",
-                                        isDark 
-                                            ? "bg-surface shadow-[0_0_20px_rgba(99,102,241,0.15)]" 
+                                        isDark
+                                            ? "bg-surface shadow-[0_0_20px_rgba(99,102,241,0.15)]"
                                             : "bg-white shadow-lg border border-primary/30"
                                     )}>
                                         <div className="flex items-center justify-between mb-2">
@@ -355,7 +353,7 @@ export const LandingPage = () => {
                                         )} style={{ boxShadow: '0 0 10px rgba(16, 185, 129, 0.6)' }} />
                                     </div>
                                 </motion.div>
-                                
+
                                 {/* Node 3 - Code */}
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.8 }}
@@ -392,7 +390,7 @@ export const LandingPage = () => {
                                     </div>
                                 </motion.div>
                             </div>
-                            
+
                             {/* Chat sidebar */}
                             <div className={cn(
                                 "w-72 border-l flex-col hidden lg:flex",
@@ -446,9 +444,9 @@ export const LandingPage = () => {
                                         "flex items-center gap-2 p-2 rounded-lg border",
                                         isDark ? "bg-white/5 border-white/[0.08]" : "bg-white border-black/[0.08]"
                                     )}>
-                                        <input 
-                                            type="text" 
-                                            placeholder="Ask AI to build..." 
+                                        <input
+                                            type="text"
+                                            placeholder="Ask AI to build..."
                                             className="flex-1 bg-transparent text-xs text-text-primary placeholder:text-text-tertiary outline-none"
                                             readOnly
                                         />
@@ -462,7 +460,7 @@ export const LandingPage = () => {
             </section>
 
             {/* ==================== PRODUCTIVITY FEATURES ==================== */}
-            <section className={cn(
+            <section id="productivity" className={cn(
                 "relative z-10 py-24 px-4 border-t",
                 isDark ? "border-white/5" : "border-black/5"
             )}>
@@ -535,8 +533,8 @@ export const LandingPage = () => {
                                 transition={{ delay: index * 0.1, duration: 0.5 }}
                                 className={cn(
                                     "group p-6 rounded-xl bg-surface border transition-all duration-300",
-                                    isDark 
-                                        ? "border-white/[0.08] hover:border-white/[0.15]" 
+                                    isDark
+                                        ? "border-white/[0.08] hover:border-white/[0.15]"
                                         : "border-black/[0.08] hover:border-black/[0.15] shadow-sm hover:shadow-md",
                                     feature.glow
                                 )}
@@ -589,8 +587,8 @@ export const LandingPage = () => {
                             viewport={{ once: true }}
                             className={cn(
                                 "p-8 rounded-xl bg-surface border transition-all",
-                                isDark 
-                                    ? "border-white/[0.08] hover:border-white/[0.15]" 
+                                isDark
+                                    ? "border-white/[0.08] hover:border-white/[0.15]"
                                     : "border-black/[0.08] hover:border-black/[0.15] shadow-sm"
                             )}
                         >
@@ -601,8 +599,8 @@ export const LandingPage = () => {
                                 AI That Understands Context
                             </h3>
                             <p className="text-text-secondary mb-6 leading-relaxed">
-                                Our AI doesn't just follow instructions—it understands your business context. 
-                                It learns from your workflows, suggests optimizations, and automatically 
+                                Our AI doesn't just follow instructions—it understands your business context.
+                                It learns from your workflows, suggests optimizations, and automatically
                                 handles edge cases you haven't thought of.
                             </p>
                             <ul className="space-y-3">
@@ -650,8 +648,8 @@ export const LandingPage = () => {
                                     transition={{ delay: index * 0.1 }}
                                     className={cn(
                                         "p-6 rounded-xl bg-surface border transition-all flex gap-5",
-                                        isDark 
-                                            ? "border-white/[0.08] hover:border-white/[0.15]" 
+                                        isDark
+                                            ? "border-white/[0.08] hover:border-white/[0.15]"
                                             : "border-black/[0.08] hover:border-black/[0.15] shadow-sm"
                                     )}
                                 >
@@ -719,7 +717,7 @@ export const LandingPage = () => {
             </section>
 
             {/* ==================== PRICING ==================== */}
-            <section className={cn(
+            <section id="pricing" className={cn(
                 "relative z-10 py-24 px-4 border-t",
                 isDark ? "border-white/5 bg-surface/30" : "border-black/5 bg-gray-50/50"
             )}>
@@ -777,11 +775,11 @@ export const LandingPage = () => {
                                 transition={{ delay: index * 0.1 }}
                                 className={cn(
                                     "relative p-6 rounded-xl border transition-all",
-                                    plan.popular 
-                                        ? isDark 
-                                            ? 'bg-surface border-primary/30 shadow-[0_0_40px_rgba(99,102,241,0.1)]' 
+                                    plan.popular
+                                        ? isDark
+                                            ? 'bg-surface border-primary/30 shadow-[0_0_40px_rgba(99,102,241,0.1)]'
                                             : 'bg-white border-primary shadow-lg'
-                                        : isDark 
+                                        : isDark
                                             ? 'bg-surface border-white/[0.08] hover:border-white/[0.15]'
                                             : 'bg-white border-black/[0.08] hover:border-black/[0.15] shadow-sm'
                                 )}
@@ -799,16 +797,18 @@ export const LandingPage = () => {
                                         <span className="text-text-secondary">{plan.period}</span>
                                     </div>
                                 </div>
-                                <ul className="space-y-3 mb-6">
+
+                                <ul className="space-y-3 mb-8">
                                     {plan.features.map((feature, i) => (
-                                        <li key={i} className="flex items-center gap-2 text-sm text-text-secondary">
-                                            <Check className="w-4 h-4 text-primary" weight="bold" />
+                                        <li key={i} className="flex items-center gap-3 text-sm text-text-secondary">
+                                            <Check className="w-4 h-4 text-primary shrink-0" weight="bold" />
                                             {feature}
                                         </li>
                                     ))}
                                 </ul>
-                                <Button 
-                                    variant={plan.popular ? 'primary' : 'secondary'} 
+
+                                <Button
+                                    variant={plan.popular ? 'primary' : 'outline'}
                                     className="w-full"
                                 >
                                     {plan.cta}
@@ -819,177 +819,8 @@ export const LandingPage = () => {
                 </div>
             </section>
 
-            {/* ==================== COMPARISON ==================== */}
-            <section className={cn(
-                "relative z-10 py-24 px-4 border-t",
-                isDark ? "border-white/5" : "border-black/5"
-            )}>
-                <div className="max-w-7xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-center mb-16"
-                    >
-                        <span className="text-xs font-semibold text-primary uppercase tracking-wider">Comparison</span>
-                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4 font-serif">
-                            How we stack up
-                        </h2>
-                        <p className="text-text-secondary max-w-2xl mx-auto">
-                            See why teams are switching from legacy automation tools.
-                        </p>
-                    </motion.div>
-
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="overflow-x-auto"
-                    >
-                        <table className="w-full min-w-[800px]">
-                            <thead>
-                                <tr className={cn(
-                                    "border-b",
-                                    isDark ? "border-white/[0.08]" : "border-black/[0.08]"
-                                )}>
-                                    <th className="text-left py-4 px-4 text-sm font-medium text-text-secondary">Feature</th>
-                                    <th className="py-4 px-4 text-sm font-medium text-primary">FlowAI</th>
-                                    <th className="py-4 px-4 text-sm font-medium text-text-secondary">Zapier</th>
-                                    <th className="py-4 px-4 text-sm font-medium text-text-secondary">Make.com</th>
-                                    <th className="py-4 px-4 text-sm font-medium text-text-secondary">n8n</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {[
-                                    { feature: 'AI-Powered Builder', flowai: true, zapier: false, make: false, n8n: false },
-                                    { feature: 'Natural Language Input', flowai: true, zapier: false, make: false, n8n: false },
-                                    { feature: 'Visual Flow Editor', flowai: true, zapier: true, make: true, n8n: true },
-                                    { feature: 'Real-time Execution', flowai: true, zapier: false, make: true, n8n: true },
-                                    { feature: 'Self-Hosted Option', flowai: true, zapier: false, make: false, n8n: true },
-                                    { feature: 'Unlimited Workflows (Free)', flowai: false, zapier: false, make: false, n8n: true },
-                                    { feature: 'Sub-50ms Response', flowai: true, zapier: false, make: false, n8n: false },
-                                    { feature: 'Built-in Error Recovery', flowai: true, zapier: true, make: true, n8n: false },
-                                ].map((row, index) => (
-                                    <tr key={index} className={cn(
-                                        "border-b",
-                                        isDark ? "border-white/[0.05]" : "border-black/[0.05]"
-                                    )}>
-                                        <td className="py-4 px-4 text-sm text-text-primary">{row.feature}</td>
-                                        <td className="py-4 px-4 text-center">
-                                            {row.flowai ? (
-                                                <Check className="w-5 h-5 text-emerald-500 mx-auto" weight="bold" />
-                                            ) : (
-                                                <X className="w-5 h-5 text-text-tertiary mx-auto" />
-                                            )}
-                                        </td>
-                                        <td className="py-4 px-4 text-center">
-                                            {row.zapier ? (
-                                                <Check className="w-5 h-5 text-emerald-500 mx-auto" weight="bold" />
-                                            ) : (
-                                                <X className="w-5 h-5 text-text-tertiary mx-auto" />
-                                            )}
-                                        </td>
-                                        <td className="py-4 px-4 text-center">
-                                            {row.make ? (
-                                                <Check className="w-5 h-5 text-emerald-500 mx-auto" weight="bold" />
-                                            ) : (
-                                                <X className="w-5 h-5 text-text-tertiary mx-auto" />
-                                            )}
-                                        </td>
-                                        <td className="py-4 px-4 text-center">
-                                            {row.n8n ? (
-                                                <Check className="w-5 h-5 text-emerald-500 mx-auto" weight="bold" />
-                                            ) : (
-                                                <X className="w-5 h-5 text-text-tertiary mx-auto" />
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </motion.div>
-                </div>
-            </section>
-
-            {/* ==================== TESTIMONIALS ==================== */}
-            <section className={cn(
-                "relative z-10 py-24 px-4 border-t",
-                isDark ? "border-white/5 bg-surface/30" : "border-black/5 bg-gray-50/50"
-            )}>
-                <div className="max-w-7xl mx-auto">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="text-center mb-16"
-                    >
-                        <span className="text-xs font-semibold text-primary uppercase tracking-wider">Testimonials</span>
-                        <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4 font-serif">
-                            Loved by teams worldwide
-                        </h2>
-                    </motion.div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {[
-                            {
-                                quote: "FlowAI replaced our entire automation stack. What used to take us days now takes minutes. The AI builder is genuinely magical.",
-                                author: "Sarah Chen",
-                                role: "Head of Operations",
-                                company: "TechCorp",
-                                avatar: "SC"
-                            },
-                            {
-                                quote: "We migrated from Zapier and cut our automation costs by 70%. Plus, the visual builder is so much more intuitive for our non-technical team.",
-                                author: "Marcus Johnson",
-                                role: "CTO",
-                                company: "StartupXYZ",
-                                avatar: "MJ"
-                            },
-                            {
-                                quote: "The real-time execution monitoring is a game changer. We can debug issues before they become problems. Best tool we've adopted this year.",
-                                author: "Elena Rodriguez",
-                                role: "Engineering Lead",
-                                company: "DataFlow Inc",
-                                avatar: "ER"
-                            }
-                        ].map((testimonial, index) => (
-                            <motion.div
-                                key={index}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ delay: index * 0.1 }}
-                                className={cn(
-                                    "p-6 rounded-xl bg-surface border",
-                                    isDark ? "border-white/[0.08]" : "border-black/[0.08] shadow-sm"
-                                )}
-                            >
-                                <div className="flex gap-1 mb-4">
-                                    {[...Array(5)].map((_, i) => (
-                                        <Star key={i} className="w-4 h-4 text-amber-500" weight="fill" />
-                                    ))}
-                                </div>
-                                <p className="text-text-secondary mb-6 leading-relaxed">"{testimonial.quote}"</p>
-                                <div className="flex items-center gap-3">
-                                    <div className={cn(
-                                        "w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-violet-500/20 border flex items-center justify-center text-sm font-semibold text-primary",
-                                        isDark ? "border-white/[0.08]" : "border-black/[0.08]"
-                                    )}>
-                                        {testimonial.avatar}
-                                    </div>
-                                    <div>
-                                        <div className="text-sm font-medium text-text-primary">{testimonial.author}</div>
-                                        <div className="text-xs text-text-secondary">{testimonial.role}, {testimonial.company}</div>
-                                    </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
             {/* ==================== FAQ ==================== */}
-            <section className={cn(
+            <section id="faq" className={cn(
                 "relative z-10 py-24 px-4 border-t",
                 isDark ? "border-white/5" : "border-black/5"
             )}>
@@ -1002,7 +833,7 @@ export const LandingPage = () => {
                     >
                         <span className="text-xs font-semibold text-primary uppercase tracking-wider">FAQ</span>
                         <h2 className="text-3xl sm:text-4xl font-bold text-text-primary mt-3 mb-4 font-serif">
-                            Frequently asked questions
+                            Frequently Asked Questions
                         </h2>
                     </motion.div>
 
@@ -1052,8 +883,8 @@ export const LandingPage = () => {
                                     )}
                                 >
                                     <span className="font-medium text-text-primary">{faq.q}</span>
-                                    <CaretDown 
-                                        className={`w-5 h-5 text-text-secondary transition-transform duration-200 ${openFaq === index ? 'rotate-180' : ''}`} 
+                                    <CaretDown
+                                        className={`w-5 h-5 text-text-secondary transition-transform duration-200 ${openFaq === index ? 'rotate-180' : ''}`}
                                     />
                                 </button>
                                 <motion.div
@@ -1086,7 +917,7 @@ export const LandingPage = () => {
                             Ready to automate your <span className="italic">work</span>?
                         </h2>
                         <p className="text-lg text-text-secondary mb-8 max-w-2xl mx-auto">
-                            Join thousands of teams who've already transformed their workflows. 
+                            Join thousands of teams who've already transformed their workflows.
                             Start free, no credit card required.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -1113,9 +944,9 @@ export const LandingPage = () => {
             )}>
                 <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-2">
-                        <img 
-                            src="/badge.svg" 
-                            alt="AutoM8 Logo" 
+                        <img
+                            src="/badge.svg"
+                            alt="AutoM8 Logo"
                             className="w-8 h-8 rounded-lg"
                         />
                         <span className="font-semibold text-text-primary">AutoM8</span>

@@ -19,7 +19,10 @@ export function LoginPage() {
         // Simulate login delay
         setTimeout(() => {
             setIsLoading(false);
-            navigate('/home');
+            import('../lib/auth').then(({ auth }) => {
+                auth.login({ name: email.split('@')[0], email });
+                navigate('/projects');
+            });
         }, 1500);
     };
 
@@ -41,9 +44,9 @@ export function LoginPage() {
                             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
                             className="flex justify-center mb-6"
                         >
-                            <img 
-                                src="/badge.svg" 
-                                alt="AutoM8 Logo" 
+                            <img
+                                src="/badge.svg"
+                                alt="AutoM8 Logo"
                                 className="w-16 h-16 rounded-2xl"
                             />
                         </motion.div>
