@@ -8,6 +8,7 @@ import { WorkspacePage } from './pages/WorkspacePage';
 import { DashboardPage } from './pages/DashboardPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ProjectsPage } from './pages/ProjectsPage';
+import { AccountSettingsPage } from './pages/AccountSettingsPage';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="/workspace" element={<Layout><WorkspacePage /></Layout>} />
           <Route path="/dashboard" element={<Layout><DashboardPage /></Layout>} />
           <Route path="/settings" element={<Layout><SettingsPage /></Layout>} />
+          <Route path="/account-settings" element={<Layout><AccountSettingsPage /></Layout>} />
         </Routes>
       </Router>
     </ThemeProvider>

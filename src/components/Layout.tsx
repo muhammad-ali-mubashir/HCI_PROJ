@@ -2,9 +2,10 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useThemeStore } from '../store/useThemeStore';
-import { Moon, Sun, Gear, ChartBar, Folder, CompassTool, ArrowRight } from '@phosphor-icons/react';
+import { Moon, Sun, Gear, ChartBar, Folder, CompassTool, SignOut, ArrowRight } from '@phosphor-icons/react';
 import { cn } from '../lib/utils';
 import { Button } from './ui/Button';
+import { Dropdown, DropdownItem } from './ui/Dropdown';
 import { auth } from '../lib/auth';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -13,7 +14,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     const user = auth.getUser();
 
     // Determine if we are in "App Mode" (protected routes)
-    const isAppMode = ['/projects', '/workspace', '/dashboard', '/settings'].some(path => location.pathname.startsWith(path));
+    const isAppMode = ['/projects', '/workspace', '/dashboard', '/settings', '/account-settings'].some(path => location.pathname.startsWith(path));
 
     const publicNavItems = [
         { href: '/#productivity', label: 'Features' },
@@ -102,36 +103,60 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                         </div>
 
                         <div className="flex items-center gap-4">
-                            {!isAppMode ? (
-                                user ? (
-                                    <Link to="/projects">
-                                        <Button variant="primary" size="sm">
-                                            Projects
-                                            <ArrowRight className="ml-2 w-4 h-4" />
-                                        </Button>
-                                    </Link>
-                                ) : (
-                                    <>
-                                        <Link to="/login" className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors">
-                                            Sign in
-                                        </Link>
-                                        <Link to="/register">
+                            {user ? (
+                                <>
+                                    {!isAppMode && (
+                                        <Link to="/projects">
                                             <Button variant="primary" size="sm">
-                                                Get Started
+                                                Projects
+                                                <ArrowRight className="ml-2 w-4 h-4" />
                                             </Button>
                                         </Link>
-                                    </>
-                                )
+                                    )}
+                                    <Dropdown
+                                        trigger={
+                                            <div className="flex items-center gap-3 pl-4 border-l border-white/10">
+                                                <div className="text-right hidden sm:block">
+                                                    <div className="text-sm font-medium text-text-primary">{user.name}</div>
+                                                </div>
+                                                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-violet-500 flex items-center justify-center text-white font-bold text-xs ring-2 ring-background hover:ring-primary/50 transition-all">
+                                                    {user.name.charAt(0).toUpperCase()}
+                                                </div>
+                                            </div>
+                                        }
+                                    >
+                                        <div className="px-4 py-2 border-b border-[var(--card-border)] mb-1">
+                                            <p className="text-sm font-medium text-text-primary">{user.name}</p>
+                                            <p className="text-xs text-text-secondary truncate">{user.email}</p>
+                                        </div>
+
+                                        <Link to="/account-settings">
+                                            <DropdownItem icon={Gear}>Account Settings</DropdownItem>
+                                        </Link>
+
+                                        <DropdownItem
+                                            icon={SignOut}
+                                            danger
+                                            onClick={() => {
+                                                auth.logout();
+                                                window.location.href = '/';
+                                            }}
+                                        >
+                                            Sign out
+                                        </DropdownItem>
+                                    </Dropdown>
+                                </>
                             ) : (
-                                // App Mode User Profile
-                                <div className="flex items-center gap-3 pl-4 border-l border-white/10">
-                                    <div className="text-right hidden sm:block">
-                                        <div className="text-sm font-medium text-text-primary">{user?.name || 'User'}</div>
-                                    </div>
-                                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-violet-500 flex items-center justify-center text-white font-bold text-xs ring-2 ring-background">
-                                        {user?.name?.charAt(0).toUpperCase() || 'U'}
-                                    </div>
-                                </div>
+                                <>
+                                    <Link to="/login" className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors">
+                                        Sign in
+                                    </Link>
+                                    <Link to="/register">
+                                        <Button variant="primary" size="sm">
+                                            Get Started
+                                        </Button>
+                                    </Link>
+                                </>
                             )}
 
                             <Button
