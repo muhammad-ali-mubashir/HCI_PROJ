@@ -107,7 +107,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                                 <>
                                     {!isAppMode && (
                                         <Link to="/projects">
-                                            <Button variant="primary" size="sm">
+                                            <Button variant="gradient" size="sm">
                                                 Projects
                                                 <ArrowRight className="ml-2 w-4 h-4" />
                                             </Button>
@@ -152,7 +152,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                                         Sign in
                                     </Link>
                                     <Link to="/register">
-                                        <Button variant="primary" size="sm">
+                                        <Button variant="gradient" size="sm">
                                             Get Started
                                         </Button>
                                     </Link>

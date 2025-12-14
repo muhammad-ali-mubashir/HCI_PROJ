@@ -126,8 +126,8 @@ export function RegisterPage() {
                                 </button>
                             </div>
 
-                            <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
-                                Create account
+                            <Button variant="gradient" type="submit" className="w-full" size="lg" isLoading={isLoading}>
+                                Create Account
                             </Button>
                         </form>
                     </div>

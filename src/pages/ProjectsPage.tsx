@@ -10,18 +10,18 @@ import { useWorkflowStore } from '../store/useWorkflowStore';
 
 export const ProjectsPage = () => {
     const navigate = useNavigate();
-    const { 
-        projects, 
-        workflows, 
-        createProject, 
-        deleteProject, 
-        createWorkflow, 
+    const {
+        projects,
+        workflows,
+        createProject,
+        deleteProject,
+        createWorkflow,
         deleteWorkflow,
         activeProjectId,
         setActiveProject,
         setActiveWorkflow
     } = useProjectStore();
-    
+
     const { setWorkflow } = useWorkflowStore();
 
     const [isCreatingProject, setIsCreatingProject] = useState(false);
@@ -68,9 +68,9 @@ export const ProjectsPage = () => {
                 >
                     <div className="flex items-center gap-4">
                         {activeProject && (
-                            <Button 
-                                variant="ghost" 
-                                size="icon" 
+                            <Button
+                                variant="ghost"
+                                size="icon"
                                 onClick={() => setActiveProject(null)}
                                 className="mr-2"
                             >
@@ -82,20 +82,20 @@ export const ProjectsPage = () => {
                                 {activeProject ? activeProject.name : 'Projects'}
                             </h1>
                             <p className="text-text-secondary">
-                                {activeProject 
-                                    ? 'Manage your workflows' 
+                                {activeProject
+                                    ? 'Manage your workflows'
                                     : 'Organize your automation work'}
                             </p>
                         </div>
                     </div>
 
                     {!activeProject ? (
-                        <Button onClick={() => setIsCreatingProject(true)}>
+                        <Button variant="gradient" onClick={() => setIsCreatingProject(true)}>
                             <Plus className="w-4 h-4 mr-2" />
                             New Project
                         </Button>
                     ) : (
-                        <Button onClick={() => setIsCreatingWorkflow(true)}>
+                        <Button variant="gradient" onClick={() => setIsCreatingWorkflow(true)}>
                             <Plus className="w-4 h-4 mr-2" />
                             New Workflow
                         </Button>
@@ -120,9 +120,9 @@ export const ProjectsPage = () => {
                                         autoFocus
                                     />
                                     <Button type="submit">Create</Button>
-                                    <Button 
-                                        type="button" 
-                                        variant="ghost" 
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
                                         onClick={() => setIsCreatingProject(false)}
                                     >
                                         Cancel
@@ -151,9 +151,9 @@ export const ProjectsPage = () => {
                                         autoFocus
                                     />
                                     <Button type="submit">Create</Button>
-                                    <Button 
-                                        type="button" 
-                                        variant="ghost" 
+                                    <Button
+                                        type="button"
+                                        variant="ghost"
                                         onClick={() => setIsCreatingWorkflow(false)}
                                     >
                                         Cancel

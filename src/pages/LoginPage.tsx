@@ -118,7 +118,7 @@ export function LoginPage() {
                                 </button>
                             </div>
 
-                            <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
+                            <Button variant="gradient" type="submit" className="w-full" size="lg" isLoading={isLoading}>
                                 Sign In
                             </Button>
                         </form>

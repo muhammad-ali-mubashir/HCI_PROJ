@@ -132,7 +132,7 @@ export const LandingPage = () => {
                         className="flex flex-col sm:flex-row gap-4 justify-center items-center"
                     >
                         <Link to="/register">
-                            <Button size="lg" className="h-12 px-8 text-base">
+                            <Button variant='gradient' size="lg" className="h-12 px-8 text-base">
                                 Start Free Trial
                                 <ArrowRight className="ml-2 w-4 h-4" />
                             </Button>
@@ -808,7 +808,7 @@ export const LandingPage = () => {
                                 </ul>
 
                                 <Button
-                                    variant={plan.popular ? 'primary' : 'outline'}
+                                    variant={plan.popular ? 'gradient' : 'outline'}
                                     className="w-full"
                                 >
                                     {plan.cta}
@@ -922,7 +922,7 @@ export const LandingPage = () => {
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                             <Link to="/register">
-                                <Button size="lg" className="h-12 px-8 text-base">
+                                <Button variant="gradient" size="lg" className="h-12 px-8 text-base">
                                     Start Free Trial
                                     <ArrowRight className="ml-2 w-4 h-4" />
                                 </Button>
