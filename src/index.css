@@ -226,6 +226,10 @@
 }
 
 @layer base {
+  html {
+    font-size: 14px;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-text-primary);
