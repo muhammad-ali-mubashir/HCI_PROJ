@@ -99,7 +99,7 @@ export const LeftSidebar = () => {
 
     return (
         <div className={cn(
-            "w-72 border-r flex flex-col h-full bg-background transition-colors duration-200 font-sans",
+            "w-full border-r flex flex-col h-full bg-background transition-colors duration-200 font-sans",
             mode === 'dark' ? "border-white/5" : "border-black/5"
         )}>
             {/* Logo Area */}

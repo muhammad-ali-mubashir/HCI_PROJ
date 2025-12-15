@@ -9,9 +9,15 @@ import { useWorkflowStore } from '../store/useWorkflowStore';
 import { Dropdown, DropdownItem } from './ui/Dropdown';
 import { auth } from '../lib/auth';
 
+import { X } from '@phosphor-icons/react';
+
 type Tab = 'copilot' | 'toolbar' | 'editor';
 
-export const RightSidebar = () => {
+interface RightSidebarProps {
+    onClose?: () => void;
+}
+
+export const RightSidebar = ({ onClose }: RightSidebarProps) => {
     const { mode } = useThemeStore();
     const [activeTab, setActiveTab] = useState<Tab>('copilot');
     const { selectedNodeId, selectNode } = useWorkflowStore();
@@ -28,12 +34,23 @@ export const RightSidebar = () => {
 
     return (
         <div className={cn(
-            "w-96 border-l flex flex-col h-full bg-background transition-colors duration-200",
+            "w-full border-l flex flex-col h-full bg-background transition-colors duration-200 relative",
             mode === 'dark' ? "border-white/5" : "border-black/5"
         )}>
+            {/* Close Button - Absolute Top Right */}
+            {onClose && (
+                <button
+                    onClick={onClose}
+                    className="absolute top-2 right-2 p-1 rounded-md text-text-tertiary hover:text-text-primary hover:bg-surface-hover z-50"
+                    title="Close Sidebar"
+                >
+                    <X className="w-4 h-4" />
+                </button>
+            )}
+
             {/* User Profile Section */}
             <div className={cn(
-                "p-2 border-b",
+                "p-2 border-b pr-10", // Added pr-10 to avoid overlap with Close button
                 mode === 'dark' ? "border-white/5" : "border-black/5"
             )}>
                 <Dropdown
