@@ -5,12 +5,9 @@ import { useLocation } from 'react-router-dom';
 
 export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const location = useLocation();
-
-    // Only show Right Sidebar on specific pages? Or always? 
-    // The user requirement implies it's a general structural change, 
-    // but "Toolbar" (nodes) makes most sense in Workspace.
-    // However, "Copilot" might be useful everywhere.
-    // Let's keep it visible for now as requested by user "the right sidebar should have three different tabs".
+    const hideRightSidebar = location.pathname.startsWith('/dashboard') ||
+        location.pathname.startsWith('/settings') ||
+        location.pathname.startsWith('/account-settings');
 
     return (
         <div className="flex h-screen w-full bg-background overflow-hidden">
@@ -26,7 +23,7 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
                 </div>
             </main>
 
-            <RightSidebar />
+            {!hideRightSidebar && <RightSidebar />}
         </div>
     );
 };

@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useThemeStore } from '../store/useThemeStore';
 import { cn } from '../lib/utils';
-import { ChatCircle, Wrench, Faders } from '@phosphor-icons/react';
+import { ChatCircle, Wrench, Faders, User, SignOut, Gear, CaretDown } from '@phosphor-icons/react';
 import { ChatInterface } from '../features/chat/ChatInterface';
 import { NodeLibrarySidebar } from '../features/builder/NodeLibrarySidebar';
 import { useWorkflowStore } from '../store/useWorkflowStore';
+import { Button } from './ui/Button';
+import { Dropdown, DropdownItem } from './ui/Dropdown';
+import { auth } from '../lib/auth';
 
 type Tab = 'copilot' | 'toolbar' | 'editor';
 
 export const RightSidebar = () => {
     const { mode } = useThemeStore();
     const [activeTab, setActiveTab] = useState<Tab>('copilot');
-    const { nodes } = useWorkflowStore(); // You might want this for editor logic
+    const { nodes } = useWorkflowStore();
+    const navigate = useNavigate();
+    const user = auth.getUser();
 
     // Dummy Editor Content for now
     const EditorContent = () => (
@@ -26,6 +32,42 @@ export const RightSidebar = () => {
             "w-96 border-l flex flex-col h-full bg-background transition-colors duration-200",
             mode === 'dark' ? "border-white/5" : "border-black/5"
         )}>
+            {/* User Profile Section */}
+            <div className={cn(
+                "p-2 border-b",
+                mode === 'dark' ? "border-white/5" : "border-black/5"
+            )}>
+                <Dropdown
+                    align="left"
+                    className="w-full"
+                    trigger={
+                        <div className="flex items-center gap-3 p-2 rounded-lg hover:bg-surface-hover transition-colors cursor-pointer w-full">
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center text-white text-xs font-bold shadow-lg">
+                                {user?.name?.[0]?.toUpperCase() || 'U'}
+                            </div>
+                            <div className="flex flex-col items-start">
+                                <span className="text-sm font-medium text-text-primary leading-none">{user?.name || 'User'}</span>
+                                <span className="text-[10px] text-text-tertiary mt-1">Free Plan</span>
+                            </div>
+                        </div>
+                    }
+                >
+                    <DropdownItem icon={Gear} onClick={() => navigate('/account-settings')}>
+                        Account Settings
+                    </DropdownItem>
+                    <DropdownItem
+                        icon={SignOut}
+                        danger
+                        onClick={() => {
+                            auth.logout();
+                            navigate('/login');
+                        }}
+                    >
+                        Sign Out
+                    </DropdownItem>
+                </Dropdown>
+            </div>
+
             {/* Tabs Header */}
             <div className={cn(
                 "flex items-center p-1 m-2 rounded-lg bg-surface border",

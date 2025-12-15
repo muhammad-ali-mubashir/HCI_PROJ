@@ -11,6 +11,8 @@ interface DropdownProps {
     onOpenChange?: (open: boolean) => void;
 }
 
+const DropdownContext = React.createContext<{ close: () => void }>({ close: () => { } });
+
 export const Dropdown: React.FC<DropdownProps> = ({
     trigger,
     children,
@@ -33,6 +35,8 @@ export const Dropdown: React.FC<DropdownProps> = ({
         }
         onOpenChange?.(newOpen);
     };
+
+    const close = () => handleOpenChange(false);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -57,45 +61,47 @@ export const Dropdown: React.FC<DropdownProps> = ({
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-    }, [isOpen, align, handleOpenChange]);
+    }, [isOpen, align /* handleOpenChange stable */]);
 
     return (
-        <div className={cn("relative", className)}>
-            <div
-                ref={triggerRef}
-                onClick={(e) => {
-                    e.stopPropagation();
-                    handleOpenChange(!isOpen);
-                }}
-                className="cursor-pointer"
-            >
-                {trigger}
-            </div>
+        <DropdownContext.Provider value={{ close }}>
+            <div className={cn("relative", className)}>
+                <div
+                    ref={triggerRef}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        handleOpenChange(!isOpen);
+                    }}
+                    className="cursor-pointer"
+                >
+                    {trigger}
+                </div>
 
-            <AnimatePresence>
-                {isOpen && position && (
-                    <motion.div
-                        ref={dropdownRef}
-                        initial={{ opacity: 0, y: 8, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                        transition={{ duration: 0.15, ease: "easeOut" }}
-                        style={{
-                            position: 'fixed',
-                            top: position.top,
-                            left: position.left,
-                            width: '12rem', // w-48
-                            zIndex: 9999
-                        }}
-                        className="rounded-xl border border-[var(--card-border)] bg-surface shadow-[var(--shadow-card)] overflow-hidden"
-                    >
-                        <div className="py-1">
-                            {children}
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </div>
+                <AnimatePresence>
+                    {isOpen && position && (
+                        <motion.div
+                            ref={dropdownRef}
+                            initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                            transition={{ duration: 0.15, ease: "easeOut" }}
+                            style={{
+                                position: 'fixed',
+                                top: position.top,
+                                left: position.left,
+                                width: '12rem', // w-48
+                                zIndex: 9999
+                            }}
+                            className="rounded-xl border border-[var(--card-border)] bg-surface shadow-[var(--shadow-card)] overflow-hidden"
+                        >
+                            <div className="py-1">
+                                {children}
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
+        </DropdownContext.Provider>
     );
 };
 
@@ -103,9 +109,12 @@ interface DropdownItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement
     children: React.ReactNode;
     danger?: boolean;
     icon?: any;
+    closeOnClick?: boolean;
 }
 
-export const DropdownItem: React.FC<DropdownItemProps> = ({ children, danger, icon: Icon, className, ...props }) => {
+export const DropdownItem: React.FC<DropdownItemProps> = ({ children, danger, icon: Icon, className, onClick, closeOnClick = true, ...props }) => {
+    const { close } = React.useContext(DropdownContext);
+
     return (
         <button
             className={cn(
@@ -115,6 +124,10 @@ export const DropdownItem: React.FC<DropdownItemProps> = ({ children, danger, ic
                     : "text-text-primary hover:bg-surface-hover",
                 className
             )}
+            onClick={(e) => {
+                onClick?.(e);
+                if (closeOnClick) close();
+            }}
             {...props}
         >
             {Icon && <Icon className="w-4 h-4 opacity-70" />}
