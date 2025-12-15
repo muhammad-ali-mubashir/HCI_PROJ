@@ -1,0 +1,90 @@
+Based on the lecture documents provided, here is a comprehensive list of Human-Computer Interaction (HCI) and Computer Graphics (CG) concepts.
+
+### **Human-Computer Interaction (HCI) Concepts**
+
+**1. Foundations and Definitions**
+*   **HCI Definition:** A discipline concerned with the design, implementation, and evaluation of interactive systems for human use,.
+*   **Usability:** The extent to which users achieve goals effectively, efficiently, and with satisfaction. Key attributes include ease of learning, recall, productivity, minimal error rates, and high user satisfaction.
+*   **Moore’s Law:** The observation regarding computing power (memory, speed) increasing over time, which influences HCI by enabling more complex human-computer interactions.
+
+**2. User-Centered Design (UCD)**
+*   **UCD Philosophy:** A design approach focusing on users, their tasks, and the environment throughout the development process. It involves early focus on users, empirical measurement, and iterative design,.
+*   **Personas:** Descriptions of "example" users, often not real people, used as surrogates to understand user needs, skills, and motivations.
+*   **Scenarios:** Rich stories of design that validate models, understand dynamics, and describe a user's step-by-step walkthrough of a system,.
+*   **Cultural Probes:** A data-gathering technique where items (like cameras or postcards) are given to users to record what is meaningful to them in their own environment.
+*   **Ethnography:** A philosophy and set of techniques, such as participant observation, where researchers immerse themselves in the culture they are studying.
+
+**3. Prototyping and Wireframing**
+*   **Wireframes:** The skeleton of a digital project focusing on layout and content placement without visual polish,.
+    *   **Low-fidelity (Lo-fi):** Basic sketches or block diagrams emphasizing structure and hierarchy,.
+    *   **High-fidelity (Hi-fi):** Detailed representations including placeholder text, images, and interactive elements that closely resemble the final product,.
+*   **Prototypes:** High-fidelity designs intended to pass as realistic representations of the final product, simulating intended behavior,.
+*   **Fidelity:** The degree to which a wireframe or prototype resembles the final product.
+*   **Design Cycle:** An iterative process involving design, implementation, and evaluation.
+
+**4. Visual Design and UI Principles**
+*   **Gestalt Principles:** Psychology principles explaining how humans perceive visual elements as unified wholes rather than separate parts,.
+*   **Visual Hierarchy:** Guiding the eye to attend to design elements in order of importance.
+*   **Affordances:** Properties of an object (physical or screen) that suggest how it can be used, such as a button looking clickable,.
+*   **Signifiers:** Clues (like icons or labels) that indicate what an affordance is for.
+*   **Feedback:** The system communicating to the user that an action has been recognized (e.g., loading indicators, success messages).
+*   **Clarity:** The principle that an interface should be self-evident and self-explanatory.
+*   **Consistency:** Ensuring similar elements look and behave the same way (internal consistency) and align with industry standards (external consistency).
+*   **10 Usability Heuristics:** A set of principles for UI design, including visibility of system status, match between system and real world, user control, and error prevention.
+
+**5. Accessibility and Mobile Design**
+*   **POUR Principles:** Web accessibility guidelines stating content must be Perceivable, Operable, Understandable, and Robust.
+*   **Contrast Ratio:** A measure of the difference in brightness between two colors, essential for readability (e.g., 4.5:1 minimum),.
+*   **Touch Targets:** The interactive area on a touchscreen, which should be large enough (e.g., 48x48 dp) for users to tap accurately,.
+*   **Thumb Zone:** The area of a screen easily reachable with a thumb during one-handed use.
+
+**6. Evaluation and Testing**
+*   **Formative Evaluation:** Evaluation conducted during the design process to improve the product ("how are we doing?").
+*   **Summative Evaluation:** Evaluation conducted after release to validate the product ("how did we do?").
+*   **Think-Aloud Protocol:** A method where users verbalize their thoughts and decisions while performing tasks,.
+*   **Heuristic Evaluation:** An inspection method where experts review an interface against established usability principles.
+*   **A/B Testing:** Comparing two versions of a design to determine which performs better regarding engagement or conversion.
+*   **Eyetracking:** Tracking where users look to gather data on attention and layout effectiveness.
+
+---
+
+### **Computer Graphics (CG) Concepts**
+
+**1. Fundamentals and Hardware**
+*   **Computer Graphics vs. Computer Vision:** Graphics converts ideas/concepts into pixels, while Vision converts pixels/images into ideas,.
+*   **Raster Graphics:** Images built from pixels (e.g., JPEG), where quality suffers when zoomed,.
+*   **Vector Graphics:** Images defined by mathematical equations (lines and curves), allowing scaling without quality loss,.
+*   **GPU (Graphics Processing Unit):** A specialized processor designed to handle large matrix data for graphics rendering, unlike the general-purpose CPU,.
+*   **Frame Buffer:** Memory that holds pixel data (color and attributes) for the image currently being displayed,.
+*   **Double Buffering:** Using two buffers (Front and Back) to avoid flickering; the next frame is drawn in the back buffer while the front buffer is displayed.
+
+**2. Rendering Algorithms**
+*   **Scan Conversion:** The process of converting geometric shapes (lines, circles) into a set of pixels.
+*   **DDA (Digital Differential Analyzer) Algorithm:** A line drawing algorithm using incremental calculations based on slope.
+*   **Bresenham’s Line Algorithm:** An efficient line drawing algorithm using integer calculations to determine pixel selection.
+
+**3. 3D Graphics and Transformations**
+*   **3D Transformations:** Mathematical operations to manipulate objects in 3D space, including Translation (moving), Scaling (resizing), and Rotation.
+*   **Viewing Pipeline:** The process of transforming 3D objects into 2D images, involving world-to-view and view-to-projection mappings,.
+*   **Orthographic Projection:** A parallel projection where objects remain the same size regardless of depth; often used in engineering,.
+*   **Perspective Projection:** A projection where objects farther away appear smaller, simulating human vision,.
+*   **View Frustum:** A truncated pyramid shape defining the visible region in a perspective projection.
+
+**4. Lighting and Shading**
+*   **Ambient Light:** Uniform light affecting all objects equally from all directions,.
+*   **Diffuse Reflection:** Scattered light dependent on the surface angle relative to the light source (Lambert's Cosine Law).
+*   **Specular Reflection:** Reflected light creating highlights on shiny surfaces (Phong Reflection Model).
+*   **Gouraud Shading:** A per-vertex shading technique that interpolates colors across polygon surfaces.
+*   **Phong Shading:** A per-pixel shading technique that interpolates normal vectors to calculate lighting at each pixel, offering more realism than Gouraud,.
+
+**5. Ray Tracing and Illumination**
+*   **Ray Casting:** A rendering technique that traces rays from the camera to the closest object to determine pixel color.
+*   **Ray Tracing:** An advanced technique simulating light paths, including secondary rays for reflections, refractions, and shadows.
+*   **Local Illumination:** Simulates direct lighting interactions only (e.g., Phong model).
+*   **Global Illumination:** Simulates both direct and indirect lighting (light bouncing between surfaces), using techniques like Ray Tracing, Radiosity, and Photon Mapping,.
+
+**6. Animation and Immersive Technology**
+*   **Keyframing:** An animation technique where key positions are defined, and the computer interpolates the frames in between.
+*   **Virtual Reality (VR):** A fully immersive simulated environment using headsets and sensors.
+*   **Augmented Reality (AR):** The overlaying of digital elements onto the real world (e.g., via smartphone cameras).
+*   **Rigging:** Creating a skeleton for a 3D character to enable movement.
