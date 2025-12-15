@@ -27,7 +27,7 @@ const dotColorMap: Record<string, { bg: string; glow: string; text: string }> = 
 // Node-specific content based on label/type
 const getNodeContent = (node: WorkflowNode) => {
     const label = node.label.toLowerCase();
-    
+
     if (label.includes('email') || label.includes('mail')) {
         return { description: 'SEND EMAIL', config: 'recipient, subject, body' };
     }
@@ -58,7 +58,7 @@ const getNodeContent = (node: WorkflowNode) => {
     if (label.includes('ai') || label.includes('chat') || label.includes('gpt')) {
         return { description: 'AI PROCESSING', config: 'model, prompt' };
     }
-    
+
     // Default by type
     switch (node.type) {
         case 'trigger':
@@ -140,8 +140,9 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                     "absolute -left-[7px] w-[14px] h-[14px] rounded-full transition-transform cursor-crosshair z-30 hover:scale-125",
                     dotColors.bg
                 )}
-                style={{ 
-                    top: '50%', 
+                style={{
+                    // Fix alignment: Edge calculates connection at exactly NODE_HEIGHT / 2
+                    top: `${NODE_HEIGHT / 2}px`,
                     transform: 'translateY(-50%)',
                     boxShadow: dotColors.glow
                 }}
@@ -150,15 +151,16 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                     if (onConnectEnd) onConnectEnd();
                 }}
             />
-            
+
             {/* Connection Point - Output (right) */}
             <div
                 className={cn(
                     "absolute -right-[7px] w-[14px] h-[14px] rounded-full transition-transform cursor-crosshair z-30 hover:scale-125",
                     dotColors.bg
                 )}
-                style={{ 
-                    top: '50%', 
+                style={{
+                    // Fix alignment: Edge calculates connection at exactly NODE_HEIGHT / 2
+                    top: `${NODE_HEIGHT / 2}px`,
                     transform: 'translateY(-50%)',
                     boxShadow: dotColors.glow
                 }}
@@ -167,7 +169,7 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                     e.stopPropagation();
                     isDraggingConnection.current = true;
                     if (onConnectStart) onConnectStart();
-                    
+
                     const handleMouseUp = () => {
                         isDraggingConnection.current = false;
                         window.removeEventListener('mouseup', handleMouseUp);
@@ -177,16 +179,16 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
             />
 
             {/* Node Card - Linear Style: Border-based depth, no shadows */}
-            <div 
+            <div
                 className={cn(
                     "rounded-xl overflow-hidden transition-all duration-150",
                     // Linear style: solid background + border for depth
                     "bg-surface",
                     // 1px border for depth (no shadows)
-                    isSelected 
+                    isSelected
                         ? mode === 'dark' ? "border border-white/20" : "border border-black/20"
-                        : mode === 'dark' 
-                            ? "border border-white/[0.08] hover:border-white/[0.12]" 
+                        : mode === 'dark'
+                            ? "border border-white/[0.08] hover:border-white/[0.12]"
                             : "border border-black/[0.08] hover:border-black/[0.12]"
                 )}
                 style={{ width: NODE_WIDTH }}
@@ -194,18 +196,18 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                 {/* Header */}
                 <div className="px-3 py-2.5 flex items-center gap-2">
                     {/* Status Dot with glow */}
-                    <div 
+                    <div
                         className={cn("w-2 h-2 rounded-full shrink-0", dotColors.bg)}
                         style={{ boxShadow: dotColors.glow }}
                     />
-                    
+
                     {/* Title */}
                     <span className="flex-1 text-[13px] font-medium text-text-primary truncate">
                         {node.label}
                     </span>
-                    
+
                     {/* Menu Button */}
-                    <button 
+                    <button
                         className="opacity-0 group-hover:opacity-100 p-1 hover:bg-surface-hover rounded transition-all"
                         onClick={(e) => e.stopPropagation()}
                     >
@@ -224,11 +226,11 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                     </div>
 
                     {/* Description label with neon accent */}
-                    <div 
+                    <div
                         className={cn("text-[10px] uppercase tracking-wider font-medium flex items-center gap-1.5")}
                         style={{ color: dotColors.text }}
                     >
-                        <div 
+                        <div
                             className={cn("w-1.5 h-1.5 rounded-full", dotColors.bg)}
                             style={{ boxShadow: dotColors.glow }}
                         />
@@ -244,16 +246,16 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                     {executionStatus && (
                         <div className={cn(
                             "flex items-center gap-2 px-2 py-1.5 rounded-md text-xs border",
-                            executionStatus === 'success' 
-                                ? "bg-emerald-500/5 text-emerald-400 border-emerald-500/20" 
+                            executionStatus === 'success'
+                                ? "bg-emerald-500/5 text-emerald-400 border-emerald-500/20"
                                 : "bg-red-500/5 text-red-400 border-red-500/20"
                         )}>
-                            <div 
+                            <div
                                 className={cn("w-1.5 h-1.5 rounded-full")}
-                                style={{ 
+                                style={{
                                     backgroundColor: executionStatus === 'success' ? '#10B981' : '#EF4444',
-                                    boxShadow: executionStatus === 'success' 
-                                        ? '0 0 8px rgba(16, 185, 129, 0.6)' 
+                                    boxShadow: executionStatus === 'success'
+                                        ? '0 0 8px rgba(16, 185, 129, 0.6)'
                                         : '0 0 8px rgba(239, 68, 68, 0.6)'
                                 }}
                             />
@@ -264,7 +266,7 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
 
                 {/* Actions Footer - appears on hover */}
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity border-t border-[var(--card-border)] px-3 py-2 flex items-center justify-between bg-surface-hover/50">
-                    <button 
+                    <button
                         className="flex items-center gap-1.5 text-[11px] text-text-tertiary hover:text-text-secondary transition-colors"
                         onClick={(e) => e.stopPropagation()}
                     >

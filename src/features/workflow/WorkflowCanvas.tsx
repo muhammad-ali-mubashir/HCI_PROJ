@@ -15,7 +15,7 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
     const { nodes, edges, updateNodePosition, removeNode, addEdge } = useWorkflowStore();
     const { mode } = useThemeStore();
     const [internalSelectedNodeId, setInternalSelectedNodeId] = useState<string | null>(null);
-    
+
     // Use external state if provided, otherwise use internal
     const selectedNodeId = externalSelectedNodeId !== undefined ? externalSelectedNodeId : internalSelectedNodeId;
     const setSelectedNodeId = (nodeId: string | null) => {
@@ -25,7 +25,7 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
             setInternalSelectedNodeId(nodeId);
         }
     };
-    
+
     const containerRef = useRef<HTMLDivElement>(null);
 
     // Pan/Zoom State
@@ -150,7 +150,7 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                     className={`px-3 py-2 rounded-lg border transition-all duration-200 cursor-pointer ${panMode
                         ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-500'
                         : 'bg-surface border-[var(--card-border)] text-text-tertiary hover:border-[var(--card-border-hover)] hover:text-text-secondary'
-                    }`}
+                        }`}
                 >
                     <div className="flex items-center gap-2">
                         <Hand className="w-4 h-4" weight={panMode ? 'fill' : 'regular'} />
@@ -171,7 +171,7 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
             <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
-                    backgroundImage: mode === 'dark' 
+                    backgroundImage: mode === 'dark'
                         ? `radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)`
                         : `radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px)`,
                     backgroundSize: '24px 24px',
@@ -208,18 +208,39 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                     {connectingNodeId && (() => {
                         const sourceNode = nodes.find(n => n.id === connectingNodeId);
                         if (!sourceNode) return null;
-                        // Start from right connection dot
-                        const startX = sourceNode.position.x + NODE_WIDTH + 7;
+                        // Start from center of right connection dot
+                        const startX = sourceNode.position.x + NODE_WIDTH;
                         const startY = sourceNode.position.y + NODE_HEIGHT / 2;
-                        
-                        // Create bezier curve to mouse
-                        const deltaX = Math.abs(mousePos.x - startX);
-                        const controlOffset = Math.max(deltaX * 0.5, 50);
-                        const path = `M ${startX} ${startY} C ${startX + controlOffset} ${startY}, ${mousePos.x - controlOffset} ${mousePos.y}, ${mousePos.x} ${mousePos.y}`;
-                        
+
+                        // Orthogonal Path to mouse
+                        const mouseX = mousePos.x;
+                        const mouseY = mousePos.y;
+
+                        const dist = mouseX - startX;
+                        const midX = startX + dist / 2;
+                        const radius = 10;
+                        const dirY = mouseY > startY ? 1 : -1;
+
+                        let path = '';
+
+                        // Fallback logic for tight spaces
+                        if (Math.abs(mouseY - startY) < radius * 2 || Math.abs(midX - startX) < radius) {
+                            const controlOffset = Math.max(Math.abs(mouseX - startX) * 0.5, 50);
+                            path = `M ${startX} ${startY} C ${startX + controlOffset} ${startY}, ${mouseX - controlOffset} ${mouseY}, ${mouseX} ${mouseY}`;
+                        } else {
+                            path = `
+                                M ${startX} ${startY} 
+                                L ${midX - radius} ${startY} 
+                                Q ${midX} ${startY} ${midX} ${startY + radius * dirY} 
+                                L ${midX} ${mouseY - radius * dirY} 
+                                Q ${midX} ${mouseY} ${midX + radius} ${mouseY} 
+                                L ${mouseX} ${mouseY}
+                            `;
+                        }
+
                         // Theme-aware stroke color
                         const tempStrokeColor = mode === 'dark' ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.4)';
-                        
+
                         return (
                             <svg className="absolute inset-0 w-full h-full pointer-events-none overflow-visible">
                                 <defs>
@@ -282,7 +303,7 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                         className="text-center"
                     >
                         <div className="w-14 h-14 bg-surface border border-[var(--card-border)] rounded-xl flex items-center justify-center mx-auto mb-4">
-                            <div 
+                            <div
                                 className="w-6 h-6 rounded-lg bg-emerald-500"
                                 style={{ boxShadow: '0 0 16px rgba(16, 185, 129, 0.4)' }}
                             />

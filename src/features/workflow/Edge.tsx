@@ -16,26 +16,48 @@ export const Edge: React.FC<EdgeProps> = ({ edge, sourceNode, targetNode }) => {
     const { mode } = useThemeStore();
 
     if (!sourceNode || !targetNode) return null;
-    
+
     // Calculate connection points at the center of the dots
-    // Source: right side of node (dot is 14px, positioned at -7px from edge)
-    const sx = sourceNode.position.x + NODE_WIDTH + 7;
+    // Source: center of right dot (dot is centered on edge)
+    const sx = sourceNode.position.x + NODE_WIDTH;
     const sy = sourceNode.position.y + NODE_HEIGHT / 2;
-    
-    // Target: left side of node
-    const tx = targetNode.position.x - 7;
+
+    // Target: center of left dot
+    const tx = targetNode.position.x;
     const ty = targetNode.position.y + NODE_HEIGHT / 2;
 
-    // Control points for smooth bezier curves - Linear style: gentle curves
-    const deltaX = Math.abs(tx - sx);
-    const controlPointOffset = Math.max(deltaX * 0.5, 60);
+    // Orthogonal Path Generation with Rounded Corners
+    const dist = tx - sx;
+    // If nodes are close or overlapping, push the loop out more
+    const midX = sx + dist / 2;
+    const radius = 10; // Corner radius
 
-    const cp1x = sx + controlPointOffset;
-    const cp1y = sy;
-    const cp2x = tx - controlPointOffset;
-    const cp2y = ty;
+    let path = '';
 
-    const path = `M ${sx} ${sy} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${tx} ${ty}`;
+    // If target is behind source, we need a more complex path (S-shape or loop)
+    // For now, handling the standard forward/vertical case which covers most UI needs
+
+    // Check if we have enough space for rounded corners
+    if (Math.abs(ty - sy) < radius * 2 || Math.abs(midX - sx) < radius) {
+        // Fallback to simple cubic bezier if too tight
+        const cp1x = sx + Math.max(Math.abs(tx - sx) * 0.5, 50);
+        const cp1y = sy;
+        const cp2x = tx - Math.max(Math.abs(tx - sx) * 0.5, 50);
+        const cp2y = ty;
+        path = `M ${sx} ${sy} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${tx} ${ty}`;
+    } else {
+        // Safe to draw rounded orthogonal path
+        const dirY = ty > sy ? 1 : -1;
+
+        path = `
+            M ${sx} ${sy} 
+            L ${midX - radius} ${sy} 
+            Q ${midX} ${sy} ${midX} ${sy + radius * dirY} 
+            L ${midX} ${ty - radius * dirY} 
+            Q ${midX} ${ty} ${midX + radius} ${ty} 
+            L ${tx} ${ty}
+        `;
+    }
 
     // Theme-aware stroke color
     const strokeColor = mode === 'dark' ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.25)';
