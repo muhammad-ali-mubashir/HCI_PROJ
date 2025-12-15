@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Plugs, Envelope, Code, Clock, Plus, X } from '@phosphor-icons/react';
 import { useState } from 'react';
+import { Button } from '../../components/ui/Button';
 import { useWorkflowStore } from '../../store/useWorkflowStore';
 
 const nodeTypes = [
@@ -14,6 +15,7 @@ const nodeTypes = [
 export const NodePalette = () => {
     const [isOpen, setIsOpen] = useState(false);
     const { addNode } = useWorkflowStore();
+    // const { mode } = useThemeStore();
 
     const handleAddNode = (type: string, label: string) => {
         const newNode = {
@@ -29,25 +31,24 @@ export const NodePalette = () => {
     return (
         <div className="absolute bottom-6 left-6 z-50">
             {!isOpen ? (
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                <Button
+                    variant="gradient"
                     onClick={() => setIsOpen(true)}
-                    className="w-14 h-14 rounded-full bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 flex items-center justify-center hover:shadow-xl transition-shadow"
+                    className="w-14 h-14 rounded-full p-0 shadow-lg"
                 >
                     <Plus className="w-6 h-6" />
-                </motion.button>
+                </Button>
             ) : (
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-white/10 p-4 shadow-2xl min-w-[280px]"
+                    className="bg-surface/95 backdrop-blur-xl rounded-2xl border border-[var(--card-border)] p-4 shadow-2xl min-w-[280px]"
                 >
                     <div className="flex items-center justify-between mb-4">
-                        <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Add Node</h3>
+                        <h3 className="text-sm font-semibold text-text-primary">Add Node</h3>
                         <button
                             onClick={() => setIsOpen(false)}
-                            className="p-1 hover:bg-gray-100 dark:hover:bg-white/10 rounded transition-colors text-gray-600 dark:text-gray-400"
+                            className="p-1 hover:bg-surface-hover rounded transition-colors text-text-secondary hover:text-text-primary"
                         >
                             <X className="w-4 h-4" />
                         </button>
@@ -60,14 +61,14 @@ export const NodePalette = () => {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 onClick={() => handleAddNode(nodeType.type, nodeType.label)}
-                                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-100 dark:hover:bg-white/5 transition-colors text-left group"
+                                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-surface-hover transition-colors text-left group border border-transparent hover:border-[var(--color-border)]"
                             >
                                 <div className={`w-10 h-10 rounded-lg bg-linear-to-br ${nodeType.color} flex items-center justify-center shadow-md`}>
                                     <nodeType.icon className="w-5 h-5 text-white" />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-sm font-medium text-gray-900 dark:text-white">{nodeType.label}</p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400 capitalize">{nodeType.type}</p>
+                                    <p className="text-sm font-medium text-text-primary">{nodeType.label}</p>
+                                    <p className="text-xs text-text-secondary capitalize">{nodeType.type}</p>
                                 </div>
                             </motion.button>
                         ))}
