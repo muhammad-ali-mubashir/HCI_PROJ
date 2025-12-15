@@ -15,6 +15,7 @@ import { AppLayout } from './components/AppLayout';
 import { PrivacyPage } from './pages/PrivacyPage';
 import { TermsPage } from './pages/TermsPage';
 import { BlogPage } from './pages/BlogPage';
+import { BlogPostPage } from './pages/BlogPostPage';
 
 // Dictionary of routes for easier management if needed, but keeping simple for now
 const AppRoutes = () => {
@@ -28,6 +29,7 @@ const AppRoutes = () => {
       <Route path="/privacy" element={<PrivacyPage />} />
       <Route path="/terms" element={<TermsPage />} />
       <Route path="/blog" element={<BlogPage />} />
+      <Route path="/blog/:id" element={<BlogPostPage />} />
 
       {/* Auth Pages - Isolated without Layout */}
       <Route path="/login" element={<LoginPage />} />
