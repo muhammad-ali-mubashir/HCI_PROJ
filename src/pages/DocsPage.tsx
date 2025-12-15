@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { cn } from '../lib/utils';
 import { CaretRight, BookOpen, RocketLaunch, TreeStructure, MagicWand, Gear } from '@phosphor-icons/react';
 

@@ -1,11 +1,11 @@
 
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useThemeStore } from '../store/useThemeStore';
 import { useProjectStore } from '../store/useProjectStore';
 import {
-    Moon, Sun, Gear, ChartBar, Folder, CompassTool, SignOut,
-    CaretDown, Plus, BookOpen, Question, FileText, Share, MagnifyingGlass,
+    Gear, ChartBar, Folder,
+    CaretDown, Plus, Share, MagnifyingGlass,
     DotsThree, Pencil, Trash, Book, ArrowSquareOut
 } from '@phosphor-icons/react';
 import { cn } from '../lib/utils';
@@ -13,13 +13,10 @@ import { Button } from './ui/Button';
 import { Dropdown, DropdownItem } from './ui/Dropdown';
 import { Modal } from './ui/Modal';
 import { Input } from './ui/Input';
-import { auth } from '../lib/auth';
 
 export const LeftSidebar = () => {
-    const { mode, toggleMode } = useThemeStore();
-    const location = useLocation();
+    const { mode } = useThemeStore();
     const navigate = useNavigate();
-    const user = auth.getUser();
 
     // Connect to Project Store
     const {

@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useThemeStore } from '../store/useThemeStore';
 import { cn } from '../lib/utils';
-import { ChatCircle, Wrench, Faders, User, SignOut, Gear, CaretDown } from '@phosphor-icons/react';
+import { ChatCircle, Wrench, Faders, Gear, SignOut } from '@phosphor-icons/react';
 import { ChatInterface } from '../features/chat/ChatInterface';
 import { NodeLibrarySidebar } from '../features/builder/NodeLibrarySidebar';
 import { useWorkflowStore } from '../store/useWorkflowStore';
-import { Button } from './ui/Button';
 import { Dropdown, DropdownItem } from './ui/Dropdown';
 import { auth } from '../lib/auth';
 
@@ -15,7 +14,7 @@ type Tab = 'copilot' | 'toolbar' | 'editor';
 export const RightSidebar = () => {
     const { mode } = useThemeStore();
     const [activeTab, setActiveTab] = useState<Tab>('copilot');
-    const { nodes } = useWorkflowStore();
+    const { selectedNodeId, selectNode } = useWorkflowStore();
     const navigate = useNavigate();
     const user = auth.getUser();
 
@@ -102,7 +101,10 @@ export const RightSidebar = () => {
                 )}
                 {activeTab === 'toolbar' && (
                     <div className="h-full overflow-y-auto">
-                        <NodeLibrarySidebar />
+                        <NodeLibrarySidebar
+                            selectedNodeId={selectedNodeId}
+                            onNodeSelect={selectNode}
+                        />
                     </div>
                 )}
                 {activeTab === 'editor' && (
@@ -115,8 +117,7 @@ export const RightSidebar = () => {
     );
 };
 
-const TabButton = ({ active, onClick, icon: Icon, label }: { active: boolean, onClick: () => void, icon: React.ElementType<any>, label: string }) => {
-    const { mode } = useThemeStore();
+const TabButton = ({ active, onClick, icon: Icon, label }: { active: boolean, onClick: () => void, icon: any, label: string }) => {
     return (
         <button
             onClick={onClick}

@@ -1,15 +1,13 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useThemeStore } from '../store/useThemeStore';
-import { Moon, Sun, Gear, ChartBar, Folder, CompassTool, SignOut, ArrowRight } from '@phosphor-icons/react';
+import { Moon, Sun, ArrowRight } from '@phosphor-icons/react';
 import { cn } from '../lib/utils';
 import { Button } from './ui/Button';
-import { Dropdown, DropdownItem } from './ui/Dropdown';
 import { auth } from '../lib/auth';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { mode, toggleMode } = useThemeStore();
-    const location = useLocation();
     const user = auth.getUser();
 
     // Simplified Layout for Public Pages only
@@ -17,13 +15,6 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
         { href: '/#productivity', label: 'Features' },
         { href: '/#pricing', label: 'Pricing' },
         { href: '/#faq', label: 'FAQ' },
-    ];
-
-    const appNavItems = [
-        { path: '/projects', icon: Folder, label: 'Projects' },
-        { path: '/workspace', icon: CompassTool, label: 'Workspace' },
-        { path: '/dashboard', icon: ChartBar, label: 'Dashboard' },
-        { path: '/settings', icon: Gear, label: 'Settings' },
     ];
 
     return (
