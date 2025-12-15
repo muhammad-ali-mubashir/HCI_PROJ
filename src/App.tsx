@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Layout } from './components/Layout';
 import { ThemeProvider } from './components/ThemeProvider';
 import { LandingPage } from './pages/LandingPage';
@@ -9,27 +9,38 @@ import { DashboardPage } from './pages/DashboardPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ProjectsPage } from './pages/ProjectsPage';
 import { AccountSettingsPage } from './pages/AccountSettingsPage';
+import { GlobalVisuals } from './components/GlobalVisuals';
+
+// Dictionary of routes for easier management if needed, but keeping simple for now
+const AppRoutes = () => {
+  const location = useLocation();
+
+  return (
+    <Routes location={location} key={location.pathname}>
+      {/* Public Routes */}
+      <Route path="/" element={<Layout><LandingPage /></Layout>} />
+      <Route path="/home" element={<Layout><LandingPage /></Layout>} />
+
+      {/* Auth Pages - Isolated without Layout */}
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+
+      {/* Protected/App Routes */}
+      <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
+      <Route path="/workspace" element={<Layout><WorkspacePage /></Layout>} />
+      <Route path="/dashboard" element={<Layout><DashboardPage /></Layout>} />
+      <Route path="/settings" element={<Layout><SettingsPage /></Layout>} />
+      <Route path="/account-settings" element={<Layout><AccountSettingsPage /></Layout>} />
+    </Routes>
+  );
+};
 
 function App() {
   return (
     <ThemeProvider>
+      <GlobalVisuals />
       <Router>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Layout><LandingPage /></Layout>} />
-          <Route path="/home" element={<Layout><LandingPage /></Layout>} />
-
-          {/* Auth Pages - Isolated without Layout */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-
-          {/* Protected/App Routes */}
-          <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
-          <Route path="/workspace" element={<Layout><WorkspacePage /></Layout>} />
-          <Route path="/dashboard" element={<Layout><DashboardPage /></Layout>} />
-          <Route path="/settings" element={<Layout><SettingsPage /></Layout>} />
-          <Route path="/account-settings" element={<Layout><AccountSettingsPage /></Layout>} />
-        </Routes>
+        <AppRoutes />
       </Router>
     </ThemeProvider>
   );

@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { useThemeStore } from '../store/useThemeStore';
 import { Moon, Sun, Gear, ChartBar, Folder, CompassTool, SignOut, ArrowRight } from '@phosphor-icons/react';
 import { cn } from '../lib/utils';
@@ -32,7 +31,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     return (
         <div className="min-h-screen bg-background text-text-primary font-sans selection:bg-primary/20 transition-colors duration-200">
             <nav className={cn(
-                "fixed top-0 left-0 right-0 z-50 backdrop-blur-xl transition-colors duration-200",
+                "sticky top-0 left-0 right-0 z-50 backdrop-blur-xl transition-colors duration-200",
                 mode === 'dark'
                     ? "border-b border-white/5 bg-background/80"
                     : "border-b border-black/5 bg-background/80 shadow-sm"
@@ -134,6 +133,11 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                                             <DropdownItem icon={Gear}>Account Settings</DropdownItem>
                                         </Link>
 
+                                        {/* Evaluation / Feedback Mechanism */}
+                                        <DropdownItem icon={ChartBar} onClick={() => alert("Feedback form would open here (Formative Evaluation)")}>
+                                            Send Feedback
+                                        </DropdownItem>
+
                                         <DropdownItem
                                             icon={SignOut}
                                             danger
@@ -173,17 +177,10 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                 </div>
             </nav>
 
-            <main className="pt-16 min-h-screen">
-                <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3, ease: "easeOut" }}
-                    key={location.pathname}
-                    className="h-full"
-                >
+            <main className="min-h-screen">
+                <div className="h-full">
                     {children}
-                </motion.div>
+                </div>
             </main>
         </div>
     );

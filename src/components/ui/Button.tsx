@@ -14,13 +14,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading, leftIcon, rightIcon, children, disabled, ...props }, ref) => {
 
     const variants = {
-      primary: "bg-primary text-primary-foreground hover:bg-primary-hover shadow-[var(--shadow-glow)]",
-      secondary: "bg-surface text-text-primary border border-[var(--color-border)] hover:bg-surface-hover hover:border-[var(--color-border-hover)]",
-      outline: "border border-[var(--color-border)] bg-transparent text-text-primary hover:bg-surface-hover hover:text-text-primary",
-      ghost: "hover:bg-surface-hover hover:text-text-primary text-text-secondary",
-      danger: "bg-error text-white hover:bg-error/90 focus-visible:ring-error/20",
-      link: "text-primary underline-offset-4 hover:underline",
-      gradient: "bg-gradient-to-b from-[var(--color-primary)] to-[#4f46e5] text-white border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_2px_4px_rgba(0,0,0,0.2),0_0_20px_rgba(99,102,241,0.3)] hover:brightness-110 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_4px_12px_rgba(99,102,241,0.5)] active:translate-y-[1px] active:scale-[0.99] active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)]",
+      primary: "cursor-pointer bg-primary text-primary-foreground hover:bg-primary-hover shadow-[var(--shadow-glow)]",
+      secondary: "cursor-pointer bg-surface text-text-primary border border-[var(--color-border)] hover:bg-surface-hover hover:border-[var(--color-border-hover)]",
+      outline: "cursor-pointer border border-[var(--color-border)] bg-transparent text-text-primary hover:bg-surface-hover hover:text-text-primary",
+      ghost: "cursor-pointer hover:bg-surface-hover hover:text-text-primary text-text-secondary",
+      danger: "cursor-pointer bg-error text-white hover:bg-error/90 focus-visible:ring-error/20",
+      link: "cursor-pointer text-primary underline-offset-4 hover:underline",
+      gradient: "cursor-pointer bg-gradient-to-b from-[var(--color-primary)] to-[#4f46e5] text-white border border-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_2px_4px_rgba(0,0,0,0.2),0_0_20px_rgba(99,102,241,0.3)] hover:brightness-110 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.3),0_4px_12px_rgba(99,102,241,0.5)] active:translate-y-[1px] active:scale-[0.99] active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.3)]",
     }
 
     const sizes = {
