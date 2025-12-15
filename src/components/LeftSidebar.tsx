@@ -5,7 +5,7 @@ import { useThemeStore } from '../store/useThemeStore';
 import { useProjectStore } from '../store/useProjectStore';
 import {
     Gear, ChartBar, Folder,
-    CaretDown, Plus, Share, MagnifyingGlass,
+    CaretDown, Plus, MagnifyingGlass,
     DotsThree, Pencil, Trash, Book, ArrowSquareOut
 } from '@phosphor-icons/react';
 import { cn } from '../lib/utils';
@@ -141,8 +141,14 @@ export const LeftSidebar = () => {
                     </Dropdown>
 
                     <div className="flex items-center gap-1">
-                        <Button variant="ghost" size="icon" className="h-7 w-7 text-text-secondary hover:text-text-primary">
-                            <Share className="w-4 h-4" />
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-7 w-7 text-text-secondary hover:text-text-primary"
+                            onClick={() => navigate('/projects')}
+                            title="View all projects"
+                        >
+                            <ArrowSquareOut className="w-4 h-4" />
                         </Button>
                         <Button variant="ghost" size="icon" className="h-7 w-7 text-text-secondary hover:text-text-primary">
                             <div className="w-4 h-4 border border-current rounded-sm flex items-center justify-center text-[10px]">

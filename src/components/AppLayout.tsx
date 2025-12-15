@@ -8,7 +8,8 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
     const hideRightSidebar = location.pathname.startsWith('/dashboard') ||
         location.pathname.startsWith('/settings') ||
         location.pathname.startsWith('/account-settings') ||
-        location.pathname.startsWith('/docs');
+        location.pathname.startsWith('/docs') ||
+        location.pathname.startsWith('/projects');
 
     const hideLeftSidebar = location.pathname.startsWith('/docs');
 
