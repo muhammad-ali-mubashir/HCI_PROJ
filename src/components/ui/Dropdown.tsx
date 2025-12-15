@@ -60,7 +60,7 @@ export const Dropdown: React.FC<DropdownProps> = ({ trigger, children, align = '
 interface DropdownItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
     danger?: boolean;
-    icon?: React.ElementType;
+    icon?: any;
 }
 
 export const DropdownItem: React.FC<DropdownItemProps> = ({ children, danger, icon: Icon, className, ...props }) => {
