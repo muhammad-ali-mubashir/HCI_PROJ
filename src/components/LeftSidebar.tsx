@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useThemeStore } from '../store/useThemeStore';
 import { useProjectStore } from '../store/useProjectStore';
 import {
     Moon, Sun, Gear, ChartBar, Folder, CompassTool, SignOut,
-    CaretDown, Plus, BookOpen, Question, FileText, Share, MagnifyingGlass
+    CaretDown, Plus, BookOpen, Question, FileText, Share, MagnifyingGlass,
+    DotsThree, Pencil, Trash
 } from '@phosphor-icons/react';
 import { cn } from '../lib/utils';
 import { Button } from './ui/Button';
 import { Dropdown, DropdownItem } from './ui/Dropdown';
+import { Modal } from './ui/Modal';
+import { Input } from './ui/Input';
 import { auth } from '../lib/auth';
 
 export const LeftSidebar = () => {
@@ -24,19 +27,76 @@ export const LeftSidebar = () => {
         setActiveProject,
         workflows,
         activeWorkflowId,
-        setActiveWorkflow
+        setActiveWorkflow,
+        createWorkflow,
+        updateWorkflow,
+        deleteWorkflow
     } = useProjectStore();
+
+    // Local State
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [newWorkflowName, setNewWorkflowName] = useState('');
+    const [editingWorkflowId, setEditingWorkflowId] = useState<string | null>(null);
+    const [editName, setEditName] = useState('');
+    const [deletingWorkflowId, setDeletingWorkflowId] = useState<string | null>(null);
+    const [activeMenuWorkflowId, setActiveMenuWorkflowId] = useState<string | null>(null);
 
     // Derived State
     const currentProject = projects.find(p => p.id === activeProjectId);
     const projectWorkflows = currentProject?.workflows.map(wId => workflows[wId]).filter(Boolean) || [];
 
     const bottomNavItems = [
-        { path: '/projects', icon: Folder, label: 'Projects' },
-        { path: '/workspace', icon: CompassTool, label: 'Workspace' },
         { path: '/dashboard', icon: ChartBar, label: 'Dashboard' },
         { path: '/settings', icon: Gear, label: 'Settings' },
     ];
+
+    const handleOpenCreateModal = () => {
+        if (!activeProjectId) return;
+        setNewWorkflowName('');
+        setIsCreateModalOpen(true);
+    };
+
+    const handleConfirmCreate = () => {
+        if (!activeProjectId || !newWorkflowName.trim()) return;
+        const newWorkflowId = createWorkflow(activeProjectId, newWorkflowName.trim());
+        setActiveWorkflow(newWorkflowId);
+        setIsCreateModalOpen(false);
+        navigate('/workspace');
+    };
+
+    const handleStartRename = (e: React.MouseEvent, workflow: any) => {
+        e.stopPropagation();
+        setEditingWorkflowId(workflow.id);
+        setEditName(workflow.name);
+    };
+
+    const handleRenameSave = () => {
+        if (editingWorkflowId && editName.trim()) {
+            updateWorkflow(editingWorkflowId, { name: editName.trim() });
+        }
+        setEditingWorkflowId(null);
+        setEditName('');
+    };
+
+    const handleRenameKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') handleRenameSave();
+        if (e.key === 'Escape') {
+            setEditingWorkflowId(null);
+            setEditName('');
+        }
+    };
+
+    const handleDeleteClick = (e: React.MouseEvent, workflowId: string) => {
+        e.stopPropagation();
+        setDeletingWorkflowId(workflowId);
+    };
+
+    const handleConfirmDelete = () => {
+        if (deletingWorkflowId) {
+            deleteWorkflow(deletingWorkflowId);
+            setDeletingWorkflowId(null);
+        }
+    };
 
     return (
         <div className={cn(
@@ -121,7 +181,7 @@ export const LeftSidebar = () => {
                         <Button variant="ghost" size="icon" className="h-5 w-5 hover:bg-surface-active">
                             <Folder className="w-3.5 h-3.5 text-text-secondary" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-5 w-5 hover:bg-surface-active">
+                        <Button variant="ghost" size="icon" className="h-5 w-5 hover:bg-surface-active" onClick={handleOpenCreateModal}>
                             <Plus className="w-3.5 h-3.5 text-text-secondary" />
                         </Button>
                     </div>
@@ -133,21 +193,63 @@ export const LeftSidebar = () => {
                             <div
                                 key={workflow.id}
                                 onClick={() => {
+                                    if (editingWorkflowId === workflow.id) return;
                                     setActiveWorkflow(workflow.id);
                                     navigate('/workspace');
                                 }}
                                 className={cn(
-                                    "flex items-center gap-2.5 px-3 py-1.5 rounded-md cursor-pointer text-sm group transition-colors",
-                                    activeWorkflowId === workflow.id
+                                    "flex items-center gap-2.5 px-3 py-1.5 rounded-md cursor-pointer text-sm group transition-colors relative",
+                                    activeWorkflowId === workflow.id && editingWorkflowId !== workflow.id
                                         ? "bg-surface-active text-text-primary"
                                         : "text-text-secondary hover:bg-surface-hover hover:text-text-primary"
                                 )}
                             >
-                                <div className={cn(
-                                    "w-2 h-2 rounded-[2px]",
-                                    activeWorkflowId === workflow.id ? "bg-blue-500" : "bg-text-tertiary group-hover:bg-text-secondary"
-                                )} />
-                                <span>{workflow.name}</span>
+                                {editingWorkflowId === workflow.id ? (
+                                    <div className="flex-1 mr-2" onClick={(e) => e.stopPropagation()}>
+                                        <Input
+                                            value={editName}
+                                            onChange={(e) => setEditName(e.target.value)}
+                                            onBlur={handleRenameSave}
+                                            onKeyDown={handleRenameKeyDown}
+                                            autoFocus
+                                            className="h-7 text-xs py-0 px-2 bg-background border-none ring-1 ring-primary/50 text-text-primary"
+                                        />
+                                    </div>
+                                ) : (
+                                    <>
+                                        <div className={cn(
+                                            "w-2 h-2 rounded-[2px]",
+                                            activeWorkflowId === workflow.id ? "bg-blue-500" : "bg-text-tertiary group-hover:bg-text-secondary"
+                                        )} />
+                                        <span className="flex-1 truncate">{workflow.name}</span>
+
+                                        <div
+                                            className={cn(
+                                                "transition-opacity",
+                                                activeMenuWorkflowId === workflow.id ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                                            )}
+                                            onClick={(e) => e.stopPropagation()}
+                                        >
+                                            <Dropdown
+                                                align="left"
+                                                open={activeMenuWorkflowId === workflow.id}
+                                                onOpenChange={(isOpen) => setActiveMenuWorkflowId(isOpen ? workflow.id : null)}
+                                                trigger={
+                                                    <Button variant="ghost" size="icon" className="h-5 w-5 hover:bg-surface-active text-text-tertiary">
+                                                        <DotsThree className="w-4 h-4" />
+                                                    </Button>
+                                                }
+                                            >
+                                                <DropdownItem onClick={(e) => handleStartRename(e, workflow)} icon={Pencil}>
+                                                    Rename
+                                                </DropdownItem>
+                                                <DropdownItem onClick={(e) => handleDeleteClick(e, workflow.id)} icon={Trash} danger>
+                                                    Delete
+                                                </DropdownItem>
+                                            </Dropdown>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         ))
                     ) : (
@@ -173,6 +275,56 @@ export const LeftSidebar = () => {
                     </Link>
                 ))}
             </div>
+
+            {/* Create Workflow Modal */}
+            <Modal
+                isOpen={isCreateModalOpen}
+                onClose={() => setIsCreateModalOpen(false)}
+                title="Create New Workflow"
+                footer={
+                    <>
+                        <Button variant="ghost" onClick={() => setIsCreateModalOpen(false)}>Cancel</Button>
+                        <Button variant="primary" onClick={handleConfirmCreate}>Create Workflow</Button>
+                    </>
+                }
+            >
+                <div className="py-2">
+                    <Input
+                        label="Workflow Name"
+                        placeholder="e.g. Data Analysis Pipeline"
+                        value={newWorkflowName}
+                        onChange={(e) => setNewWorkflowName(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleConfirmCreate();
+                        }}
+                        autoFocus
+                    />
+                </div>
+            </Modal>
+
+            {/* Delete Confirmation Modal */}
+            <Modal
+                isOpen={!!deletingWorkflowId}
+                onClose={() => setDeletingWorkflowId(null)}
+                title="Delete Workflow"
+                footer={
+                    <>
+                        <Button variant="ghost" onClick={() => setDeletingWorkflowId(null)}>Cancel</Button>
+                        <Button
+                            variant="primary"
+                            className="bg-red-500 hover:bg-red-600 text-white"
+                            onClick={handleConfirmDelete}
+                        >
+                            Delete
+                        </Button>
+                    </>
+                }
+            >
+                <div className="py-2 text-sm text-text-secondary">
+                    Are you sure you want to delete this workflow? This action cannot be undone.
+                </div>
+            </Modal>
         </div>
     );
 };
+
