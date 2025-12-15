@@ -12,9 +12,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
     const location = useLocation();
     const user = auth.getUser();
 
-    // Determine if we are in "App Mode" (protected routes)
-    const isAppMode = ['/projects', '/workspace', '/dashboard', '/settings', '/account-settings'].some(path => location.pathname.startsWith(path));
-
+    // Simplified Layout for Public Pages only
     const publicNavItems = [
         { href: '/#productivity', label: 'Features' },
         { href: '/#pricing', label: 'Pricing' },
@@ -49,107 +47,28 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                             </Link>
                         </div>
 
-                        <div className="hidden md:block">
-                            <div className="ml-10 flex items-baseline space-x-1">
-                                {!isAppMode ? (
-                                    // Public / Home Navbar Item
-                                    <>
-                                        {publicNavItems.map((item) => (
-                                            <a
-                                                key={item.label}
-                                                href={item.href}
-                                                className={cn(
-                                                    "px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 text-text-secondary hover:text-text-primary hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
-                                                )}
-                                            >
-                                                {item.label}
-                                            </a>
-                                        ))}
-                                    </>
-                                ) : (
-                                    // App Navbar Items (Only when logged in/in app)
-                                    <>
-                                        {appNavItems.map((item) => {
-                                            const isActive = location.pathname.startsWith(item.path);
-                                            return (
-                                                <Link
-                                                    key={item.path}
-                                                    to={item.path}
-                                                    className={cn(
-                                                        "px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 flex items-center gap-2 group",
-                                                        isActive
-                                                            ? mode === 'dark'
-                                                                ? "text-text-primary bg-white/5"
-                                                                : "text-text-primary bg-black/5"
-                                                            : mode === 'dark'
-                                                                ? "text-text-secondary hover:text-text-primary hover:bg-white/5"
-                                                                : "text-text-secondary hover:text-text-primary hover:bg-black/5"
-                                                    )}
-                                                >
-                                                    <item.icon className={cn(
-                                                        "w-4 h-4 transition-colors",
-                                                        isActive
-                                                            ? "text-primary"
-                                                            : "text-text-tertiary group-hover:text-text-primary"
-                                                    )} />
-                                                    {item.label}
-                                                </Link>
-                                            );
-                                        })}
-                                    </>
-                                )}
-                            </div>
+                        <div className="ml-10 flex items-baseline space-x-1">
+                            {publicNavItems.map((item) => (
+                                <a
+                                    key={item.label}
+                                    href={item.href}
+                                    className={cn(
+                                        "px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 text-text-secondary hover:text-text-primary hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
+                                    )}
+                                >
+                                    {item.label}
+                                </a>
+                            ))}
                         </div>
 
                         <div className="flex items-center gap-4">
                             {user ? (
-                                <>
-                                    {!isAppMode && (
-                                        <Link to="/projects">
-                                            <Button variant="gradient" size="sm">
-                                                Projects
-                                                <ArrowRight className="ml-2 w-4 h-4" />
-                                            </Button>
-                                        </Link>
-                                    )}
-                                    <Dropdown
-                                        trigger={
-                                            <div className="flex items-center gap-3 pl-4 border-l border-white/10">
-                                                <div className="text-right hidden sm:block">
-                                                    <div className="text-sm font-medium text-text-primary">{user.name}</div>
-                                                </div>
-                                                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-violet-500 flex items-center justify-center text-white font-bold text-xs ring-2 ring-background hover:ring-primary/50 transition-all">
-                                                    {user.name.charAt(0).toUpperCase()}
-                                                </div>
-                                            </div>
-                                        }
-                                    >
-                                        <div className="px-4 py-2 border-b border-[var(--card-border)] mb-1">
-                                            <p className="text-sm font-medium text-text-primary">{user.name}</p>
-                                            <p className="text-xs text-text-secondary truncate">{user.email}</p>
-                                        </div>
-
-                                        <Link to="/account-settings">
-                                            <DropdownItem icon={Gear}>Account Settings</DropdownItem>
-                                        </Link>
-
-                                        {/* Evaluation / Feedback Mechanism */}
-                                        <DropdownItem icon={ChartBar} onClick={() => alert("Feedback form would open here (Formative Evaluation)")}>
-                                            Send Feedback
-                                        </DropdownItem>
-
-                                        <DropdownItem
-                                            icon={SignOut}
-                                            danger
-                                            onClick={() => {
-                                                auth.logout();
-                                                window.location.href = '/';
-                                            }}
-                                        >
-                                            Sign out
-                                        </DropdownItem>
-                                    </Dropdown>
-                                </>
+                                <Link to="/projects">
+                                    <Button variant="gradient" size="sm">
+                                        Go to App
+                                        <ArrowRight className="ml-2 w-4 h-4" />
+                                    </Button>
+                                </Link>
                             ) : (
                                 <>
                                     <Link to="/login" className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors">
