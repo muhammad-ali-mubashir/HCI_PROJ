@@ -9,6 +9,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ProjectsPage } from './pages/ProjectsPage';
 import { AccountSettingsPage } from './pages/AccountSettingsPage';
+import { DocsPage } from './pages/DocsPage';
 import { GlobalVisuals } from './components/GlobalVisuals';
 import { AppLayout } from './components/AppLayout';
 
@@ -32,6 +33,7 @@ const AppRoutes = () => {
       <Route path="/dashboard" element={<AppLayout><DashboardPage /></AppLayout>} />
       <Route path="/settings" element={<AppLayout><SettingsPage /></AppLayout>} />
       <Route path="/account-settings" element={<AppLayout><AccountSettingsPage /></AppLayout>} />
+      <Route path="/docs" element={<AppLayout><DocsPage /></AppLayout>} />
     </Routes>
   );
 };

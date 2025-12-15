@@ -7,11 +7,14 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
     const location = useLocation();
     const hideRightSidebar = location.pathname.startsWith('/dashboard') ||
         location.pathname.startsWith('/settings') ||
-        location.pathname.startsWith('/account-settings');
+        location.pathname.startsWith('/account-settings') ||
+        location.pathname.startsWith('/docs');
+
+    const hideLeftSidebar = location.pathname.startsWith('/docs');
 
     return (
         <div className="flex h-screen w-full bg-background overflow-hidden">
-            <LeftSidebar />
+            {!hideLeftSidebar && <LeftSidebar />}
 
             <main className="flex-1 h-full overflow-hidden relative flex flex-col">
                 {/* 

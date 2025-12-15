@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useThemeStore } from '../store/useThemeStore';
@@ -5,7 +6,7 @@ import { useProjectStore } from '../store/useProjectStore';
 import {
     Moon, Sun, Gear, ChartBar, Folder, CompassTool, SignOut,
     CaretDown, Plus, BookOpen, Question, FileText, Share, MagnifyingGlass,
-    DotsThree, Pencil, Trash
+    DotsThree, Pencil, Trash, Book, ArrowSquareOut
 } from '@phosphor-icons/react';
 import { cn } from '../lib/utils';
 import { Button } from './ui/Button';
@@ -47,6 +48,7 @@ export const LeftSidebar = () => {
 
     const bottomNavItems = [
         { path: '/dashboard', icon: ChartBar, label: 'Dashboard' },
+        { path: '/docs', icon: Book, label: 'Documentation' },
         { path: '/settings', icon: Gear, label: 'Settings' },
     ];
 
@@ -266,12 +268,17 @@ export const LeftSidebar = () => {
                     <Link
                         key={item.path}
                         to={item.path}
+                        target={item.path === '/docs' ? '_blank' : undefined}
+                        rel={item.path === '/docs' ? 'noopener noreferrer' : undefined}
                         className={cn(
                             "flex items-center gap-3 px-3 py-1.5 rounded-md text-sm font-medium transition-colors text-text-secondary hover:text-text-primary hover:bg-surface-hover"
                         )}
                     >
                         <item.icon className="w-4 h-4 text-text-tertiary group-hover:text-text-secondary" />
-                        {item.label}
+                        <span className="flex-1">{item.label}</span>
+                        {item.path === '/docs' && (
+                            <ArrowSquareOut className="w-3.5 h-3.5 text-text-tertiary" />
+                        )}
                     </Link>
                 ))}
             </div>
