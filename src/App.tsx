@@ -9,7 +9,9 @@ import { DashboardPage } from './pages/DashboardPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { ProjectsPage } from './pages/ProjectsPage';
 import { AccountSettingsPage } from './pages/AccountSettingsPage';
+import { DocsPage } from './pages/DocsPage';
 import { GlobalVisuals } from './components/GlobalVisuals';
+import { AppLayout } from './components/AppLayout';
 
 // Dictionary of routes for easier management if needed, but keeping simple for now
 const AppRoutes = () => {
@@ -26,11 +28,12 @@ const AppRoutes = () => {
       <Route path="/register" element={<RegisterPage />} />
 
       {/* Protected/App Routes */}
-      <Route path="/projects" element={<Layout><ProjectsPage /></Layout>} />
-      <Route path="/workspace" element={<Layout><WorkspacePage /></Layout>} />
-      <Route path="/dashboard" element={<Layout><DashboardPage /></Layout>} />
-      <Route path="/settings" element={<Layout><SettingsPage /></Layout>} />
-      <Route path="/account-settings" element={<Layout><AccountSettingsPage /></Layout>} />
+      <Route path="/projects" element={<AppLayout><ProjectsPage /></AppLayout>} />
+      <Route path="/workspace" element={<AppLayout><WorkspacePage /></AppLayout>} />
+      <Route path="/dashboard" element={<AppLayout><DashboardPage /></AppLayout>} />
+      <Route path="/settings" element={<AppLayout><SettingsPage /></AppLayout>} />
+      <Route path="/account-settings" element={<AppLayout><AccountSettingsPage /></AppLayout>} />
+      <Route path="/docs" element={<AppLayout><DocsPage /></AppLayout>} />
     </Routes>
   );
 };

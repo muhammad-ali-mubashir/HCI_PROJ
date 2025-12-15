@@ -65,7 +65,10 @@ export const useProjectStore = create<ProjectState>()(
                 });
             },
 
-            setActiveProject: (id) => set({ activeProjectId: id }),
+            setActiveProject: (id) => set((state) => ({
+                activeProjectId: id,
+                activeWorkflowId: state.activeProjectId === id ? state.activeWorkflowId : null
+            })),
 
             updateProject: (id, data) => set((state) => ({
                 projects: state.projects.map(p => p.id === id ? { ...p, ...data, updatedAt: Date.now() } : p)
@@ -86,8 +89,8 @@ export const useProjectStore = create<ProjectState>()(
 
                 set((state) => ({
                     workflows: { ...state.workflows, [id]: newWorkflow },
-                    projects: state.projects.map(p => 
-                        p.id === projectId 
+                    projects: state.projects.map(p =>
+                        p.id === projectId
                             ? { ...p, workflows: [...p.workflows, id], updatedAt: Date.now() }
                             : p
                     ),
@@ -106,8 +109,8 @@ export const useProjectStore = create<ProjectState>()(
 
                     return {
                         workflows: newWorkflows,
-                        projects: state.projects.map(p => 
-                            p.id === workflow.projectId 
+                        projects: state.projects.map(p =>
+                            p.id === workflow.projectId
                                 ? { ...p, workflows: p.workflows.filter(wId => wId !== id), updatedAt: Date.now() }
                                 : p
                         ),
