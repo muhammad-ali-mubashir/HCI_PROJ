@@ -5,6 +5,7 @@ import { Moon, Sun, ArrowRight } from '@phosphor-icons/react';
 import { cn } from '../lib/utils';
 import { Button } from './ui/Button';
 import { auth } from '../lib/auth';
+import { Footer } from './Footer';
 
 export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const { mode, toggleMode } = useThemeStore();
@@ -34,7 +35,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                                     alt="AutoM8 Logo"
                                     className="w-8 h-8 rounded-lg transition-transform group-hover:scale-105"
                                 />
-                                <span className="text-text-primary">AutoM8</span>
+                                <span className="text-text-secondary group-hover:text-text-primary transition-colors">AutoM8</span>
                             </Link>
                         </div>
 
@@ -92,6 +93,7 @@ export const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) =>
                     {children}
                 </div>
             </main>
+            <Footer />
         </div>
     );
 };

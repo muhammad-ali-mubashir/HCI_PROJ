@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { cn } from '../lib/utils';
 import { CaretRight, BookOpen, RocketLaunch, TreeStructure, MagicWand, Gear } from '@phosphor-icons/react';
+import { Footer } from '../components/Footer';
 
 const sections = [
     {
@@ -149,11 +150,8 @@ export const DocsPage = () => {
                             </section>
                         ))}
                     </div>
-
-                    <div className="mt-20 pt-10 border-t border-border text-center text-text-tertiary text-sm">
-                        <p>&copy; {new Date().getFullYear()} Autom8 Platform. All rights reserved.</p>
-                    </div>
                 </div>
+                <Footer />
             </main>
         </div>
     );

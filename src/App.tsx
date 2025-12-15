@@ -12,6 +12,9 @@ import { AccountSettingsPage } from './pages/AccountSettingsPage';
 import { DocsPage } from './pages/DocsPage';
 import { GlobalVisuals } from './components/GlobalVisuals';
 import { AppLayout } from './components/AppLayout';
+import { PrivacyPage } from './pages/PrivacyPage';
+import { TermsPage } from './pages/TermsPage';
+import { BlogPage } from './pages/BlogPage';
 
 // Dictionary of routes for easier management if needed, but keeping simple for now
 const AppRoutes = () => {
@@ -22,6 +25,9 @@ const AppRoutes = () => {
       {/* Public Routes */}
       <Route path="/" element={<Layout><LandingPage /></Layout>} />
       <Route path="/home" element={<Layout><LandingPage /></Layout>} />
+      <Route path="/privacy" element={<PrivacyPage />} />
+      <Route path="/terms" element={<TermsPage />} />
+      <Route path="/blog" element={<BlogPage />} />
 
       {/* Auth Pages - Isolated without Layout */}
       <Route path="/login" element={<LoginPage />} />

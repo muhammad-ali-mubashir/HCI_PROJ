@@ -136,8 +136,8 @@ export function LoginPage() {
 
                 <div className="mt-8 text-center text-xs text-text-tertiary">
                     <span className="cursor-pointer hover:text-text-primary mr-4">Help</span>
-                    <span className="cursor-pointer hover:text-text-primary mr-4">Terms</span>
-                    <span className="cursor-pointer hover:text-text-primary">Privacy</span>
+                    <Link to="/terms" className="cursor-pointer hover:text-text-primary mr-4">Terms</Link>
+                    <Link to="/privacy" className="cursor-pointer hover:text-text-primary">Privacy</Link>
                 </div>
             </div>
 
