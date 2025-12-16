@@ -29,7 +29,7 @@ export const NodePalette = () => {
     };
 
     return (
-        <div className="absolute bottom-6 left-6 z-50">
+        <div className="absolute bottom-6 left-[312px] z-50">
             {!isOpen ? (
                 <Button
                     variant="gradient"
