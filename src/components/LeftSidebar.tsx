@@ -14,7 +14,12 @@ import { Dropdown, DropdownItem } from './ui/Dropdown';
 import { Modal } from './ui/Modal';
 import { Input } from './ui/Input';
 
-export const LeftSidebar = () => {
+interface LeftSidebarProps {
+    isCollapsed?: boolean;
+    onToggleCollapse?: () => void;
+}
+
+export const LeftSidebar: React.FC<LeftSidebarProps> = ({ isCollapsed = false, onToggleCollapse }) => {
     const { mode } = useThemeStore();
     const navigate = useNavigate();
 
@@ -103,19 +108,34 @@ export const LeftSidebar = () => {
             mode === 'dark' ? "border-white/5" : "border-black/5"
         )}>
             {/* Logo Area */}
-            <div className="h-14 flex items-center px-4 mb-2">
+            <div className="h-14 flex items-center px-4 mb-2 justify-center">
                 <Link to="/" className="flex items-center gap-2 font-bold text-lg tracking-tight group">
                     <img
                         src="/badge.svg"
                         alt="AutoM8 Logo"
                         className="w-7 h-7 rounded-lg transition-transform group-hover:scale-105"
                     />
-                    <span className="text-text-primary">AutoM8</span>
+                    {!isCollapsed && <span className="text-text-primary">AutoM8</span>}
                 </Link>
             </div>
 
+            {/* Expand Button - shown when collapsed */}
+            {isCollapsed && onToggleCollapse && (
+                <div className="px-2 mb-3">
+                    <button
+                        onClick={onToggleCollapse}
+                        className="w-full flex items-center justify-center py-2 rounded-md text-text-secondary hover:text-text-primary hover:bg-surface-hover transition-colors"
+                        title="Expand sidebar"
+                    >
+                        <div className="w-4 h-4 border border-current rounded-sm flex items-center justify-center text-[10px]">
+                            <div className="w-[50%] h-full border-l border-current"></div>
+                        </div>
+                    </button>
+                </div>
+            )}
+
             {/* Top Section: Project Switcher */}
-            <div className="px-3 pb-3 border-b border-transparent">
+            <div className={cn("px-3 pb-3 border-b border-transparent", isCollapsed && "hidden")}>
                 <div className="flex items-center justify-between mb-2">
                     <Dropdown
                         align="left"
@@ -150,7 +170,13 @@ export const LeftSidebar = () => {
                         >
                             <ArrowSquareOut className="w-4 h-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="h-7 w-7 text-text-secondary hover:text-text-primary">
+                        <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="h-7 w-7 text-text-secondary hover:text-text-primary"
+                            onClick={onToggleCollapse}
+                            title="Collapse sidebar"
+                        >
                             <div className="w-4 h-4 border border-current rounded-sm flex items-center justify-center text-[10px]">
                                 <div className="w-[50%] h-full border-r border-current"></div>
                             </div>
@@ -176,7 +202,7 @@ export const LeftSidebar = () => {
             </div>
 
             {/* Workflows Section */}
-            <div className="flex-1 flex flex-col overflow-hidden">
+            <div className={cn("flex-1 flex flex-col overflow-hidden", isCollapsed && "hidden")}>
                 <div className="px-4 py-2 flex items-center justify-between group">
                     <h3 className="text-xs font-medium text-text-tertiary hover:text-text-secondary cursor-pointer flex items-center gap-1">
                         Workflows
@@ -274,13 +300,19 @@ export const LeftSidebar = () => {
                         target={item.path === '/docs' ? '_blank' : undefined}
                         rel={item.path === '/docs' ? 'noopener noreferrer' : undefined}
                         className={cn(
-                            "flex items-center gap-3 px-3 py-1.5 rounded-md text-sm font-medium transition-colors text-text-secondary hover:text-text-primary hover:bg-surface-hover"
+                            "flex items-center gap-3 px-3 py-1.5 rounded-md text-sm font-medium transition-colors text-text-secondary hover:text-text-primary hover:bg-surface-hover",
+                            isCollapsed && "justify-center"
                         )}
+                        title={isCollapsed ? item.label : undefined}
                     >
                         <item.icon className="w-4 h-4 text-text-tertiary group-hover:text-text-secondary" />
-                        <span className="flex-1">{item.label}</span>
-                        {item.path === '/docs' && (
-                            <ArrowSquareOut className="w-3.5 h-3.5 text-text-tertiary" />
+                        {!isCollapsed && (
+                            <>
+                                <span className="flex-1">{item.label}</span>
+                                {item.path === '/docs' && (
+                                    <ArrowSquareOut className="w-3.5 h-3.5 text-text-tertiary" />
+                                )}
+                            </>
                         )}
                     </Link>
                 ))}

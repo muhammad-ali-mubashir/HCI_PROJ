@@ -4,6 +4,7 @@ import { RightSidebar } from './RightSidebar';
 import { useLocation } from 'react-router-dom';
 
 import { SidebarSimple } from '@phosphor-icons/react';
+import { cn } from '../lib/utils';
 
 export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const location = useLocation();
@@ -21,6 +22,9 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
     const [leftWidth, setLeftWidth] = useState(288); // Default 72 * 4 = 288px
     const [rightWidth, setRightWidth] = useState(320); // Default 80 * 4 = 320px
     const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(true);
+    const [isLeftSidebarCollapsed, setIsLeftSidebarCollapsed] = useState(false);
+    
+    const collapsedLeftWidth = 60; // Width when collapsed to show only icons
 
     // Effect to handle route-based visibility overrides
     React.useEffect(() => {
@@ -63,15 +67,31 @@ export const AppLayout: React.FC<{ children: React.ReactNode }> = ({ children })
             {/* LEFT SIDEBAR AREA */}
             {!shouldHideLeftSidebar && (
                 <>
-                    <div style={{ width: leftWidth, minWidth: leftWidth, maxWidth: leftWidth }} className="h-full relative shrink-0">
-                        <LeftSidebar />
+                    {/* Left Resizer Handle - only show when not collapsed */}
+                    {!isLeftSidebarCollapsed && (
+                        <div
+                            className="w-1 hover:w-1.5 bg-transparent hover:bg-primary/20 cursor-col-resize absolute z-50 h-full transition-colors"
+                            style={{ left: (isLeftSidebarCollapsed ? collapsedLeftWidth : leftWidth) - 2 }} // Overlap slightly
+                            onMouseDown={() => startResizing('left')}
+                        />
+                    )}
+                    <div 
+                        style={{ 
+                            width: isLeftSidebarCollapsed ? collapsedLeftWidth : leftWidth, 
+                            minWidth: isLeftSidebarCollapsed ? collapsedLeftWidth : leftWidth, 
+                            maxWidth: isLeftSidebarCollapsed ? collapsedLeftWidth : leftWidth,
+                            left: 0
+                        }} 
+                        className={cn(
+                            "h-full absolute z-40",
+                            isLeftSidebarCollapsed && "transition-all duration-300"
+                        )}
+                    >
+                        <LeftSidebar 
+                            isCollapsed={isLeftSidebarCollapsed} 
+                            onToggleCollapse={() => setIsLeftSidebarCollapsed(!isLeftSidebarCollapsed)} 
+                        />
                     </div>
-                    {/* Left Resizer Handle */}
-                    <div
-                        className="w-1 hover:w-1.5 bg-transparent hover:bg-primary/20 cursor-col-resize absolute z-50 h-full transition-colors"
-                        style={{ left: leftWidth - 2 }} // Overlap slightly
-                        onMouseDown={() => startResizing('left')}
-                    />
                 </>
             )}
 
