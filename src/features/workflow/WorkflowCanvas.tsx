@@ -12,7 +12,7 @@ interface WorkflowCanvasProps {
 }
 
 export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeSelect }: WorkflowCanvasProps = {}) => {
-    const { nodes, edges, updateNodePosition, removeNode, addEdge } = useWorkflowStore();
+    const { nodes, edges, updateNodePosition, removeNode, addEdge, startExecution, stopExecution, addExecutionStep, isExecuting } = useWorkflowStore();
     const { mode } = useThemeStore();
     const [internalSelectedNodeId, setInternalSelectedNodeId] = useState<string | null>(null);
 
@@ -27,6 +27,49 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
     };
 
     const containerRef = useRef<HTMLDivElement>(null);
+
+    const runSimulation = async (startNodeId: string) => {
+        if (isExecuting) return;
+
+        startExecution();
+
+        // Helper to get next nodes
+        const getNextNodes = (id: string) => edges.filter(e => e.source === id).map(e => e.target);
+
+        const visited = new Set<string>();
+
+        // Process sequentially to simulate flow
+        const processNode = async (id: string) => {
+            // Mark running
+            addExecutionStep({
+                nodeId: id,
+                status: 'running',
+                timestamp: Date.now()
+            });
+
+            // Wait for visual effect
+            await new Promise(r => setTimeout(r, 1500));
+
+            // Mark success
+            addExecutionStep({
+                nodeId: id,
+                status: 'success',
+                timestamp: Date.now()
+            });
+
+            const nextNodes = getNextNodes(id);
+            for (const nextId of nextNodes) {
+                if (!visited.has(nextId)) {
+                    visited.add(nextId);
+                    await processNode(nextId);
+                }
+            }
+        };
+
+        await processNode(startNodeId);
+
+        setTimeout(stopExecution, 1000);
+    };
 
     // Pan/Zoom State
     const [transform, setTransform] = useState({ x: 0, y: 0, scale: 1 });
@@ -289,6 +332,7 @@ export const WorkflowCanvas = ({ selectedNodeId: externalSelectedNodeId, onNodeS
                             onDelete={removeNode}
                             onConnectStart={() => startConnection(node.id)}
                             onConnectEnd={() => completeConnection(node.id)}
+                            onRun={runSimulation}
                         />
                     ))}
                 </div>

@@ -90,17 +90,22 @@ interface NodeProps {
     onDelete?: (id: string) => void;
     onConnectStart?: () => void;
     onConnectEnd?: () => void;
+    onRun?: (id: string) => void;
 }
 
-export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onClick, onDragEnd, onDragStart, onDelete, onConnectStart, onConnectEnd }) => {
+export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onClick, onDragEnd, onDragStart, onDelete, onConnectStart, onConnectEnd, onRun }) => {
     const Icon = iconMap[node.type] || Lightning;
     const dotColors = dotColorMap[node.type] || { bg: 'bg-gray-500', glow: '0 0 10px rgba(107, 114, 128, 0.6)', text: '#6B7280' };
     const { isExecuting, executionLog } = useWorkflowStore();
     const { mode } = useThemeStore();
     const isDraggingConnection = useRef(false);
 
-    const executionStatus = executionLog.find(step => step.nodeId === node.id)?.status;
-    const isRunning = executionStatus === 'running' || (isExecuting && !executionStatus);
+    // Get the latest status for this node
+    const executionStatus = [...executionLog]
+        .reverse()
+        .find(step => step.nodeId === node.id)?.status;
+
+    const isRunning = executionStatus === 'running' || (isExecuting && !executionStatus && executionLog.length === 0);
     const nodeContent = getNodeContent(node);
 
     return (
@@ -248,18 +253,22 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                             "flex items-center gap-2 px-2 py-1.5 rounded-md text-xs border",
                             executionStatus === 'success'
                                 ? "bg-emerald-500/5 text-emerald-400 border-emerald-500/20"
-                                : "bg-red-500/5 text-red-400 border-red-500/20"
+                                : executionStatus === 'running'
+                                    ? "bg-blue-500/5 text-blue-400 border-blue-500/20"
+                                    : "bg-red-500/5 text-red-400 border-red-500/20"
                         )}>
                             <div
-                                className={cn("w-1.5 h-1.5 rounded-full")}
+                                className={cn("w-1.5 h-1.5 rounded-full", executionStatus === 'running' && "animate-pulse")}
                                 style={{
-                                    backgroundColor: executionStatus === 'success' ? '#10B981' : '#EF4444',
+                                    backgroundColor: executionStatus === 'success' ? '#10B981' : executionStatus === 'running' ? '#3B82F6' : '#EF4444',
                                     boxShadow: executionStatus === 'success'
                                         ? '0 0 8px rgba(16, 185, 129, 0.6)'
-                                        : '0 0 8px rgba(239, 68, 68, 0.6)'
+                                        : executionStatus === 'running'
+                                            ? '0 0 8px rgba(59, 130, 246, 0.6)'
+                                            : '0 0 8px rgba(239, 68, 68, 0.6)'
                                 }}
                             />
-                            {executionStatus === 'success' ? 'Completed' : 'Failed'}
+                            {executionStatus === 'success' ? 'Completed' : executionStatus === 'running' ? 'Running...' : 'Failed'}
                         </div>
                     )}
                 </div>
@@ -268,7 +277,10 @@ export const Node: React.FC<NodeProps> = ({ node, isSelected, isConnecting, onCl
                 <div className="opacity-0 group-hover:opacity-100 transition-opacity border-t border-[var(--card-border)] px-3 py-2 flex items-center justify-between bg-surface-hover/50">
                     <button
                         className="flex items-center gap-1.5 text-[11px] text-text-tertiary hover:text-text-secondary transition-colors"
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            if (onRun) onRun(node.id);
+                        }}
                     >
                         <Play className="w-3 h-3" weight="fill" />
                         <span>Run</span>
